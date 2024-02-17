@@ -16,6 +16,7 @@ import { FileDto } from 'app/entities/file/file.dto';
   imports: [SharedModule, RouterModule],
 })
 export default class HomeComponent implements OnInit, OnDestroy {
+  files: FileDto[] = [];
   account: Account | null = null;
 
   private readonly destroy$ = new Subject<void>();
@@ -32,7 +33,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(account => (this.account = account));
 
-    this.getRecentUploadFIles()
+      this.files = this.fileService.getRecentUploadFIles();
   }
 
   login(): void {
@@ -42,20 +43,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  public files: FileDto[] = [];
-  getRecentUploadFIles() {
-    for (let i = 1; i <= 6; i++) {
-      this.files.push({
-        id: i,
-        name: `File ${i}`,
-        size: Math.floor(Math.random() * 1000),
-        mimeType: 'text/plain',
-        createdBy: `User ${i}`,
-        createdDate: new Date(),
-      });
-    }
   }
 
   call_delete_fileService(id: number) {
