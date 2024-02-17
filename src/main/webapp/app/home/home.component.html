@@ -86,24 +86,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Mark.txt</td>
-          <td>400 mb</td>
-          <td>20.01.2024</td>
-          <td>Tony</td>
+        <tr *ngFor="let file of files">
+          <td>{{file.name}}</td>
+          <td>{{file.size}}</td>
+          <td>{{file.createdDate}}</td>
+          <td>{{file.createdBy}}</td>
           <td>
-            <button (click)="call_delete_fileService(12345)" class="btn btn-outline-danger">Delete</button>
-            <button (click)="call_donwload_fileService(5555555)" class="btn btn-outline-primary">Donwload</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Ma22rk.txt</td>
-          <td>100 mb</td>
-          <td>21.01.2024</td>
-          <td>Tony</td>
-          <td>
-            <button (click)="call_delete_fileService(222222222)" class="btn btn-outline-danger">Delete</button>
-            <button (click)="call_donwload_fileService(3333333333)" class="btn btn-outline-primary">Donwload</button>
+            <button (click)="call_delete_fileService(file.id)" class="btn btn-outline-danger">Delete</button>
+            <button (click)="call_donwload_fileService(file.id)" class="btn btn-outline-primary">Donwload</button>
           </td>
         </tr>
       </tbody>
