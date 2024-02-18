@@ -68,35 +68,6 @@
   </div>
 </div>
 
-<section>
-  <div class="d-flex justify-content-between mt-5">
-    <h3 class="fs-5 text-secondary mb-4">Recent upload files</h3>
-    <a href="" class="link-primary">View All</a>
-  </div>
-
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped text-center">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">file name</th>
-          <th scope="col">size</th>
-          <th scope="col">last modified</th>
-          <th scope="col">user</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let file of files">
-          <td>{{file.name}}</td>
-          <td>{{file.size}}</td>
-          <td>{{file.createdDate}}</td>
-          <td>{{file.createdBy}}</td>
-          <td>
-            <button (click)="call_delete_fileService(file.id)" class="btn btn-outline-danger">Delete</button>
-            <button (click)="call_donwload_fileService(file.id)" class="btn btn-outline-primary">Donwload</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+@if (account !== null) {
+  <jhi-recent-upload-files></jhi-recent-upload-files>
+}
