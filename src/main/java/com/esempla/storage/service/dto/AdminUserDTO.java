@@ -48,6 +48,7 @@ public class AdminUserDTO implements Serializable {
     private String lastModifiedBy;
 
     private Instant lastModifiedDate;
+    private Integer rezervationSize =50;
 
     private Set<String> authorities;
 
@@ -68,6 +69,7 @@ public class AdminUserDTO implements Serializable {
         this.createdDate = user.getCreatedDate();
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
+        this.rezervationSize = user.getRezervationSize();
         this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
     }
 
@@ -173,6 +175,14 @@ public class AdminUserDTO implements Serializable {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public Integer getRezervationSize() {
+        return rezervationSize;
+    }
+
+    public void setRezervationSize(Integer rezervationSize) {
+        this.rezervationSize = rezervationSize;
     }
 
     // prettier-ignore
