@@ -2,6 +2,17 @@
   "global": {
     "title": "StorageService",
     "browsehappy": "Ваш браузер <strong>устарел</strong>. Пожалуйста <a href=\"http://browsehappy.com/?locale=ru\">обновите ваш браузер</a>.",
+    "documents": {
+      "table": {
+        "thead": {
+          "name": "имя файла",
+          "size": "размер",
+          "last_modified": "последнее изменение",
+          "user": "пользователь",
+          "Actions": "действия"
+        }
+      }
+    },
     "menu": {
       "home": "Главная",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",

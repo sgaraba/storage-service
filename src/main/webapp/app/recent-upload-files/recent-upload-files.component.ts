@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FileDto } from 'app/entities/file/file.dto';
 import { FileService } from 'app/entities/file/file.service';
-import { SidebarComponent } from 'app/layouts/sidebar/sidebar.component';
 import SharedModule from 'app/shared/shared.module';
 
 @Component({
   selector: 'jhi-recent-upload-files',
   standalone: true,
-  imports: [SharedModule, SidebarComponent],
+  imports: [SharedModule],
   templateUrl: './recent-upload-files.component.html',
   styleUrl: './recent-upload-files.component.scss'
 })
