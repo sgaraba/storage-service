@@ -5,6 +5,7 @@ import com.esempla.storage.domain.User;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
 import com.esempla.storage.service.MailService;
+import com.esempla.storage.service.UserReservationService;
 import com.esempla.storage.service.UserService;
 import com.esempla.storage.service.dto.AdminUserDTO;
 import com.esempla.storage.web.rest.errors.BadRequestAlertException;
@@ -87,10 +88,13 @@ public class UserResource {
 
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
+    private final UserReservationService userReservationService;
+
+    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserReservationService userReservationService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.userReservationService = userReservationService;
     }
 
     /**
@@ -119,6 +123,7 @@ public class UserResource {
             throw new EmailAlreadyUsedException();
         } else {
             User newUser = userService.createUser(userDTO);
+            userReservationService.createReservation(10L, newUser);  //test
             mailService.sendCreationEmail(newUser);
             return ResponseEntity
                 .created(new URI("/api/admin/users/" + newUser.getLogin()))
