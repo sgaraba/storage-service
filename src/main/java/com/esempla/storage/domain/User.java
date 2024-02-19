@@ -78,9 +78,7 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     @Column(name = "reset_date")
     private Instant resetDate = null;
-    //@Size(min =1, max=100)
-    @Column(name = "rezervation_size")
-    private Integer rezervationSize = null;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -92,13 +90,6 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     private Set<Authority> authorities = new HashSet<>();
 
 
-    public Integer getRezervationSize() {
-        return rezervationSize;
-    }
-
-    public void setRezervationSize(Integer rezervationSize) {
-        this.rezervationSize = rezervationSize;
-    }
     public Long getId() {
         return id;
     }

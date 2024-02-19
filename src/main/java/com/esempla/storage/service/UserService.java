@@ -110,7 +110,6 @@ public class UserService {
         }
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
-        newUser.setRezervationSize(userDTO.getRezervationSize());// set rezervation size from dto
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key
