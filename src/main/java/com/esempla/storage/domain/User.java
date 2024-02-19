@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
@@ -78,6 +79,13 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     @Column(name = "reset_date")
     private Instant resetDate = null;
+
+    @OneToOne(mappedBy = "user")
+    private UserReservation userReservation;
+
+    @OneToMany(mappedBy = "user")
+    //@JoinColumn(name = "user_id", referencedColumnName = "id")  //Nu am inteles cum corect de relationat
+    private List<StorageFile> storageFiles;
 
     @JsonIgnore
     @ManyToMany
