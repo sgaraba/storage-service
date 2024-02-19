@@ -1,0 +1,49 @@
+<section class="d-flex">
+  <jhi-sidebar></jhi-sidebar>
+
+  <div class="row w-100 p-5">
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <th scope="col">file name</th>
+          <th scope="col">size</th>
+          <th scope="col">last modified</th>
+          <th scope="col">user</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let file of pagedFiles">
+          <td>{{file.name}}</td>
+          <td>{{file.size}}</td>
+          <td>{{file.createdDate}}</td>
+          <td>{{file.createdBy}}</td>
+          <td>
+            <button (click)="call_delete_fileService(file.id)" class="btn btn-outline-danger">Delete</button>
+            <button (click)="call_donwload_fileService(file.id)" class="btn btn-outline-primary">Donwload</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="prevPage()" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li class="page-item" *ngFor="let page of totalPagesArray" [class.active]="page === currentPage">
+          <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="nextPage()" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>    
+  </div>
+</section>

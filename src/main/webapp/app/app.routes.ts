@@ -7,12 +7,18 @@ import { errorRoute } from './layouts/error/error.route';
 import HomeComponent from './home/home.component';
 import NavbarComponent from './layouts/navbar/navbar.component';
 import LoginComponent from './login/login.component';
+import { RecentUploadFilesComponent } from './recent-upload-files/recent-upload-files.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
     title: 'home.title',
+  },
+  {
+    path: 'files',
+    component: RecentUploadFilesComponent,
+    title: 'home.files',
   },
   {
     path: '',
