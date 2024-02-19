@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FileDto } from 'app/entities/file/file.dto';
 import { FileService } from 'app/entities/file/file.service';
 import SharedModule from 'app/shared/shared.module';
+import { ConfirmDeleteComponent } from './modals/confirm-delete/confirm-delete.component';
 
 @Component({
   selector: 'jhi-recent-upload-files',
   standalone: true,
-  imports: [SharedModule],
-  templateUrl: './recent-upload-files.component.html',
-  styleUrl: './recent-upload-files.component.scss'
+  imports: [SharedModule, ConfirmDeleteComponent],
+  templateUrl: './files.html',
+  styleUrl: './files.scss'
 })
 export class RecentUploadFilesComponent implements OnInit {
   files: FileDto[] = [];
@@ -30,9 +31,6 @@ export class RecentUploadFilesComponent implements OnInit {
   }
 
   // call api from file Service
-  call_delete_fileService(id: number) {
-    this.fileService.deleteFile(id);
-  }
   call_donwload_fileService(id: number) {
     this.fileService.downloadFile(id);
   }

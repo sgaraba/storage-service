@@ -7,7 +7,7 @@
         "thead": {
           "name": "nume fisier",
           "size": "mărimea",
-          "last_modified": "ultima dată modificat",
+          "last_modified": "ultima modificare",
           "user": "utilizatorul",
           "Actions": "acțiuni"
         }

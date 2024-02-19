@@ -15,8 +15,8 @@
         <td>{{file.size}}</td>
         <td>{{file.createdDate}}</td>
         <td>{{file.createdBy}}</td>
-        <td>
-          <button (click)="call_delete_fileService(file.id)" class="btn btn-outline-danger">Delete</button>
+        <td class="d-flex justify-content-center">
+          <jhi-confirm-delete class="me-3" [idFile]="file.id" [title]="'Confirm delete'" [content]="'Are you sure you want to delete this file?'"></jhi-confirm-delete>
           <button (click)="call_donwload_fileService(file.id)" class="btn btn-outline-primary">Donwload</button>
         </td>
       </tr>
