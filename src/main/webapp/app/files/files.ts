@@ -2,19 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { FileDto } from 'app/entities/file/file.dto';
 import { FileService } from 'app/entities/file/file.service';
 import SharedModule from 'app/shared/shared.module';
-import { ConfirmDeleteComponent } from './modals/confirm-delete/confirm-delete.component';
+import { ConfirmDeleteComponent } from './delete/confirm-delete.component';
+import { ItemCountComponent } from 'app/shared/pagination';
 
 @Component({
   selector: 'jhi-recent-upload-files',
   standalone: true,
-  imports: [SharedModule, ConfirmDeleteComponent],
+  imports: [SharedModule, ConfirmDeleteComponent, ItemCountComponent, ItemCountComponent],
   templateUrl: './files.html',
-  styleUrl: './files.scss'
 })
-export class RecentUploadFilesComponent implements OnInit {
+export class FilesComponent implements OnInit {
   files: FileDto[] = [];
   pagedFiles: FileDto[] = [];
   currentPage: number = 1;
+  totalItems: number = 0;
   itemsPerPage: number = 7;
   totalPages: number = 0;
   totalPagesArray: number[] = [];
@@ -27,6 +28,7 @@ export class RecentUploadFilesComponent implements OnInit {
     this.files = this.fileService.getRecentUploadFIles();
     this.totalPages = Math.ceil(this.files.length / this.itemsPerPage);
     this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    this.totalItems = this.files.length;
     this.updatePage();
   }
 

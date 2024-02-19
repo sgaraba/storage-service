@@ -1,0 +1,19 @@
+<div>
+    <button class="btn btn-danger btn-sm" (click)="toggleModal()">Delete</button>
+    <div class="modal-background" *ngIf="modalVisible">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" jhiTranslate="entity.delete.title">{{ title }}</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>{{ content }}</p>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-danger me-4" (click)="confirmDeleteAction(idFile)">confirm delete</button>
+                <button class="btn btn-primary" (click)="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
