@@ -62,6 +62,12 @@
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
             <li>
+              <a class="dropdown-item" routerLink="/admin/reservation-space/list" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="wrench" [fixedWidth]="true"></fa-icon>
+                <span>Gestiune Spatiu Rezervat</span>
+              </a>
+            </li>
+            <li>
               <a class="dropdown-item" routerLink="/admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
                 <span jhiTranslate="global.menu.admin.userManagement">Gestiune utilizatori</span>

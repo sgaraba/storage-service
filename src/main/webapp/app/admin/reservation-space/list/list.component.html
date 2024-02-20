@@ -1,0 +1,59 @@
+@if (currentAccount !== null) {
+  <div class="row p-2">
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+
+    <table class="table table-striped" aria-describedby="user-files-uploaded">
+      <thead>
+      <tr>
+        <th>File Name</th>
+        <th>Total Size</th>
+        <th>Used Size</th>
+        <th>User</th>
+        <th>Activated</th>
+        <th>Created By</th>
+        <th>Created Date</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <!--        <tr *ngFor="let file of pagedFiles">-->
+      <!--          <td>{{ file.name }}</td>-->
+      <!--          <td>{{ file.size }}</td>-->
+      <!--          <td>{{ file.createdDate }}</td>-->
+      <!--          <td>{{ file.createdBy }}</td>-->
+      <!--          <td class="d-flex justify-content-center">-->
+      <!--            <jhi-confirm-delete class="me-3" [idFile]="file.id" [title]="'Confirm delete'"-->
+      <!--                                [content]="'Are you sure you want to delete this file?'"></jhi-confirm-delete>-->
+      <!--            <button (click)="call_donwload_fileService(file.id)" class="btn btn-primary btn-sm">Donwload</button>-->
+      <!--          </td>-->
+      <!--        </tr>-->
+      </tbody>
+    </table>
+
+    <!--      <div>-->
+    <!--        <div class="d-flex justify-content-center">-->
+    <!--          <jhi-item-count-->
+    <!--            [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>-->
+    <!--        </div>-->
+    <!--        <div class="d-flex justify-content-center">-->
+    <!--          <ngb-pagination-->
+    <!--            [collectionSize]="totalItems"-->
+    <!--            [(page)]="page"-->
+    <!--            [pageSize]="itemsPerPage"-->
+    <!--            [maxSize]="5"-->
+    <!--            [rotate]="true"-->
+    <!--            [boundaryLinks]="true"-->
+    <!--            (pageChange)="updatePage()"-->
+    <!--          ></ngb-pagination>-->
+    <!--        </div>-->
+    <!--      </div>-->
+  </div>
+} @else {
+  <div class="alert alert-warning">
+    <span jhiTranslate="global.messages.info.register.noaccount">Încă nu aveți un cont?</span>&nbsp;
+    <a class="alert-link" routerLink="/account/register" jhiTranslate="global.messages.info.register.link">Înregistrați
+      un cont nou</a>
+  </div>
+}
