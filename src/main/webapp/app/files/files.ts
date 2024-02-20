@@ -16,7 +16,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'jhi-recent-upload-files',
   standalone: true,
-  imports: [SharedModule, RouterModule, ConfirmDeleteComponent, ItemCountComponent, ItemCountComponent],
+  imports: [SharedModule, RouterModule, ConfirmDeleteComponent, ItemCountComponent],
   templateUrl: './files.html',
 })
 export class FilesComponent  implements OnInit, OnDestroy {
