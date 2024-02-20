@@ -31,6 +31,7 @@
         "logs": "Jurnal",
         "apidocs": "API",
         "database": "Bază de date",
+        "reservation": "Spatiu rezervat",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
       },
       "services": {
