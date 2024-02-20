@@ -1,35 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FileDto } from 'app/entities/file/file.dto';
 import { FileService } from 'app/entities/file/file.service';
 import SharedModule from 'app/shared/shared.module';
 import { ConfirmDeleteComponent } from './delete/confirm-delete.component';
 import { ItemCountComponent } from 'app/shared/pagination';
-
+import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { RouterModule } from '@angular/router';
+import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 @Component({
   selector: 'jhi-recent-upload-files',
   standalone: true,
-  imports: [SharedModule, ConfirmDeleteComponent, ItemCountComponent, ItemCountComponent],
+  imports: [SharedModule, RouterModule, ConfirmDeleteComponent, ItemCountComponent, ItemCountComponent],
   templateUrl: './files.html',
 })
-export class FilesComponent implements OnInit {
+export class FilesComponent  implements OnInit, OnDestroy {
+  currentAccount: Account | null = null;
+  private readonly destroy$ = new Subject<void>();
+
   files: FileDto[] = [];
   pagedFiles: FileDto[] = [];
-  currentPage: number = 1;
+  page!: number;
   totalItems: number = 0;
+  // itemsPerPage: number = ITEMS_PER_PAGE;
   itemsPerPage: number = 7;
   totalPages: number = 0;
   totalPagesArray: number[] = [];
 
   constructor(
+    private accountService: AccountService,
     private fileService: FileService,
   ) { }
 
   ngOnInit(): void {
+    this.accountService.identity().subscribe(account => (this.currentAccount = account));
+
     this.files = this.fileService.getRecentUploadFIles();
     this.totalPages = Math.ceil(this.files.length / this.itemsPerPage);
     this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
     this.totalItems = this.files.length;
-    this.updatePage();
+  }
+
+  // pagination
+  updatePage() {
+    const startIndex = (this.page - 1) * this.itemsPerPage;
+    const endIndex = Math.min(startIndex + this.itemsPerPage - 1, this.files.length - 1);
+    this.pagedFiles = this.files.slice(startIndex, endIndex + 1);
   }
 
   // call api from file Service
@@ -37,31 +55,8 @@ export class FilesComponent implements OnInit {
     this.fileService.downloadFile(id);
   }
 
-  // pagination for table
-  prevPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePage();
-    }
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.updatePage();
-    }
-  }
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePage();
-    }
-  }
-
-  updatePage() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = Math.min(startIndex + this.itemsPerPage - 1, this.files.length - 1);
-    this.pagedFiles = this.files.slice(startIndex, endIndex + 1);
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
