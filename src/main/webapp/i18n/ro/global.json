@@ -24,6 +24,7 @@
       "admin": {
         "main": "Administrare",
         "userManagement": "Gestiune utilizatori",
+        "reservationSpace": "Gestiune Spatiu",
         "tracker": "Informații utilizatori",
         "metrics": "Metrici",
         "health": "Stare",

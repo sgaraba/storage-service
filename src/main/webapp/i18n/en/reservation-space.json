@@ -1,0 +1,15 @@
+{
+  "reservationSpace": {
+    "table": {
+      "thead": {
+        "totalSize": "total size",
+        "usedSize": "used size",
+        "user": "user",
+        "activated": "activated",
+        "createdBy": "created by",
+        "createdDate": "created date",
+        "actions": "actions"
+      }
+    }
+  }
+}
