@@ -10,6 +10,9 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
+import { Alert, AlertService } from '../core/util/alert.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'jhi-recent-upload-files',
   standalone: true,
@@ -18,7 +21,6 @@ import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 })
 export class FilesComponent  implements OnInit, OnDestroy {
   currentAccount: Account | null = null;
-  private readonly destroy$ = new Subject<void>();
 
   files: FileDto[] = [];
   pagedFiles: FileDto[] = [];
@@ -28,10 +30,16 @@ export class FilesComponent  implements OnInit, OnDestroy {
   itemsPerPage: number = 7;
   totalPages: number = 0;
   totalPagesArray: number[] = [];
+  isLoading: boolean = true;
+
+  private readonly destroy$:Subject<void> = new Subject<void>();
+  private alerts: any;
 
   constructor(
     private accountService: AccountService,
     private fileService: FileService,
+    private alertService: AlertService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -41,18 +49,24 @@ export class FilesComponent  implements OnInit, OnDestroy {
     this.totalPages = Math.ceil(this.files.length / this.itemsPerPage);
     this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
     this.totalItems = this.files.length;
+
+    this.updatePage();
   }
 
   // pagination
-  updatePage() {
-    const startIndex = (this.page - 1) * this.itemsPerPage;
-    const endIndex = Math.min(startIndex + this.itemsPerPage - 1, this.files.length - 1);
+  updatePage(): void {
+    const startIndex: number = (this.page - 1) * this.itemsPerPage;
+    const endIndex: number = Math.min(startIndex + this.itemsPerPage - 1, this.files.length - 1);
     this.pagedFiles = this.files.slice(startIndex, endIndex + 1);
+
+    this.isLoading = false;
   }
 
   // call api from file Service
-  call_donwload_fileService(id: number) {
+  call_donwload_fileService(id: number): void {
     this.fileService.downloadFile(id);
+
+    this.alertService.addAlert({ type: 'success', message: 'Your file is donwloaded' });
   }
 
   ngOnDestroy(): void {

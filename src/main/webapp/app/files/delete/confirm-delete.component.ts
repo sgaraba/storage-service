@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FileService } from 'app/entities/file/file.service';
+import { AlertService } from '../../core/util/alert.service';
 
 @Component({
   selector: 'jhi-confirm-delete',
@@ -9,7 +10,7 @@ import { FileService } from 'app/entities/file/file.service';
   templateUrl: './confirm-delete.component.html',
   styleUrl: './confirm-delete.component.scss'
 })
-export class ConfirmDeleteComponent implements OnInit {
+export class ConfirmDeleteComponent {
   @Input() title: string = '';
   @Input() content: string = '';
   @Input() idFile: number = 0;
@@ -18,8 +19,10 @@ export class ConfirmDeleteComponent implements OnInit {
   @Output() confirmActionEvent = new EventEmitter<void>();
   modalVisible: boolean = false;
 
-  constructor(private fileService: FileService) {}
-  ngOnInit(): void {}
+  constructor(
+    private fileService: FileService,
+    private alertService: AlertService
+  ) {}
 
   closeModal(): void {
     this.modalVisible = false;
@@ -27,8 +30,13 @@ export class ConfirmDeleteComponent implements OnInit {
   }
 
   confirmDeleteAction(id: number): void {
-    this.fileService.deleteFile(id);
-    this.toggleModal();
+    if (id) {
+      this.fileService.deleteFile(id);
+      this.toggleModal();
+      this.alertService.addAlert({ type: 'success', message: 'Your file is deleted!' });
+    } else {
+      console.error('No file ID provided.');
+    }
   }
 
   toggleModal(): void {
