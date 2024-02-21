@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FileDto } from 'app/entities/file/file.dto';
 import { FileService } from 'app/entities/file/file.service';
 import SharedModule from 'app/shared/shared.module';
-import { ConfirmDeleteComponent } from './delete/confirm-delete.component';
 import { ItemCountComponent } from 'app/shared/pagination';
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
@@ -12,11 +11,12 @@ import { RouterModule } from '@angular/router';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { Alert, AlertService } from '../core/util/alert.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmDeleteModalComponent } from './delete-modal/confirm-delete-modal.component';
 
 @Component({
   selector: 'jhi-recent-upload-files',
   standalone: true,
-  imports: [SharedModule, RouterModule, ConfirmDeleteComponent, ItemCountComponent],
+  imports: [SharedModule, RouterModule, ConfirmDeleteModalComponent, ItemCountComponent],
   templateUrl: './files.html',
 })
 export class FilesComponent  implements OnInit, OnDestroy {
@@ -61,6 +61,11 @@ export class FilesComponent  implements OnInit, OnDestroy {
     this.pagedFiles = this.files.slice(startIndex, endIndex + 1);
 
     this.isLoading = false;
+  }
+
+  openModal(fileID: number): void {
+    const modalRef = this.modalService.open(ConfirmDeleteModalComponent);
+    modalRef.componentInstance.fileID = fileID;
   }
 
   // call api from file Service
