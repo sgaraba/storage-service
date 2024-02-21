@@ -3,11 +3,13 @@ import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FileService } from '../../entities/file/file.service';
 import { AlertService } from '../../core/util/alert.service';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import TranslateDirective from '../../shared/language/translate.directive';
 
 @Component({
   selector: 'jhi-confirm-delete-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FaIconComponent, TranslateDirective],
   templateUrl: './confirm-delete-modal.component.html',
 })
 export class ConfirmDeleteModalComponent {

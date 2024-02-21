@@ -28,8 +28,15 @@
           <td>{{ file.createdDate }}</td>
           <td>{{ file.createdBy }}</td>
           <td class="d-flex justify-content-center">
-            <button (click)="openModal(file.id)" class="btn btn-danger btn-sm">Delete</button>
-            <button (click)="call_donwload_fileService(file.id)" class="btn btn-primary btn-sm">Donwload</button>
+            <button class="btn btn-info btn-sm">
+              <span jhiTranslate="entity.action.view">Vizualizare</span>
+            </button>
+            <button (click)="call_donwload_fileService(file.id)" class="btn btn-primary btn-sm">
+              <span jhiTranslate="entity.action.download">Download</span>
+            </button>
+            <button (click)="openModal(file.id)" class="btn btn-danger btn-sm">
+              <span jhiTranslate="entity.action.delete">Ștergere</span>
+            </button>
           </td>
         </tr>
         </tbody>
