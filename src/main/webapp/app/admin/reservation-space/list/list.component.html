@@ -25,7 +25,7 @@
         <td>{{ reservation.createdBy }}</td>
         <td>{{ reservation.createdDate }}</td>
         <td class="d-flex justify-content-center">
-          <button type="submit" class="btn btn-info btn-sm">
+          <button [routerLink]="['../detail']" type="submit" class="btn btn-info btn-sm">
             <fa-icon icon="eye"></fa-icon>
             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vizualizare</span>
           </button>
