@@ -33,6 +33,9 @@ export class ListComponent implements OnInit {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));
     this.reservations = this.reservationSpaceService.get_reservationSpace_info();
     this.totalItems = this.reservations.length;
+
+    this.page = 1;
+    this.updatePage();
   }
 
   // pagination
