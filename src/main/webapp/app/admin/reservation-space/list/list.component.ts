@@ -6,11 +6,12 @@ import { ItemCountComponent } from '../../../shared/pagination';
 import SharedModule from '../../../shared/shared.module';
 import { ReservationSpaceService } from '../service/reservation.space.service';
 import { ReservationDTO } from '../../../entities/reservation/reservation.dto';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'jhi-list',
   standalone: true,
-  imports: [SharedModule, ItemCountComponent],
+  imports: [SharedModule, ItemCountComponent, RouterModule],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })

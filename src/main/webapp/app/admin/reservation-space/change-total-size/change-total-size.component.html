@@ -1,0 +1,28 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate>
+      <h2>Add new total size</h2>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <div class="mb-3">
+        <label>name user</label>
+        <input type="text" class="form-control" readonly />
+      </div>
+
+      <div class="mb-3">
+        <label>Current total size</label>
+        <input type="text" class="form-control" readonly />
+      </div>
+
+      <div class="mb-3">
+        <label>New total size</label>
+        <input type="text" class="form-control" />
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+      </button>
+    </form>
+  </div>
+</div>
