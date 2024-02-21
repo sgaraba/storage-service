@@ -2,6 +2,17 @@
   "global": {
     "title": "StorageService",
     "browsehappy": "Folosiți un browser <strong>vechi</strong>. Va rugăm <a href=\"http://browsehappy.com/?locale=en\"> să îl actualizați</a> pentru o experiență îmbunătațită.",
+    "documents": {
+      "table": {
+        "thead": {
+          "name": "nume fisier",
+          "size": "mărimea",
+          "last_modified": "ultima modificare",
+          "user": "utilizatorul",
+          "Actions": "acțiuni"
+        }
+      }
+    },
     "menu": {
       "home": "Acasă",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
