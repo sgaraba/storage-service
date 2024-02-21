@@ -26,7 +26,7 @@ export class ListComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private alertService: AlertService,
-    private reservationSpaceService: ReservationSpaceService
+    private reservationSpaceService: ReservationSpaceService,
   ) { }
 
   ngOnInit(): void {

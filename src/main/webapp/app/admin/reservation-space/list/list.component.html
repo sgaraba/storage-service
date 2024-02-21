@@ -25,8 +25,18 @@
         <td>{{ reservation.createdBy }}</td>
         <td>{{ reservation.createdDate }}</td>
         <td class="d-flex justify-content-center">
-          <button class="btn btn-primary btn-sm">View</button>
-          <button class="btn btn-warning btn-sm">Change total size</button>
+          <button type="submit" class="btn btn-info btn-sm">
+            <fa-icon icon="eye"></fa-icon>
+            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vizualizare</span>
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary btn-sm"
+          >
+            <fa-icon icon="pencil-alt"></fa-icon>
+            <span class="d-none d-md-inline">Change Total Size</span>
+          </button>
         </td>
       </tr>
       </tbody>
