@@ -50,6 +50,7 @@ export class FilesComponent  implements OnInit, OnDestroy {
     this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
     this.totalItems = this.files.length;
 
+    this.page = 1;
     this.updatePage();
   }
 
