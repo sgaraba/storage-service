@@ -7,6 +7,10 @@ import SharedModule from '../../../shared/shared.module';
 import { ReservationSpaceService } from '../service/reservation.space.service';
 import { ReservationDTO } from '../../../entities/reservation/reservation.dto';
 import { RouterModule } from '@angular/router';
+import { registerLocaleData } from '@angular/common';
+import localeRo from '@angular/common/locales/ro'; // import to register local Ro
+
+registerLocaleData(localeRo); // register local Ro lang
 
 @Component({
   selector: 'jhi-list',
