@@ -1,5 +1,6 @@
 package com.esempla.storage.web.rest;
 
+import com.esempla.storage.config.MinioConfiguration;
 import com.esempla.storage.domain.User;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.security.SecurityUtils;
@@ -62,8 +63,12 @@ public class AccountResource {
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         mailService.sendActivationEmail(user);
+        MinIO();
     }
-
+    private MinioConfiguration minioConfiguration;
+    public void MinIO(){
+        minioConfiguration.main();
+    }
     /**
      * {@code GET  /activate} : activate the registered user.
      *
