@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
 
 @Entity
@@ -16,8 +17,7 @@ public class UserReservation implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -26,10 +26,10 @@ public class UserReservation implements Serializable {
 
     @NotNull
     @Column(name = "used_size", nullable = false)
-    private Long usedSize;
+    private Long usedSize = 0L;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn
     private User user;
 
     @NotNull
@@ -102,19 +102,15 @@ public class UserReservation implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof UserReservation)) {
-            return false;
-        }
-        return id != null && id.equals(((UserReservation) o).id);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserReservation that = (UserReservation) o;
+        return activated == that.activated && Objects.equals(id, that.id) && Objects.equals(totalSize, that.totalSize) && Objects.equals(usedSize, that.usedSize) && Objects.equals(createdBy, that.createdBy) && Objects.equals(createdDate, that.createdDate);
     }
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return getClass().hashCode();
+        return Objects.hash(id, totalSize, usedSize, activated, createdBy, createdDate);
     }
 
     @Override

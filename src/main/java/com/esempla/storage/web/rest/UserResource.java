@@ -88,13 +88,10 @@ public class UserResource {
 
     private final MailService mailService;
 
-    private final UserReservationService userReservationService;
-
     public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserReservationService userReservationService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
-        this.userReservationService = userReservationService;
     }
 
     /**
@@ -123,7 +120,6 @@ public class UserResource {
             throw new EmailAlreadyUsedException();
         } else {
             User newUser = userService.createUser(userDTO);
-            userReservationService.createReservation(10L, newUser);  //test
             mailService.sendCreationEmail(newUser);
             return ResponseEntity
                 .created(new URI("/api/admin/users/" + newUser.getLogin()))
