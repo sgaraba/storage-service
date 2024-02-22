@@ -83,7 +83,6 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     private UserReservation userReservation;
 
     @OneToMany(mappedBy = "user")
-    //@JoinColumn(name = "user_id", referencedColumnName = "id")  //Nu am inteles cum corect de relationat
     private List<StorageFile> storageFiles;
 
     @JsonIgnore

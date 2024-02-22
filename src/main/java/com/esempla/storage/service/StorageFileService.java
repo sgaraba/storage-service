@@ -2,27 +2,82 @@ package com.esempla.storage.service;
 
 import com.esempla.storage.domain.StorageFile;
 import com.esempla.storage.domain.User;
+import com.esempla.storage.domain.UserReservation;
 import com.esempla.storage.repository.StorageFileRepository;
+import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.repository.UserReservationRepository;
+import com.esempla.storage.service.dto.AdminReservationDTO;
+import com.esempla.storage.service.dto.AdminStorageFileDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class StorageFileService {
+
+    private final Logger log = LoggerFactory.getLogger(UserService.class);
+
     private final StorageFileRepository storageFileRepository;
 
-    public StorageFileService(StorageFileRepository storageFileRepository) {
+    private final UserRepository userRepository;
+
+    public StorageFileService(StorageFileRepository storageFileRepository, UserRepository userRepository) {
         this.storageFileRepository = storageFileRepository;
+        this.userRepository = userRepository;
     }
 
-    public StorageFile createStorageFile(String name, Long size, String mimeType, String path, User user){
-        StorageFile storageFile = new StorageFile();
-        storageFile.setName(name);
-        storageFile.setSize(size);
-        storageFile.setMimeType(mimeType);
-        storageFile.setPath(path);
-        storageFile.setUser(user);
-        storageFile.setCreatedBy(user.getLogin());
+    public StorageFile createStorageFile(AdminStorageFileDTO adminStorageFileDTO){
+        Optional
+            .of(userRepository.findById(adminStorageFileDTO.getUserId()))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .map(user -> {
+                StorageFile storageFile = new StorageFile();
+                storageFile.setName(adminStorageFileDTO.getName());
+                storageFile.setPath(adminStorageFileDTO.getPath());
+                storageFile.setUser(user);
+                storageFile.setCreatedBy(user.getLogin());
 
-        return storageFile;
+                storageFileRepository.save(storageFile);
+
+                return storageFile;
+            });
+        return null;
+    }
+
+    public Optional<AdminStorageFileDTO> updateStorageFile(AdminStorageFileDTO adminStorageFileDTO) {
+        return Optional
+            .of(storageFileRepository.findById(adminStorageFileDTO.getId()))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .map(storageFile -> {
+                storageFile.setSize(adminStorageFileDTO.getSize());
+                storageFile.setMimeType(adminStorageFileDTO.getMimeType());
+                storageFile.setName(adminStorageFileDTO.getName());
+                storageFile.setPath(adminStorageFileDTO.getPath());
+                storageFileRepository.save(storageFile);
+                log.debug("Changed Information for Storage File: {}", storageFile);
+                return storageFile;
+            })
+            .map(AdminStorageFileDTO::new);
+    }
+
+    public void deleteStorageFile(Long id) {
+        storageFileRepository
+            .findById(id)
+            .ifPresent(storageFile -> {
+                storageFileRepository.delete(storageFile);
+                log.debug("Deleted Storage File: {}", storageFile);
+            });
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AdminStorageFileDTO> getAllManagedStorageFiles(Pageable pageable) {
+        return storageFileRepository.findAll(pageable).map(AdminStorageFileDTO::new);
     }
 }

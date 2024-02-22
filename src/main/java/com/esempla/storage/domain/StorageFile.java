@@ -1,5 +1,6 @@
 package com.esempla.storage.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedBy;
@@ -7,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Table(name = "storage_file")
@@ -15,8 +17,7 @@ public class StorageFile implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -31,12 +32,13 @@ public class StorageFile implements Serializable {
     @Column(name = "mime_type",nullable = false, length = 255)
     private String mimeType;
 
+    @JsonIgnore
     @NotNull
     @Column(name = "path",nullable = false, length = 255)
     private String path;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn
     private User user;
 
     @CreatedBy
@@ -113,19 +115,15 @@ public class StorageFile implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof StorageFile)) {
-            return false;
-        }
-        return id != null && id.equals(((StorageFile) o).id);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StorageFile that = (StorageFile) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(size, that.size) && Objects.equals(mimeType, that.mimeType) && Objects.equals(path, that.path) && Objects.equals(createdBy, that.createdBy) && Objects.equals(createdDate, that.createdDate);
     }
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return getClass().hashCode();
+        return Objects.hash(id, name, size, mimeType, path, createdBy, createdDate);
     }
 
     @Override

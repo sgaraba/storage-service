@@ -9,7 +9,7 @@
 
     <changeSet id="20241702164731-1" author="Neo7Noir">
         <createTable tableName="storage_file">
-            <column name="id" type="bigint">
+            <column name="id" type="bigserial">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
@@ -34,7 +34,7 @@
         </createTable>
 
         <createTable tableName="user_reservation">
-            <column name="id" type="bigint">
+            <column name="id" type="bigserial">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="total_size" type="bigint">
