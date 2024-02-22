@@ -13,6 +13,13 @@ import { Alert, AlertService } from '../core/util/alert.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmDeleteModalComponent } from './delete-modal/confirm-delete-modal.component';
 
+//imports for add local Ro lang
+import { registerLocaleData } from '@angular/common';
+import localeRo from '@angular/common/locales/ro';
+
+// Register the 'ro' locale data
+registerLocaleData(localeRo);
+
 @Component({
   selector: 'jhi-recent-upload-files',
   standalone: true,
