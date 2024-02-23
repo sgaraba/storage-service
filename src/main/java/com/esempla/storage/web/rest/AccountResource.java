@@ -1,5 +1,6 @@
 package com.esempla.storage.web.rest;
 
+import com.esempla.storage.config.MinioConfiguration;
 import com.esempla.storage.domain.User;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.security.SecurityUtils;
@@ -35,9 +36,7 @@ public class AccountResource {
     private final Logger log = LoggerFactory.getLogger(AccountResource.class);
 
     private final UserRepository userRepository;
-
     private final UserService userService;
-
     private final MailService mailService;
 
     public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
@@ -61,7 +60,7 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        //mailService.sendActivationEmail(user);
+        mailService.sendActivationEmail(user);
     }
 
     /**

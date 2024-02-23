@@ -33,20 +33,20 @@ public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final AuthorityRepository authorityRepository;
+    private final MinioService minioService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, MinioService minioService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.minioService = minioService;
     }
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
-        return userRepository
+        Optional<User> user1 = userRepository
             .findOneByActivationKey(key)
             .map(user -> {
                 // activate given user for the registration key.
@@ -55,6 +55,10 @@ public class UserService {
                 log.debug("Activated user: {}", user);
                 return user;
             });
+
+        // Create user bucket
+
+        return user1;
     }
 
     public Optional<User> completePasswordReset(String newPassword, String key) {

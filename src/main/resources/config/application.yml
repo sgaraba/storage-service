@@ -208,5 +208,10 @@ jhipster:
 # More documentation is available at:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
-
+storage:
+  minio:
+    url: http://localhost:9002
+    access-key: access_key
+    secret-key: secret_key
+    bucket: storage
 # application:
