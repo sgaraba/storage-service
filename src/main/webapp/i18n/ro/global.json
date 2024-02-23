@@ -2,6 +2,17 @@
   "global": {
     "title": "StorageService",
     "browsehappy": "Folosiți un browser <strong>vechi</strong>. Va rugăm <a href=\"http://browsehappy.com/?locale=en\"> să îl actualizați</a> pentru o experiență îmbunătațită.",
+    "documents": {
+      "table": {
+        "thead": {
+          "name": "nume fisier",
+          "size": "mărimea",
+          "last_modified": "ultima modificare",
+          "user": "utilizatorul",
+          "Actions": "acțiuni"
+        }
+      }
+    },
     "menu": {
       "home": "Acasă",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
@@ -24,6 +35,7 @@
       "admin": {
         "main": "Administrare",
         "userManagement": "Gestiune utilizatori",
+        "reservationSpace": "Gestiune Spatiu",
         "tracker": "Informații utilizatori",
         "metrics": "Metrici",
         "health": "Stare",
@@ -31,6 +43,7 @@
         "logs": "Jurnal",
         "apidocs": "API",
         "database": "Bază de date",
+        "reservation": "Spatiu rezervat",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
       },
       "services": {
@@ -103,6 +116,7 @@
       "back": "Înapoi",
       "cancel": "Anulare",
       "delete": "Ștergere",
+      "download": "Descărcare",
       "edit": "Editare",
       "open": "Deschidere",
       "save": "Salvare",

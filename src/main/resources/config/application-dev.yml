@@ -15,7 +15,7 @@
 
 logging:
   level:
-    ROOT: DEBUG
+    ROOT: INFO
     tech.jhipster: DEBUG
     org.hibernate.SQL: DEBUG
     com.esempla.storage: DEBUG
@@ -44,8 +44,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: {storage.service.internship@gmail.com}
-    password: {1234qwertyQ}
+    username: storage.service.internship@gmail.com
+    password: 1234qwertyQ
     properties:
       mail:
         smtp:

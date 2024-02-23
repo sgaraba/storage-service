@@ -2,6 +2,17 @@
   "global": {
     "title": "StorageService",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+    "documents": {
+      "table": {
+        "thead": {
+          "name": "name file",
+          "size": "size",
+          "last_modified": "last modified",
+          "user": "user",
+          "Actions": "actions"
+        }
+      }
+    },
     "menu": {
       "home": "Home",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
@@ -21,6 +32,7 @@
       "admin": {
         "main": "Administration",
         "userManagement": "User management",
+        "reservationSpace": "Reservation Space",
         "tracker": "User tracker",
         "metrics": "Metrics",
         "health": "Health",
@@ -28,6 +40,7 @@
         "logs": "Logs",
         "apidocs": "API",
         "database": "Database",
+        "reservation": "Reservation",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
       },
       "language": "Language"
@@ -94,6 +107,7 @@
       "back": "Back",
       "cancel": "Cancel",
       "delete": "Delete",
+      "download": "Download",
       "edit": "Edit",
       "open": "Open",
       "save": "Save",

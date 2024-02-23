@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgModule } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -14,6 +14,7 @@ import { Account } from 'app/core/auth/account.model';
   styleUrl: './home.component.scss',
   imports: [SharedModule, RouterModule],
 })
+
 export default class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
 
@@ -22,7 +23,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private accountService: AccountService,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.accountService

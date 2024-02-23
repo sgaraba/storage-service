@@ -5,6 +5,7 @@ import com.esempla.storage.domain.User;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
 import com.esempla.storage.service.MailService;
+import com.esempla.storage.service.UserReservationService;
 import com.esempla.storage.service.UserService;
 import com.esempla.storage.service.dto.AdminUserDTO;
 import com.esempla.storage.web.rest.errors.BadRequestAlertException;
@@ -88,7 +89,7 @@ public class UserResource {
 
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
+    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserReservationService userReservationService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;

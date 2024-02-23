@@ -2,6 +2,17 @@
   "global": {
     "title": "StorageService",
     "browsehappy": "Ваш браузер <strong>устарел</strong>. Пожалуйста <a href=\"http://browsehappy.com/?locale=ru\">обновите ваш браузер</a>.",
+    "documents": {
+      "table": {
+        "thead": {
+          "name": "имя файла",
+          "size": "размер",
+          "last_modified": "последнее изменение",
+          "user": "пользователь",
+          "Actions": "действия"
+        }
+      }
+    },
     "menu": {
       "home": "Главная",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
@@ -21,6 +32,7 @@
       "admin": {
         "main": "Администрирование",
         "userManagement": "Управление пользователями",
+        "reservationSpace": "Управление Памяти",
         "tracker": "Трекер польз.",
         "metrics": "Метрики",
         "health": "Состояние",
@@ -28,6 +40,7 @@
         "logs": "Логи",
         "apidocs": "API",
         "database": "База данных",
+        "reservation": "Зарезервированное место",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
       },
       "language": "Язык"
@@ -94,6 +107,7 @@
       "back": "Назад",
       "cancel": "Отмена",
       "delete": "Удалить",
+      "download": "Скачать",
       "edit": "Изменить",
       "open": "Открыть",
       "save": "Сохранить",
