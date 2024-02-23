@@ -73,7 +73,8 @@ public class UserResource {
             "createdBy",
             "createdDate",
             "lastModifiedBy",
-            "lastModifiedDate"
+            "lastModifiedDate",
+            "rezervationSize"
         )
     );
 

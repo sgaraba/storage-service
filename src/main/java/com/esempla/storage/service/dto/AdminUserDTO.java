@@ -4,6 +4,8 @@ import com.esempla.storage.config.Constants;
 import com.esempla.storage.domain.Authority;
 import com.esempla.storage.domain.User;
 import jakarta.validation.constraints.*;
+import org.wildfly.common.annotation.NotNull;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
@@ -48,6 +50,9 @@ public class AdminUserDTO implements Serializable {
     private String lastModifiedBy;
 
     private Instant lastModifiedDate;
+
+    @Min(1)//minim value
+    private Integer rezervationSize; //default value
 
     private Set<String> authorities;
 
@@ -173,6 +178,14 @@ public class AdminUserDTO implements Serializable {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public Integer getRezervationSize() {
+        return rezervationSize;
+    }
+
+    public void setRezervationSize(Integer rezervationSize) {
+        this.rezervationSize = rezervationSize;
     }
 
     // prettier-ignore
