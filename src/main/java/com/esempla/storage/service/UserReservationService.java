@@ -1,5 +1,6 @@
 package com.esempla.storage.service;
 
+import com.esempla.storage.domain.User;
 import com.esempla.storage.domain.UserReservation;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.repository.UserReservationRepository;
@@ -8,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -28,22 +31,16 @@ public class UserReservationService {
     }
 
     public UserReservation createReservation(AdminReservationDTO adminReservationDTO){
-        Optional
-            .of(userRepository.findById(adminReservationDTO.getUserId()))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .map(user -> {
-                UserReservation userReservation = new UserReservation();
-                userReservation.setTotalSize(adminReservationDTO.getTotalSize());
-                userReservation.setActivated(adminReservationDTO.isActivated());
-                userReservation.setUser(user);
-                userReservation.setCreatedBy(user.getLogin());
+        User user = userRepository.findById(adminReservationDTO.getUserId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-                userReservationRepository.save(userReservation);
+        UserReservation userReservation = new UserReservation();
+        userReservation.setTotalSize(adminReservationDTO.getTotalSize());
+        userReservation.setActivated(adminReservationDTO.isActivated());
+        userReservation.setUser(user);
+        userReservation.setCreatedBy(user.getLogin());
 
-                return userReservation;
-            });
-        return null;
+       return userReservationRepository.save(userReservation);
     }
 
     public Optional<AdminReservationDTO> updateUserReservation(AdminReservationDTO adminReservationDTO) {

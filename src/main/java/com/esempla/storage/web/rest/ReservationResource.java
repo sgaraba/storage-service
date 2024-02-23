@@ -57,14 +57,12 @@ public class ReservationResource {
 
     private final UserReservationRepository userReservationRepository;
 
-
     public ReservationResource(UserReservationService userReservationService, UserReservationRepository userReservationRepository) {
         this.userReservationService = userReservationService;
         this.userReservationRepository = userReservationRepository;
     }
 
     @PostMapping("/reservations")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<UserReservation> createReservation(@Valid @RequestBody AdminReservationDTO reservationDTO) throws URISyntaxException {
         log.debug("REST request to save Reservation : {}", reservationDTO);
 
@@ -87,7 +85,6 @@ public class ReservationResource {
 
 
     @GetMapping("/reservations")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<List<AdminReservationDTO>> getAllReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get all Reservations for an admin");
         if (!onlyContainsAllowedProperties(pageable)) {
@@ -104,7 +101,6 @@ public class ReservationResource {
     }
 
     @GetMapping("/reservations/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<AdminReservationDTO> getUserReservation(@PathVariable("id") Long id) {
         log.debug("REST request to get Reservation : {}", id);
         return ResponseUtil.wrapOrNotFound(userReservationRepository.findById(id).map(AdminReservationDTO::new));

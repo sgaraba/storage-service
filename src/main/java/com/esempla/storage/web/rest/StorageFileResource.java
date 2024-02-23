@@ -55,7 +55,6 @@ public class StorageFileResource {
     private String applicationName;
 
     private final StorageFileService storageFileService;
-
     private final StorageFileRepository storageFileRepository;
 
     public StorageFileResource(StorageFileService storageFileService, StorageFileRepository storageFileRepository) {
@@ -63,8 +62,7 @@ public class StorageFileResource {
         this.storageFileRepository = storageFileRepository;
     }
 
-    @PostMapping("/storageFiles")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @PostMapping("/storage-files")
     public ResponseEntity<StorageFile> createStorageFile(@Valid @RequestBody AdminStorageFileDTO storageFileDTO) throws URISyntaxException {
         log.debug("REST request to save Storage File : {}", storageFileDTO);
 
@@ -75,12 +73,12 @@ public class StorageFileResource {
         StorageFile newStorageFile = storageFileService.createStorageFile(storageFileDTO);
 
         return ResponseEntity
-            .created(new URI("/api/admin/storageFiles/" + newStorageFile.getName()))
+            .created(new URI("/api/admin/storage-files/" + newStorageFile.getName()))
             .headers(HeaderUtil.createAlert(applicationName, "userStorageFileManagement.created", newStorageFile.getName()))
             .body(newStorageFile);
     }
 
-    @GetMapping("/storageFiles")
+    @GetMapping("/storage-files")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<List<AdminStorageFileDTO>> getAllReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get all Storage Files for an admin");
@@ -98,14 +96,12 @@ public class StorageFileResource {
     }
 
     @GetMapping("/storageFiles/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<AdminStorageFileDTO> getStorageFile(@PathVariable("id") Long id) {
         log.debug("REST request to get Storage File : {}", id);
         return ResponseUtil.wrapOrNotFound(storageFileRepository.findById(id).map(AdminStorageFileDTO::new));
     }
 
     @PutMapping("/storageFiles")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<AdminStorageFileDTO> updateStorageFile(@Valid @RequestBody AdminStorageFileDTO adminStorageFileDTO) {
         log.debug("REST request to update Storage File : {}", adminStorageFileDTO);
         Optional<StorageFile> existingStorageFile = storageFileRepository.findByUserId(adminStorageFileDTO.getUserId());
@@ -122,7 +118,6 @@ public class StorageFileResource {
     }
 
     @DeleteMapping("/storageFiles/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteStorageFile(@PathVariable("id") Long id) {
         log.debug("REST request to delete Storage File: {}", id);
         storageFileService.deleteStorageFile(id);
