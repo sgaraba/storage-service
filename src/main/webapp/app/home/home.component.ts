@@ -22,7 +22,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private accountService: AccountService,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.accountService
