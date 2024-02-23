@@ -1,0 +1,15 @@
+{
+  "reservationSpace": {
+    "table": {
+      "thead": {
+        "totalSize": "общий размер",
+        "usedSize": "использованный размер",
+        "user": "пользователь",
+        "activated": "активирован",
+        "createdBy": "создано",
+        "createdDate": "дата создания",
+        "actions": "действия"
+      }
+    }
+  }
+}

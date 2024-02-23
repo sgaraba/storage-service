@@ -1,0 +1,15 @@
+{
+  "reservationSpace": {
+    "table": {
+      "thead": {
+        "totalSize": "dimensiune totală",
+        "usedSize": "dimensiune utilizată",
+        "user": "utilizator",
+        "activated": "activat",
+        "createdBy": "creat de",
+        "createdDate": "data creării",
+        "actions": "acțiuni"
+      }
+    }
+  }
+}

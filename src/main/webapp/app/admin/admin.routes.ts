@@ -8,6 +8,10 @@ const routes: Routes = [
     title: 'userManagement.home.title',
   },
   {
+    path: 'reservation-space',
+    loadChildren: () => import('./reservation-space/reservation-space.route'),
+  },
+  {
     path: 'docs',
     loadComponent: () => import('./docs/docs.component'),
     title: 'global.menu.admin.apidocs',
