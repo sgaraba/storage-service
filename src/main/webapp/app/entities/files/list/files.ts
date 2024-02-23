@@ -1,21 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FileDto } from 'app/entities/file/file.dto';
-import { FileService } from 'app/entities/file/file.service';
+import { FileDto } from 'app/entities/files/file.dto';
+import { FileService } from 'app/entities/files/service/file.service';
 import SharedModule from 'app/shared/shared.module';
 import { ItemCountComponent } from 'app/shared/pagination';
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { RouterModule } from '@angular/router';
-import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
-import { Alert, AlertService } from '../core/util/alert.service';
+import { Alert, AlertService } from '../../../core/util/alert.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmDeleteModalComponent } from './delete-modal/confirm-delete-modal.component';
 
 //imports for add local Ro lang
 import { registerLocaleData } from '@angular/common';
 import localeRo from '@angular/common/locales/ro';
+import {ConfirmDeleteModalComponent} from "../delete/confirm-delete-modal.component";
 
 // Register the 'ro' locale data
 registerLocaleData(localeRo);

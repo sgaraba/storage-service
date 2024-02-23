@@ -18,7 +18,7 @@
           <th jhiTranslate="global.documents.table.thead.size" scope="col">size</th>
           <th jhiTranslate="global.documents.table.thead.last_modified" scope="col">last modified</th>
           <th jhiTranslate="global.documents.table.thead.user" scope="col">user</th>
-          <th jhiTranslate="global.documents.table.thead.Actions" scope="col">actions</th>
+          <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -29,13 +29,13 @@
           <td>{{ file.createdBy }}</td>
           <td class="d-flex justify-content-center">
             <button class="btn btn-info btn-sm">
-              <span jhiTranslate="entity.action.view">Vizualizare</span>
+              <fa-icon icon="eye"></fa-icon>
             </button>
             <button (click)="call_donwload_fileService(file.id)" class="btn btn-primary btn-sm">
-              <span jhiTranslate="entity.action.download">Download</span>
+              <fa-icon icon="download"></fa-icon>
             </button>
             <button (click)="openModal(file.id)" class="btn btn-danger btn-sm">
-              <span jhiTranslate="entity.action.delete">Ștergere</span>
+              <fa-icon icon="trash-alt"></fa-icon>
             </button>
           </td>
         </tr>

@@ -1,7 +1,11 @@
 import { Routes } from '@angular/router';
 
 const routes: Routes = [
-  /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
+  {
+    path: 'files',
+    loadChildren: () => import('./files/files.routes'),
+    title: 'files.home',
+  },
 ];
 
 export default routes;

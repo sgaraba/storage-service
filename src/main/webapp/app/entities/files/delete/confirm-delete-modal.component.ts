@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FileService } from '../../entities/file/file.service';
-import { AlertService } from '../../core/util/alert.service';
+import { FileService } from '../service/file.service';
+import { AlertService } from '../../../core/util/alert.service';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import TranslateDirective from '../../shared/language/translate.directive';
+import TranslateDirective from '../../../shared/language/translate.directive';
 
 @Component({
   selector: 'jhi-confirm-delete-modal',
