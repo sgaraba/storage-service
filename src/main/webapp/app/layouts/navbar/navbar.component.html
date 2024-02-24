@@ -43,6 +43,14 @@
               </span>
             </a>
             <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+              <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a class="nav-link link-dark" routerLink="/files">
+                  <span>
+                    <fa-icon icon="files"></fa-icon>
+                    <span>Files</span>
+                  </span>
+                </a>
+              </li>
             </ul>
           </li>
         }

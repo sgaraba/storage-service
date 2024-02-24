@@ -1,5 +1,14 @@
 {
   "files": {
-    "home": "Documents"
+    "home": "Documents",
+    "table": {
+      "thead": {
+        "name": "Name file",
+        "size": "Size",
+        "last_modified": "Last modified",
+        "user": "User",
+        "Actions": "Actions"
+      }
+    }
   }
 }

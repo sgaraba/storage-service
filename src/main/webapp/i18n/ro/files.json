@@ -1,5 +1,14 @@
 {
   "files": {
-    "home": "Documente"
+    "home": "Documente",
+    "table": {
+      "thead": {
+        "name": "Nume fișier",
+        "size": "Mărime",
+        "last_modified": "Ultima modificare",
+        "user": "Utilizator",
+        "Actions": "Acțiuni"
+      }
+    }    
   }
 }
