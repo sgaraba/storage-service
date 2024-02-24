@@ -9,6 +9,15 @@
         "user": "User",
         "Actions": "Actions"
       }
+    },
+
+    "confirmDeleteModal": {
+      "modalTitle": "Confirm deletion action",
+      "modalBody": "Are you sure you want to delete this file?",
+      "buttons": {
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
     }
   }
 }

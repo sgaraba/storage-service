@@ -9,6 +9,15 @@
         "user": "Utilizator",
         "Actions": "Acțiuni"
       }
+    },
+
+    "confirmDeleteModal": {
+      "modalTitle": "Confirmați acțiunea de ștergere",
+      "modalBody": "Sunteți sigur că doriți să ștergeți acest fișier?",
+      "buttons": {
+        "cancel": "Anulează",
+        "confirm": "Șterge"
+      }
     }    
   }
 }
