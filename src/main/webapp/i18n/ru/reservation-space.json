@@ -20,10 +20,18 @@
       "usedSize": "Использованный объем",
       "createdBy": "Создано",
       "createdDate": "Создано на дату"
-    },    
+    },
 
     "buttons": {
       "changeTotalSize": "Изменить общий размер"
+    },
+
+    "modalChangeTotalSize": {
+      "modalTitle": "Изменить общий размер",
+      "modalButtons": {
+        "cancel": "Отмена",
+        "confirm": "Обновить"
+      }
     }
   }
 }

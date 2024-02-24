@@ -8,7 +8,9 @@ import { ReservationSpaceService } from '../service/reservation.space.service';
 import { ReservationDTO } from '../../../entities/reservation/reservation.dto';
 import { RouterModule } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
-import localeRo from '@angular/common/locales/ro'; // import to register local Ro
+import localeRo from '@angular/common/locales/ro';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ChangeTotalSizeComponent } from '../change-total-size/change-total-size.component'; // import to register local Ro
 
 registerLocaleData(localeRo); // register local Ro lang
 
@@ -32,6 +34,7 @@ export class ListComponent implements OnInit {
     private accountService: AccountService,
     private alertService: AlertService,
     private reservationSpaceService: ReservationSpaceService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -41,6 +44,11 @@ export class ListComponent implements OnInit {
 
     this.page = 1;
     this.updatePage();
+  }
+
+  openModalChangeTotalSize(): void {
+    const modalRef = this.modalService.open(ChangeTotalSizeComponent);
+    // modalRef.componentInstance.fileID = fileID;
   }
 
   // pagination

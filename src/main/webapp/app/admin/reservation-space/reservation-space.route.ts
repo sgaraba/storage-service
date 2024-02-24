@@ -10,10 +10,6 @@ const ReservationSpaceRoute: Routes = [
     component: ListComponent,
   },
   {
-    path: 'change-total-size',
-    component: ChangeTotalSizeComponent,
-  },
-  {
     path: 'detail',
     component: ReservationSpaceDetailComponent,
   }

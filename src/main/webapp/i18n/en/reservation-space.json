@@ -24,6 +24,14 @@
 
     "buttons": {
       "changeTotalSize": "Change Total Size"
+    },
+
+    "modalChangeTotalSize": {
+      "modalTitle": "Modify total size",
+      "modalButtons": {
+        "cancel": "Cancel",
+        "confirm": "Update"
+      }
     }
   }
 }

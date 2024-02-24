@@ -8,13 +8,22 @@
   Sunteti siguri ca doriti sa stergeti acest file?
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()"  jhiTranslate="files.confirmDeleteModal.buttons.cancel">
+  <button
+    type="button"
+    class="btn btn-secondary"
+    data-dismiss="modal"
+    (click)="closeModal()"
+  >
     <fa-icon icon="ban"></fa-icon>&nbsp;
-    <span jhiTranslate="entity.action.cancel">Anulare</span>
+    <span jhiTranslate="files.confirmDeleteModal.buttons.cancel">Anulare</span>
   </button>
 
-  <button type="submit" class="btn btn-danger"  (click)="confirmDeleteAction()"  jhiTranslate="files.confirmDeleteModal.buttons.confirm">
+  <button
+    type="submit"
+    class="btn btn-danger"
+    (click)="confirmDeleteAction()"
+  >
     <fa-icon icon="times"></fa-icon>&nbsp;
-    <span jhiTranslate="entity.action.delete">Ștergere</span>
+    <span jhiTranslate="files.confirmDeleteModal.buttons.confirm">Ștergere</span>
   </button>
 </div>

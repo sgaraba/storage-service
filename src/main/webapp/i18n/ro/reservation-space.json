@@ -20,10 +20,18 @@
       "usedSize": "Spațiu utilizat",
       "createdBy": "Creat de",
       "createdDate": "Creat la data de"
-    },    
+    },
 
     "buttons": {
       "changeTotalSize": "Schimbare Dimensiune Totală"
+    },
+
+    "modalChangeTotalSize": {
+      "modalTitle": "Modifică dimensiunea totală",
+      "modalButtons": {
+        "cancel": "Anulează",
+        "confirm": "Actualizează"
+      }
     }
   }
 }
