@@ -95,13 +95,13 @@ public class StorageFileResource {
         return pageable.getSort().stream().map(Sort.Order::getProperty).allMatch(ALLOWED_ORDERED_PROPERTIES::contains);
     }
 
-    @GetMapping("/storageFiles/{id}")
+    @GetMapping("/storage-files/{id}")
     public ResponseEntity<AdminStorageFileDTO> getStorageFile(@PathVariable("id") Long id) {
         log.debug("REST request to get Storage File : {}", id);
         return ResponseUtil.wrapOrNotFound(storageFileRepository.findById(id).map(AdminStorageFileDTO::new));
     }
 
-    @PutMapping("/storageFiles")
+    @PutMapping("/storage-files")
     public ResponseEntity<AdminStorageFileDTO> updateStorageFile(@Valid @RequestBody AdminStorageFileDTO adminStorageFileDTO) {
         log.debug("REST request to update Storage File : {}", adminStorageFileDTO);
         Optional<StorageFile> existingStorageFile = storageFileRepository.findByUserId(adminStorageFileDTO.getUserId());
@@ -117,7 +117,7 @@ public class StorageFileResource {
         );
     }
 
-    @DeleteMapping("/storageFiles/{id}")
+    @DeleteMapping("/storage-files/{id}")
     public ResponseEntity<Void> deleteStorageFile(@PathVariable("id") Long id) {
         log.debug("REST request to delete Storage File: {}", id);
         storageFileService.deleteStorageFile(id);

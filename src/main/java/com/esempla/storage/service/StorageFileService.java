@@ -12,8 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -32,23 +34,19 @@ public class StorageFileService {
     }
 
     public StorageFile createStorageFile(AdminStorageFileDTO adminStorageFileDTO){
-        Optional
-            .of(userRepository.findById(adminStorageFileDTO.getUserId()))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .map(user -> {
-                StorageFile storageFile = new StorageFile();
-                storageFile.setName(adminStorageFileDTO.getName());
-                storageFile.setPath(adminStorageFileDTO.getPath());
-                storageFile.setSize(adminStorageFileDTO.getSize());
-                storageFile.setUser(user);
-                storageFile.setCreatedBy(user.getLogin());
+        User user = userRepository.findById(adminStorageFileDTO.getUserId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-                storageFileRepository.save(storageFile);
+        StorageFile storageFile = new StorageFile();
+        storageFile.setName(adminStorageFileDTO.getName());
+        storageFile.setPath(adminStorageFileDTO.getPath());
+        storageFile.setMimeType(adminStorageFileDTO.getMimeType());
+        storageFile.setSize(adminStorageFileDTO.getSize());
+        storageFile.setUser(user);
+        storageFile.setCreatedBy(user.getLogin());
 
-                return storageFile;
-            });
-        return null;
+        storageFileRepository.save(storageFile);
+        return storageFile;
     }
 
     public Optional<AdminStorageFileDTO> updateStorageFile(AdminStorageFileDTO adminStorageFileDTO) {
