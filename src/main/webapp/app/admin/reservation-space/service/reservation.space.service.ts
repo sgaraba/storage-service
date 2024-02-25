@@ -2,28 +2,26 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from '../../../core/config/application-config.service';
-import { ReservationDTO } from '../../../entities/reservation/reservation.dto';
+import { ReservationDTO } from '../reservation.dto';
+import { Pagination } from '../../../core/request/request.model';
+import { createRequestOption } from '../../../core/request/request-util';
+import { IUser } from '../../user-management/user-management.model';
 
 @Injectable({ providedIn: 'root' })
 export class ReservationSpaceService{
+  private resourceUrl = this.applicationConfigService.getEndpointFor('/api/admin/reservations');
+
   constructor(
     private http: HttpClient,
+    private applicationConfigService: ApplicationConfigService,
   ) {}
 
-  get_reservationSpace_info(): ReservationDTO[] {
-    const reservations: ReservationDTO[] = [];
-    for (let i = 1; i <= 30; i++) {
-      const reservation: ReservationDTO = {
-        id: i,
-        totalSize: Math.floor(Math.random() * 1000),
-        usedSize: Math.floor(Math.random() * 500),
-        user: { id: i, login: `User ${i}` },
-        activated: Math.random() < 0.5,
-        createdBy: `User ${Math.floor(Math.random() * 10) + 1}`,
-        createdDate: new Date(new Date().getTime() - Math.floor(Math.random() * 10000000000))
-      };
-      reservations.push(reservation);
-    }
-    return reservations;
+  find(id: number): Observable<IUser> {
+    return this.http.get<IUser>(`${this.resourceUrl}/${id}`);
+  }
+
+  query(req?: Pagination): Observable<HttpResponse<ReservationDTO[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<ReservationDTO[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import SharedModule from '../../../shared/shared.module';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ReservationDTO } from '../reservation.dto';
 
 @Component({
   selector: 'jhi-reservation-space-detail',
@@ -10,5 +11,14 @@ import { RouterModule } from '@angular/router';
 })
 
 export class ReservationSpaceDetailComponent{
-  constructor() {}
+  reservation: ReservationDTO | null = null;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.route.data.subscribe(({ reservation }) => {
+      this.reservation = reservation;
+    });
+    console.log(this.reservation)
+  }
 }
