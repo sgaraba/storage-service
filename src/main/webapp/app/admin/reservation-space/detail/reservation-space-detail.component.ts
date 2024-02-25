@@ -19,7 +19,5 @@ export class ReservationSpaceDetailComponent{
     this.route.data.subscribe(({ reservation }) => {
       this.reservation = reservation;
     });
-
-    console.log(this.reservation)
   }
 }
