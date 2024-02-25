@@ -40,7 +40,6 @@ public class StorageFileService {
                 StorageFile storageFile = new StorageFile();
                 storageFile.setName(adminStorageFileDTO.getName());
                 storageFile.setPath(adminStorageFileDTO.getPath());
-                storageFile.setSize(adminStorageFileDTO.getSize());
                 storageFile.setUser(user);
                 storageFile.setCreatedBy(user.getLogin());
 
