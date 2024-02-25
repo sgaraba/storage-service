@@ -50,7 +50,13 @@
         <td>{{ reservation.totalSize }}</td>
         <td>{{ reservation.usedSize }}</td>
         <td>{{ reservation.user }}</td>
-        <td>{{ reservation.activated }}</td>
+        <td>
+          @if (!reservation.activated){
+            <code jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">Deactivat</code>
+          } @else {
+            <code jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">Activat</code>
+          }
+        </td>
         <td>{{ reservation.createdBy }}</td>
         <td>{{ reservation.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
         <td class="d-flex justify-content-center">

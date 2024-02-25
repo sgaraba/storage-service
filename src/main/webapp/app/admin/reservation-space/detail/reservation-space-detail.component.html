@@ -1,5 +1,6 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
+    @if(reservation){
       <div>
         <h2>
           <span jhiTranslate="reservationSpace.userDetail.title">Rezervarea Utilizatorului </span> [<strong>Login User</strong>]
@@ -8,29 +9,36 @@
         <dl class="row-md jh-entity-details">
           <dt><span jhiTranslate="reservationSpace.userDetail.user">Utilizatorul</span></dt>
           <dd>
-            <span>User123</span>
+            <span>user</span>
           </dd>
 
           <dt><span jhiTranslate="reservationSpace.userDetail.activationStatus">Status Activare</span></dt>
-          <dd><code>activated</code></dd>
+          <td>
+            @if (!reservation.activated){
+              <code jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">Deactivat</code>
+            } @else {
+              <code jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">Activat</code>
+            }
+          </td>
 
           <dt><span jhiTranslate="reservationSpace.userDetail.totalSize">Spatiu total rezervat</span></dt>
-          <dd>2222</dd>
+          <dd>{{ reservation.totalSize }}</dd>
 
           <dt><span jhiTranslate="reservationSpace.userDetail.usedSize">Spatiu utilizat</span></dt>
-          <dd>111</dd>
+          <dd>{{ reservation.usedSize }}</dd>
 
           <dt><span jhiTranslate="reservationSpace.userDetail.createdBy">creat de</span></dt>
-          <dd>Admin</dd>
+          <dd>{{ reservation.createdBy }}</dd>
 
           <dt><span jhiTranslate="reservationSpace.userDetail.createdDate">creat la data</span></dt>
-          <dd>21/02/24 10:55</dd>
+          <dd>{{ reservation.createdDate | date: 'dd/MM/yy HH:mm' }}</dd>
         </dl>
 
-        <button type="submit" routerLink="../../reservation-space/list" class="btn btn-info">
+        <button type="submit" routerLink="../../list" class="btn btn-info">
           <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
         </button>
       </div>
+    }
 
   </div>
 </div>

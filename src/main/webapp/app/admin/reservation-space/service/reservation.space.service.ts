@@ -16,8 +16,8 @@ export class ReservationSpaceService{
     private applicationConfigService: ApplicationConfigService,
   ) {}
 
-  find(id: number): Observable<IUser> {
-    return this.http.get<IUser>(`${this.resourceUrl}/${id}`);
+  find(id: number): Observable<ReservationDTO> {
+    return this.http.get<ReservationDTO>(`${this.applicationConfigService.getEndpointFor('/api/admin/reservations/')}/${id}`);
   }
 
   query(req?: Pagination): Observable<HttpResponse<ReservationDTO[]>> {

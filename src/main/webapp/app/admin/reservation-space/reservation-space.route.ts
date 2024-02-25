@@ -6,6 +6,14 @@ import { ReservationDTO } from './reservation.dto';
 import { of } from 'rxjs';
 import { ReservationSpaceService } from './service/reservation.space.service';
 
+export const ReservationResolve: ResolveFn<ReservationDTO | null> = (route: ActivatedRouteSnapshot) => {
+  const id = route.paramMap.get('idReservation');
+  if (id) {
+    return inject(ReservationSpaceService).find(parseInt(id, 10));
+  }
+  return of(null);
+};
+
 const ReservationSpaceRoute: Routes = [
   {
     path: 'list',
@@ -17,6 +25,9 @@ const ReservationSpaceRoute: Routes = [
   {
     path: ':idReservation/detail',
     component: ReservationSpaceDetailComponent,
+    resolve: {
+      reservation: ReservationResolve
+    }
   }
 ];
 
