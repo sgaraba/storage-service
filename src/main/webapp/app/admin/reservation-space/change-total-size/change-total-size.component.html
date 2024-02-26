@@ -1,4 +1,4 @@
-<form>
+<div>
   <div class="modal-header">
     <h4 class="modal-title" jhiTranslate="reservationSpace.modalChangeTotalSize.modalTitle">Schimbarea Dimensiune Totala</h4>
     <button (click)="closeModal()" aria-label="Close" class="close" type="button">
@@ -25,13 +25,13 @@
     </button>
 
     <button
-      (click)="confirmDeleteAction()"
-      class="btn btn-danger btn-sm"
+      (click)="updateTotalSize()"
+      class="btn btn-success btn-sm"
       type="submit"
     >
       <fa-icon icon="times"></fa-icon>&nbsp;
       <span jhiTranslate="reservationSpace.modalChangeTotalSize.modalButtons.confirm">Actualizeaza</span>
     </button>
   </div>
-</form>
+</div>
 

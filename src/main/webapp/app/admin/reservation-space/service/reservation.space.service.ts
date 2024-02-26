@@ -5,7 +5,6 @@ import { ApplicationConfigService } from '../../../core/config/application-confi
 import { ReservationDTO } from '../reservation.dto';
 import { Pagination } from '../../../core/request/request.model';
 import { createRequestOption } from '../../../core/request/request-util';
-import { IUser } from '../../user-management/user-management.model';
 
 @Injectable({ providedIn: 'root' })
 export class ReservationSpaceService{
