@@ -4,10 +4,18 @@
   <router-outlet name="navbar"></router-outlet>
 </div>
 
-<div class="container-fluid">
-  <div class="card jh-card">
-    <router-outlet></router-outlet>
+<div class="main">
+
+  <!-- NOTE: Navbar custom -->
+  <jhi-left-menu class="centered_nav"></jhi-left-menu>
+
+  <!-- Restul paginii -->
+  <div class="container-fluid">
+    <div class="card jh-card">
+      <router-outlet></router-outlet>
+    </div>
+
+    <jhi-footer></jhi-footer>
   </div>
 
-  <jhi-footer></jhi-footer>
 </div>
