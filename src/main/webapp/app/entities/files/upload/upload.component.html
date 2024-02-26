@@ -1,10 +1,26 @@
-<form class="col-md-3" enctype="multipart/form-data" method="post">
-  <div class="mb-3">
-    <label class="form-label" for="formFile">Default file input example</label>
-    <input class="form-control" id="formFile" type="file">
-  </div>
+<section class="d-flex justify-content-center">
+  <form role="form" novalidate class="col-md-8" enctype="multipart/form-data" method="post">
+    <h2>
+      Creeare sau editare Document
+    </h2>
 
-  <button class="btn btn-info" routerLink="../list">
-    <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
-  </button>
-</form>
+    <div>
+      <jhi-alert-error></jhi-alert-error>
+
+      <div class="mb-3">
+        <label for="formFile" class="form-label">Default file input example</label>
+        <input class="form-control" type="file" id="formFile">
+      </div>
+
+      <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" routerLink="../list">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+      >
+        <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
+      </button>
+    </div>
+  </form>
+</section>
