@@ -68,7 +68,7 @@ public class UserReservationService {
     }
 
     @Transactional(readOnly = true)
-    public Page<AdminReservationDTO> getAllManagedReservations(Pageable pageable) {
-        return userReservationRepository.findAll(pageable).map(AdminReservationDTO::new);
+    public Page<UserReservation> getAllManagedReservations(Pageable pageable) {
+        return userReservationRepository.findAll(pageable);
     }
 }

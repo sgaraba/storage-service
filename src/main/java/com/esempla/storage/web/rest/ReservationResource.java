@@ -85,13 +85,13 @@ public class ReservationResource {
 
 
     @GetMapping("/reservations")
-    public ResponseEntity<List<AdminReservationDTO>> getAllReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<UserReservation>> getAllReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get all Reservations for an admin");
         if (!onlyContainsAllowedProperties(pageable)) {
             return ResponseEntity.badRequest().build();
         }
 
-        final Page<AdminReservationDTO> page = userReservationService.getAllManagedReservations(pageable);
+        final Page<UserReservation> page = userReservationService.getAllManagedReservations(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
