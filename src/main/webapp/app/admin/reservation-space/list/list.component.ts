@@ -5,7 +5,7 @@ import { Account } from 'app/core/auth/account.model';
 import { ItemCountComponent } from '../../../shared/pagination';
 import SharedModule from '../../../shared/shared.module';
 import { ReservationSpaceService } from '../service/reservation.space.service';
-import { ReservationDTO } from '../reservation.dto';
+import { ReservationModel } from '../reservation.model';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
 import localeRo from '@angular/common/locales/ro';
@@ -31,7 +31,7 @@ registerLocaleData(localeRo); // register local Ro lang
 })
 export class ListComponent implements OnInit {
   currentAccount: Account | null = null;
-  reservations: ReservationDTO[] | null = null;
+  reservations: ReservationModel[] | null = null;
 
   page!: number;
   totalItems: number = 0;
@@ -59,7 +59,7 @@ export class ListComponent implements OnInit {
     // modalRef.componentInstance.fileID = fileID;
   }
 
-  setActive(reservation: ReservationDTO, isActivated: boolean): void {
+  setActive(reservation: ReservationModel, isActivated: boolean): void {
     this.reservationSpaceService.update({ ...reservation, activated: isActivated }).subscribe(() => this.loadAll());
     this.alertService.addAlert( {type: 'info', message: "Reservation activation for user: " + reservation.user.firstName + " " + reservation.user.lastName + " has changed"} );
   }
@@ -73,7 +73,7 @@ export class ListComponent implements OnInit {
         sort: this.sort(),
       })
       .subscribe({
-        next: (res: HttpResponse<ReservationDTO[]>) => {
+        next: (res: HttpResponse<ReservationModel[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers);
         },
@@ -107,7 +107,7 @@ export class ListComponent implements OnInit {
     return result;
   }
 
-  private onSuccess(reservations: ReservationDTO[] | null, headers: HttpHeaders): void {
+  private onSuccess(reservations: ReservationModel[] | null, headers: HttpHeaders): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.reservations = reservations;
   }

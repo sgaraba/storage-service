@@ -63,7 +63,7 @@
         </td>
         <td>{{ reservation.createdBy }}</td>
         <td>{{ reservation.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-        <td class="d-flex justify-content-center">
+        <td>
           <button
             [routerLink]="['../', reservation.id,'detail']"
             type="submit"

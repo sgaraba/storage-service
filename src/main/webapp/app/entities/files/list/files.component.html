@@ -6,6 +6,9 @@
           <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
           <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
         </button>
+        <button class="btn btn-primary jh-create-entity" [routerLink]="['../upload']">
+          <fa-icon icon="plus"></fa-icon> <span jhiTranslate="files.buttons.upload">Upload new file</span>
+        </button>
       </div>
 
       <jhi-alert-error></jhi-alert-error>

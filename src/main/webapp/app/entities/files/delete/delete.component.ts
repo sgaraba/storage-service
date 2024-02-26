@@ -10,9 +10,9 @@ import TranslateDirective from '../../../shared/language/translate.directive';
   selector: 'jhi-confirm-delete-modal',
   standalone: true,
   imports: [CommonModule, FaIconComponent, TranslateDirective],
-  templateUrl: './confirm-delete-modal.component.html',
+  templateUrl: './delete.component.html',
 })
-export class ConfirmDeleteModalComponent {
+export class DeleteComponent {
   @Input() fileID!: number;
   constructor(
     public activeModal: NgbActiveModal,

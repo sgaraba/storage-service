@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FileDto } from 'app/entities/files/file.dto';
+import { FileModel } from 'app/entities/files/file.model';
 import { FileService } from 'app/entities/files/service/file.service';
 import SharedModule from 'app/shared/shared.module';
 import { ItemCountComponent } from 'app/shared/pagination';
@@ -13,7 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //imports for add local Ro lang
 import { registerLocaleData } from '@angular/common';
 import localeRo from '@angular/common/locales/ro';
-import {ConfirmDeleteModalComponent} from "../delete/confirm-delete-modal.component";
+import {DeleteComponent} from "../delete/delete.component";
 
 // Register the 'ro' locale data
 registerLocaleData(localeRo);
@@ -21,14 +21,14 @@ registerLocaleData(localeRo);
 @Component({
   selector: 'jhi-recent-upload-files',
   standalone: true,
-  imports: [SharedModule, RouterModule, ConfirmDeleteModalComponent, ItemCountComponent],
-  templateUrl: './files.html',
+  imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent],
+  templateUrl: './files.component.html',
 })
 export class FilesComponent  implements OnInit, OnDestroy {
   currentAccount: Account | null = null;
 
-  files: FileDto[] = [];
-  pagedFiles: FileDto[] = [];
+  files: FileModel[] = [];
+  pagedFiles: FileModel[] = [];
   page!: number;
   totalItems: number = 0;
   // itemsPerPage: number = ITEMS_PER_PAGE;
@@ -69,7 +69,7 @@ export class FilesComponent  implements OnInit, OnDestroy {
   }
 
   openModal(fileID: number): void {
-    const modalRef = this.modalService.open(ConfirmDeleteModalComponent);
+    const modalRef = this.modalService.open(DeleteComponent);
     modalRef.componentInstance.fileID = fileID;
   }
 

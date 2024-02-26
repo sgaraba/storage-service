@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { FileDto } from '../file.dto';
+import { FileModel } from '../file.model';
 
 @Injectable({ providedIn: 'root' })
 export class FileService {
     private apiUrl = "/api/files";
-    public files: FileDto[] = [];
+    public files: FileModel[] = [];
 
     constructor(private http: HttpClient) { }
 

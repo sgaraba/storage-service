@@ -1,4 +1,4 @@
-export interface FileDto {
+export interface FileModel {
     id: number;
     name: string;
     size: number;

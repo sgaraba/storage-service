@@ -18,6 +18,10 @@
         "cancel": "Anulează",
         "confirm": "Șterge"
       }
-    }    
+    },
+
+    "buttons": {
+      "upload": "Încărcați fișier nou"
+    }
   }
 }
