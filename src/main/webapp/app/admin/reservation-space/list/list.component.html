@@ -52,9 +52,13 @@
         <td>{{ reservation.user }}</td>
         <td>
           @if (!reservation.activated){
-            <code jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">Deactivat</code>
+            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, true)" jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">
+              Deactivat
+            </button>
           } @else {
-            <code jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">Activat</code>
+            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, false)"  jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">
+              Activat
+            </button>
           }
         </td>
         <td>{{ reservation.createdBy }}</td>

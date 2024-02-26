@@ -7,7 +7,7 @@
   </div>
   <div class="modal-body">
     <div class="input-group mb-2">
-      <input class="form-control" name="totalSizeValue" type="number" placeholder="5120">
+      <input class="form-control" name="totalSizeValue" type="number" placeholder="Write new total size">
       <div class="input-group-prepend">
         <div class="input-group-text">MB</div>
       </div>
@@ -16,7 +16,7 @@
   <div class="modal-footer">
     <button
       (click)="closeModal()"
-      class="btn btn-secondary"
+      class="btn btn-secondary btn-sm"
       data-dismiss="modal"
       type="button"
     >
@@ -26,7 +26,7 @@
 
     <button
       (click)="confirmDeleteAction()"
-      class="btn btn-danger"
+      class="btn btn-danger btn-sm"
       type="submit"
     >
       <fa-icon icon="times"></fa-icon>&nbsp;

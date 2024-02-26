@@ -19,6 +19,9 @@ export class ReservationSpaceService{
   find(id: number): Observable<ReservationDTO> {
     return this.http.get<ReservationDTO>(`${this.applicationConfigService.getEndpointFor('/api/admin/reservations/')}/${id}`);
   }
+  update(reservation: ReservationDTO): Observable<ReservationDTO> {
+    return this.http.put<ReservationDTO>(this.resourceUrl, reservation);
+  }
 
   query(req?: Pagination): Observable<HttpResponse<ReservationDTO[]>> {
     const options = createRequestOption(req);

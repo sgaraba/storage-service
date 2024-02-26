@@ -58,6 +58,10 @@ export class ListComponent implements OnInit {
     // modalRef.componentInstance.fileID = fileID;
   }
 
+  setActive(reservation: ReservationDTO, isActivated: boolean): void {
+    this.reservationSpaceService.update({ ...reservation, activated: isActivated }).subscribe(() => this.loadAll());
+  }
+
   loadAll(): void {
     this.isLoading = true;
     this.reservationSpaceService
