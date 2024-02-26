@@ -1,0 +1,7 @@
+
+entity Document {
+  title String required
+  data Blob required
+}
+
+paginate Document with pagination
