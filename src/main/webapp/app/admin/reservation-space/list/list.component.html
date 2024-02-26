@@ -49,7 +49,7 @@
       <tr *ngFor="let reservation of reservations">
         <td>{{ reservation.totalSize }}</td>
         <td>{{ reservation.usedSize }}</td>
-        <td>{{ reservation.user }}</td>
+        <td>{{ reservation.user.firstName + ' ' + reservation.user.lastName }}</td>
         <td>
           @if (!reservation.activated){
             <code jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">Deactivat</code>
