@@ -1,5 +1,23 @@
 {
   "files": {
-    "home": "Documents"
+    "home": "Documents",
+    "table": {
+      "thead": {
+        "name": "Name file",
+        "size": "Size",
+        "last_modified": "Last modified",
+        "user": "User",
+        "Actions": "Actions"
+      }
+    },
+
+    "confirmDeleteModal": {
+      "modalTitle": "Confirm deletion action",
+      "modalBody": "Are you sure you want to delete this file?",
+      "buttons": {
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
+    }
   }
 }

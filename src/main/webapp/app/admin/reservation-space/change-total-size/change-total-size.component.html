@@ -1,31 +1,37 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    <form name="editForm" role="form" novalidate>
-      <h2>Add new total size</h2>
-
-      <jhi-alert-error></jhi-alert-error>
-
-      <div class="mb-3">
-        <label>name user</label>
-        <input type="text" class="form-control" readonly />
-      </div>
-
-      <div class="mb-3">
-        <label>Current total size</label>
-        <input type="text" class="form-control" readonly />
-      </div>
-
-      <div class="mb-3">
-        <label>New total size</label>
-        <input type="text" class="form-control" />
-      </div>
-
-      <button type="submit" class="btn btn-primary">
-        <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
-      </button>
-      <button type="submit" routerLink="../../reservation-space/list" class="btn btn-info">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
-      </button>
-    </form>
+<form>
+  <div class="modal-header">
+    <h4 class="modal-title" jhiTranslate="reservationSpace.modalChangeTotalSize.modalTitle">Schimbarea Dimensiune Totala</h4>
+    <button (click)="closeModal()" aria-label="Close" class="close" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
-</div>
+  <div class="modal-body">
+    <div class="input-group mb-2">
+      <input class="form-control" name="totalSizeValue" type="number" placeholder="5120">
+      <div class="input-group-prepend">
+        <div class="input-group-text">MB</div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      (click)="closeModal()"
+      class="btn btn-secondary"
+      data-dismiss="modal"
+      type="button"
+    >
+      <fa-icon icon="ban"></fa-icon>&nbsp;
+      <span jhiTranslate="files.confirmDeleteModal.buttons.cancel">Anulare</span>
+    </button>
+
+    <button
+      (click)="confirmDeleteAction()"
+      class="btn btn-danger"
+      type="submit"
+    >
+      <fa-icon icon="times"></fa-icon>&nbsp;
+      <span jhiTranslate="reservationSpace.modalChangeTotalSize.modalButtons.confirm">Actualizeaza</span>
+    </button>
+  </div>
+</form>
+

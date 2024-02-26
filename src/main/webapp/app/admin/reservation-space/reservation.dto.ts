@@ -1,4 +1,4 @@
-import { User } from "../user/user.model";
+import { User } from "../../entities/user/user.model";
 
 export interface ReservationDTO {
     id: number;
