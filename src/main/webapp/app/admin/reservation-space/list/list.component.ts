@@ -18,13 +18,14 @@ import { combineLatest } from 'rxjs';
 import SortDirective from '../../../shared/sort/sort.directive';
 import SortByDirective from '../../../shared/sort/sort-by.directive';
 import { ITEMS_PER_PAGE } from '../../../config/pagination.constants';
+import CheckFirstLastName from '../../../shared/user/check-firstName-lastName.pipe';
 
 registerLocaleData(localeRo); // register local Ro lang
 
 @Component({
   selector: 'jhi-list',
   standalone: true,
-  imports: [SharedModule, ItemCountComponent, RouterModule, SortDirective, SortByDirective],
+  imports: [SharedModule, ItemCountComponent, RouterModule, SortDirective, SortByDirective, CheckFirstLastName],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })
@@ -60,6 +61,7 @@ export class ListComponent implements OnInit {
 
   setActive(reservation: ReservationDTO, isActivated: boolean): void {
     this.reservationSpaceService.update({ ...reservation, activated: isActivated }).subscribe(() => this.loadAll());
+    this.alertService.addAlert( {type: 'info', message: "Reservation activation for user: " + reservation.user.firstName + " " + reservation.user.lastName + " has changed"} );
   }
 
   loadAll(): void {

@@ -49,14 +49,14 @@
       <tr *ngFor="let reservation of reservations">
         <td>{{ reservation.totalSize }}</td>
         <td>{{ reservation.usedSize }}</td>
-        <td>{{ reservation.user.firstName + " " + reservation.user.lastName }}</td>
+        <td>{{ reservation.user | checkFirstLastName }}</td>
         <td>
           @if (!reservation.activated){
-            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, true)" jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">
+            <button class="btn btn-danger btn-sm border-0" (click)="setActive(reservation, true)" jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">
               Deactivat
             </button>
           } @else {
-            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, false)"  jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">
+            <button class="btn btn-danger btn-sm border-0" (click)="setActive(reservation, false)"  jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">
               Activat
             </button>
           }

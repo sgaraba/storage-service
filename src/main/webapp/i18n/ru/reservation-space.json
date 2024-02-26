@@ -31,7 +31,8 @@
       "modalButtons": {
         "cancel": "Отмена",
         "confirm": "Обновить"
-      }
+      },
+      "placeholder": "Введите новый общий размер"
     }
   }
 }
