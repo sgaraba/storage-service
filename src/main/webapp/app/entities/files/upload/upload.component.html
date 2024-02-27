@@ -8,9 +8,16 @@
       <jhi-alert-error></jhi-alert-error>
 
       <div class="mb-3">
-        <label for="formFile" class="form-label">Default file input example</label>
-        <input class="form-control" type="file" id="formFile">
+        <label for="formFile" class="form-label">Alegeti fisier spre incarcare</label>
+        <input (change)="onFileSelected($event)" class="form-control" type="file" id="formFile">
       </div>
+
+      @if(fileData != null && fileToUpload != null){
+        <div class="form-text text-danger clearfix">
+          <span>File size: <code class="fw-bold">{{byteSize(fileData.mimeType)}}</code></span>
+          <hr>
+        </div>
+      }
 
       <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" routerLink="../list">
         <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
@@ -18,6 +25,7 @@
       <button
         type="submit"
         class="btn btn-primary"
+        (click)="upload()"
       >
         <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
       </button>
