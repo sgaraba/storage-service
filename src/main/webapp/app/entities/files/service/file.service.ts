@@ -1,33 +1,30 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { FileModel } from '../file.model';
+import { Pagination } from '../../../core/request/request.model';
+import { Observable } from 'rxjs';
+import { createRequestOption } from '../../../core/request/request-util';
+import { ApplicationConfigService } from '../../../core/config/application-config.service';
 
 @Injectable({ providedIn: 'root' })
 export class FileService {
-  public files: FileModel[] = [];
-    private apiUrl = "/api/files";
+  private resourceUrl = this.applicationConfigService.getEndpointFor('/api/admin/storage-files');
 
-    constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private applicationConfigService: ApplicationConfigService
+  ) {}
 
-    getRecentUploadFIles() {
-        for (let i = 1; i <= 30; i++) {
-            this.files.push({
-                id: i,
-                name: `File ${i}`,
-                size: Math.floor(Math.random() * 1000),
-                mimeType: 'text/plain',
-                createdBy: `User ${i}`,
-                createdDate: new Date(),
-            });
-        }
-        return this.files;
-    }
+  query(req?: Pagination): Observable<HttpResponse<FileModel[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<FileModel[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
 
-    deleteFile(id: number) {
-        alert("Deleting file with id: " + id);
-    }
+  deleteFile(id: number): void {
+    alert('Deleting file with id: ' + id);
+  }
 
-    downloadFile(id: number) {
-        alert("Donwloading file with id: " + id);
-    }
+  downloadFile(id: number): void  {
+    alert('Donwloading file with id: ' + id);
+  }
 }

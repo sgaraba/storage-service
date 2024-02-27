@@ -1,7 +1,7 @@
 @if (currentAccount !== null) {
   <div class="row p-2">
     <div class="d-flex justify-content-end my-2">
-      <button class="btn btn-info me-2" (click)="updatePage()" [disabled]="isLoading">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
       </button>
@@ -14,19 +14,31 @@
 
     <jhi-alert></jhi-alert>
 
-    @if (pagedFiles && pagedFiles.length > 0) {
+    @if (files && files.length > 0) {
       <table class="table table-striped" aria-describedby="user-files-uploaded">
         <thead>
-        <tr>
-          <th jhiTranslate="files.table.thead.name" scope="col">file name</th>
-          <th jhiTranslate="files.table.thead.size" scope="col">size</th>
-          <th jhiTranslate="files.table.thead.last_modified" scope="col">last modified</th>
-          <th jhiTranslate="files.table.thead.user" scope="col">user</th>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
+          <th jhiSortBy="name" scope="col">
+            <span jhiTranslate="files.table.thead.name">file name</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th jhiSortBy="size" scope="col">
+            <span jhiTranslate="files.table.thead.size">size</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th jhiSortBy="last_modified" scope="col">
+            <span jhiTranslate="files.table.thead.last_modified">last modified</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th jhiSortBy="user" scope="col">
+            <span jhiTranslate="files.table.thead.user">user</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let file of pagedFiles">
+        <tr *ngFor="let file of files">
           <td>{{ file.name }}</td>
           <td>{{ file.size }}</td>
           <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm'  }}</td>
@@ -59,7 +71,7 @@
             [maxSize]="5"
             [rotate]="true"
             [boundaryLinks]="true"
-            (pageChange)="updatePage()"
+            (pageChange)="transition()"
           ></ngb-pagination>
         </div>
       </div>

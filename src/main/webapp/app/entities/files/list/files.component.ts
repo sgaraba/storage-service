@@ -5,8 +5,8 @@ import SharedModule from 'app/shared/shared.module';
 import { ItemCountComponent } from 'app/shared/pagination';
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
-import { Subject } from 'rxjs';
-import { RouterModule } from '@angular/router';
+import { combineLatest, Subject } from 'rxjs';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Alert, AlertService } from '../../../core/util/alert.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -14,6 +14,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { registerLocaleData } from '@angular/common';
 import localeRo from '@angular/common/locales/ro';
 import {DeleteComponent} from "../delete/delete.component";
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { User } from '../../../admin/user-management/user-management.model';
+import { ASC, DESC, SORT } from '../../../config/navigation.constants';
+import { ITEMS_PER_PAGE } from '../../../config/pagination.constants';
+import SortDirective from '../../../shared/sort/sort.directive';
+import SortByDirective from '../../../shared/sort/sort-by.directive';
 
 // Register the 'ro' locale data
 registerLocaleData(localeRo);
@@ -21,51 +27,36 @@ registerLocaleData(localeRo);
 @Component({
   selector: 'jhi-recent-upload-files',
   standalone: true,
-  imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent],
+  imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective],
   templateUrl: './files.component.html',
 })
-export class FilesComponent  implements OnInit, OnDestroy {
+export class FilesComponent  implements OnInit {
   currentAccount: Account | null = null;
 
-  files: FileModel[] = [];
-  pagedFiles: FileModel[] = [];
+  files: FileModel[] | null = null;
   page!: number;
   totalItems: number = 0;
-  // itemsPerPage: number = ITEMS_PER_PAGE;
-  itemsPerPage: number = 7;
+  itemsPerPage: number = ITEMS_PER_PAGE;
   totalPages: number = 0;
   totalPagesArray: number[] = [];
   isLoading: boolean = true;
 
-  private readonly destroy$:Subject<void> = new Subject<void>();
-  private alerts: any;
+  predicate!: string;
+  ascending!: boolean;
 
   constructor(
     private accountService: AccountService,
     private fileService: FileService,
     private alertService: AlertService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+
   ) { }
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));
-
-    this.files = this.fileService.getRecentUploadFIles();
-    this.totalPages = Math.ceil(this.files.length / this.itemsPerPage);
-    this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    this.totalItems = this.files.length;
-
-    this.page = 1;
-    this.updatePage();
-  }
-
-  // pagination
-  updatePage(): void {
-    const startIndex: number = (this.page - 1) * this.itemsPerPage;
-    const endIndex: number = Math.min(startIndex + this.itemsPerPage - 1, this.files.length - 1);
-    this.pagedFiles = this.files.slice(startIndex, endIndex + 1);
-
-    this.isLoading = false;
+    this.handleNavigation();
   }
 
   openModal(fileID: number): void {
@@ -73,15 +64,61 @@ export class FilesComponent  implements OnInit, OnDestroy {
     modalRef.componentInstance.fileID = fileID;
   }
 
-  // call api from file Service
   call_donwload_fileService(id: number): void {
     this.fileService.downloadFile(id);
-
     this.alertService.addAlert({ type: 'success', message: 'Your file is donwloaded' });
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  // pagination
+  loadAll(): void {
+    this.isLoading = true;
+    this.fileService
+      .query({
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+      })
+      .subscribe({
+        next: (res: HttpResponse<FileModel[]>) => {
+          this.isLoading = false;
+          this.onSuccess(res.body, res.headers);
+        },
+        error: () => (this.isLoading = false),
+      });
   }
+
+  transition(): void {
+    this.router.navigate(['./list'], {
+      relativeTo: this.activatedRoute.parent,
+      queryParams: {
+        page: this.page,
+        sort: `${this.predicate},${this.ascending ? ASC : DESC}`,
+      },
+    });
+  }
+
+  private handleNavigation(): void {
+    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
+      const page = params.get('page');
+      this.page = +(page ?? 1);
+      const sort = (params.get(SORT) ?? data['defaultSort']).split(',');
+      this.predicate = sort[0];
+      this.ascending = sort[1] === ASC;
+      this.loadAll();
+    });
+  }
+
+  private sort(): string[] {
+    const result = [`${this.predicate},${this.ascending ? ASC : DESC}`];
+    if (this.predicate !== 'id') {
+      result.push('id');
+    }
+    return result;
+  }
+
+  private onSuccess(files: FileModel[] | null, headers: HttpHeaders): void {
+    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.files = files;
+  }
+  // end pagination
 }
