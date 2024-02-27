@@ -9,8 +9,6 @@ import { combineLatest, Subject } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Alert, AlertService } from '../../../core/util/alert.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
-//imports for add local Ro lang
 import { registerLocaleData } from '@angular/common';
 import localeRo from '@angular/common/locales/ro';
 import {DeleteComponent} from "../delete/delete.component";
@@ -25,7 +23,7 @@ import SortByDirective from '../../../shared/sort/sort-by.directive';
 registerLocaleData(localeRo);
 
 @Component({
-  selector: 'jhi-recent-upload-files',
+  selector: 'jhi-files-list',
   standalone: true,
   imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective],
   templateUrl: './files.component.html',

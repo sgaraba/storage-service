@@ -44,7 +44,7 @@
           <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm'  }}</td>
           <td>{{ file.createdBy }}</td>
           <td class="d-flex justify-content-center">
-            <button class="btn btn-info btn-sm">
+            <button [routerLink]="['../', file.id, 'detail']" class="btn btn-info btn-sm">
               <fa-icon icon="eye"></fa-icon>
             </button>
             <button (click)="call_donwload_fileService(file.id)" class="btn btn-primary btn-sm">

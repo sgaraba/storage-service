@@ -5,6 +5,7 @@ import { Pagination } from '../../../core/request/request.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../../../core/request/request-util';
 import { ApplicationConfigService } from '../../../core/config/application-config.service';
+import { ReservationModel } from '../../../admin/reservation-space/reservation.model';
 
 @Injectable({ providedIn: 'root' })
 export class FileService {
@@ -18,6 +19,10 @@ export class FileService {
   query(req?: Pagination): Observable<HttpResponse<FileModel[]>> {
     const options = createRequestOption(req);
     return this.http.get<FileModel[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  find(id: number): Observable<FileModel> {
+    return this.http.get<FileModel>(`${this.applicationConfigService.getEndpointFor('/api/admin/storageFiles/')}/${id}`);
   }
 
   deleteFile(id: number): void {

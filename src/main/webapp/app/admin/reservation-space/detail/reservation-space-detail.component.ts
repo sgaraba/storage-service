@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import SharedModule from '../../../shared/shared.module';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ReservationModel } from '../reservation.model';
@@ -10,7 +10,7 @@ import { ReservationModel } from '../reservation.model';
   templateUrl: './reservation-space-detail.component.html',
 })
 
-export class ReservationSpaceDetailComponent{
+export class ReservationSpaceDetailComponent implements OnInit{
   reservation: ReservationModel | null = null;
 
   constructor(private route: ActivatedRoute) {}
