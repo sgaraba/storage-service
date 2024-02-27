@@ -1,0 +1,25 @@
+{
+  "storageServiceApp": {
+    "document": {
+      "home": {
+        "title": "Documents",
+        "refreshListLabel": "Обновить список",
+        "createLabel": "Создать новый Document",
+        "createOrEditLabel": "Создать или отредактировать Document",
+        "notFound": "Documents не найдено"
+      },
+      "created": "Новый Document создан с идентификатором {{ param }}",
+      "updated": "Document обновлен с идентификатором {{ param }}",
+      "deleted": "Document удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Document {{ id }}?"
+      },
+      "detail": {
+        "title": "Document"
+      },
+      "id": "ID",
+      "title": "Title",
+      "data": "Data"
+    }
+  }
+}

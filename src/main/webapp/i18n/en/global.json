@@ -2,17 +2,6 @@
   "global": {
     "title": "StorageService",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
-    "documents": {
-      "table": {
-        "thead": {
-          "name": "name file",
-          "size": "size",
-          "last_modified": "last modified",
-          "user": "user",
-          "Actions": "actions"
-        }
-      }
-    },
     "menu": {
       "home": "Home",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",

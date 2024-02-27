@@ -1,0 +1,25 @@
+{
+  "storageServiceApp": {
+    "document": {
+      "home": {
+        "title": "Documents",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Document",
+        "createOrEditLabel": "Creeare sau editare Document",
+        "notFound": "No Documents found"
+      },
+      "created": "A fost creată o nouă entitate Document cu identificatorul {{ param }}",
+      "updated": "Document cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Document cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Document {{ id }}?"
+      },
+      "detail": {
+        "title": "Document"
+      },
+      "id": "ID",
+      "title": "Title",
+      "data": "Data"
+    }
+  }
+}
