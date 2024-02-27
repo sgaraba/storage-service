@@ -1,6 +1,9 @@
 package com.esempla.storage.service.dto;
 
 import com.esempla.storage.domain.UserReservation;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -12,14 +15,16 @@ public class AdminReservationDTO implements Serializable {
 
     private Long id;
 
-    private Long usedSize;
+    private Long usedSize = 0L;
 
+    @NotNull
     private Long totalSize;
 
     private Long userId;
 
-    private boolean activated;
+    private boolean activated = false;
 
+    @Size(max=50)
     private String createdBy;
 
     private Instant createdDate;

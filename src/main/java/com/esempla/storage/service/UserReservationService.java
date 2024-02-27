@@ -44,15 +44,6 @@ public class UserReservationService {
     }
 
     public Optional<AdminReservationDTO> updateUserReservation(AdminReservationDTO adminReservationDTO) {
-//        UserReservation userReservation = userReservationRepository.findById(adminReservationDTO.getId())
-//            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-//
-//        userReservation.setTotalSize(adminReservationDTO.getTotalSize());
-//        userReservation.setActivated(adminReservationDTO.isActivated());
-//        userReservationRepository.save(userReservation);
-//        log.debug("Changed Information for Reservation: {}", userReservation);
-//        return new AdminReservationDTO(userReservation);
-
         return Optional
             .of(userReservationRepository.findById(adminReservationDTO.getId()))
             .filter(Optional::isPresent)

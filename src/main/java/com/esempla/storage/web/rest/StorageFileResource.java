@@ -123,4 +123,6 @@ public class StorageFileResource {
         storageFileService.deleteStorageFile(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "storageFileManagement.deleted", id.toString())).build();
     }
+
+
 }
