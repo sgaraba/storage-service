@@ -7,6 +7,8 @@ import { saveAs } from 'file-saver';
 import { FileModel } from '../file.model';
 import { Account } from '../../../core/auth/account.model';
 import { AccountService } from '../../../core/auth/account.service';
+import { FileService } from '../service/file.service';
+import { AlertService } from '../../../core/util/alert.service';
 
 @Component({
   selector: 'jhi-upload-file',
@@ -25,6 +27,8 @@ export class UploadComponent implements OnInit {
   constructor(
     protected dataUtils: DataUtils,
     private accountService: AccountService,
+    private fileService: FileService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void{
@@ -59,6 +63,10 @@ export class UploadComponent implements OnInit {
   }
 
   upload(): void {
-    console.log(this.fileData);
+    if (this.fileData !== null) {
+      this.fileService.upload(this.fileData);
+    } else {
+      this.alertService.addAlert({ type: "danger", message: "No file data available to upload." });
+    }
   }
 }

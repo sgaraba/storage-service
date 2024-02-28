@@ -25,6 +25,10 @@ export class FileService {
     return this.http.get<FileModel>(`${this.applicationConfigService.getEndpointFor('/api/admin/storageFiles/')}/${id}`);
   }
 
+  upload(file: FileModel): Observable<HttpResponse<FileModel>>{
+    return this.http.post<FileModel>(this.applicationConfigService.getEndpointFor('/api/admin/storage-files'), file, { observe: 'response' });
+  }
+
   deleteFile(id: number): void {
     alert('Deleting file with id: ' + id);
   }
