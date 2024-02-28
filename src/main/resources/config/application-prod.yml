@@ -47,14 +47,20 @@ spring:
     port: 587
     username: storage.service.internship@gmail.com
     password: eexd fqwj gvwn adwf
-    mail:
-      smtp:
-        auth: true
-        starttls:
-          enable: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   thymeleaf:
     cache: true
-
+storage:
+  minio:
+    url: http://localhost:9002
+    access-key: access_key
+    secret-key: secret_key
+    bucket: storage
 # ===================================================================
 # To enable TLS in production, generate a certificate using:
 # keytool -genkey -alias storageservice -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
