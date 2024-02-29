@@ -9,16 +9,16 @@ import { ReservationModel } from '../../../admin/reservation-space/reservation.m
 
 @Injectable({ providedIn: 'root' })
 export class FileService {
-  private resourceUrl = this.applicationConfigService.getEndpointFor('/api/admin/storage-files');
+  private resourceUrl = this.applicationConfigService.getEndpointFor('/api/admin/storage-files-by-user/');
 
   constructor(
     private http: HttpClient,
     private applicationConfigService: ApplicationConfigService
   ) {}
 
-  query(req?: Pagination): Observable<HttpResponse<FileModel[]>> {
+  query(userLogin: string, req?: Pagination): Observable<HttpResponse<FileModel[]>> {
     const options = createRequestOption(req);
-    return this.http.get<FileModel[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<FileModel[]>(`${this.resourceUrl}/${userLogin}`, { params: options, observe: 'response' });
   }
 
   find(id: number): Observable<FileModel> {
@@ -29,8 +29,8 @@ export class FileService {
     return this.http.post<FileModel>(this.applicationConfigService.getEndpointFor('/api/admin/storage-files'), file, { observe: 'response' });
   }
 
-  deleteFile(id: number): void {
-    alert('Deleting file with id: ' + id);
+  deleteFile(id: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.applicationConfigService.getEndpointFor('/api/admin/storage-files/')}/${id}`, { observe: 'response' });
   }
 
   downloadFile(id: number): void  {

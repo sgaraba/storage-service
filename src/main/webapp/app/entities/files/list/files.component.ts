@@ -30,13 +30,12 @@ registerLocaleData(localeRo);
 })
 export class FilesComponent  implements OnInit {
   currentAccount: Account | null = null;
+  userLogin!: string;
 
   files: FileModel[] | null = null;
   page!: number;
   totalItems: number = 0;
   itemsPerPage: number = ITEMS_PER_PAGE;
-  totalPages: number = 0;
-  totalPagesArray: number[] = [];
   isLoading: boolean = true;
 
   predicate!: string;
@@ -49,11 +48,14 @@ export class FilesComponent  implements OnInit {
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-
   ) { }
 
   ngOnInit(): void {
-    this.accountService.identity().subscribe(account => (this.currentAccount = account));
+    this.accountService.identity().subscribe(account => {
+        this.currentAccount = account;
+        this.userLogin = this.currentAccount?.login ?? '';
+      }
+    );
     this.handleNavigation();
   }
 
@@ -71,7 +73,7 @@ export class FilesComponent  implements OnInit {
   loadAll(): void {
     this.isLoading = true;
     this.fileService
-      .query({
+      .query(this.userLogin, {
         page: this.page - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
