@@ -79,4 +79,9 @@ public class StorageFileService {
     public Page<AdminStorageFileDTO> getAllManagedStorageFiles(Pageable pageable) {
         return storageFileRepository.findAll(pageable).map(AdminStorageFileDTO::new);
     }
+
+    @Transactional(readOnly = true)
+    public Page<AdminStorageFileDTO> getStorageFilesByUserLogin(String login, Pageable pageable) {
+        return storageFileRepository.findAllByUserLogin(login, pageable).map(AdminStorageFileDTO::new);
+    }
 }

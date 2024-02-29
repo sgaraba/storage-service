@@ -101,6 +101,18 @@ public class StorageFileResource {
         return ResponseUtil.wrapOrNotFound(storageFileRepository.findById(id).map(AdminStorageFileDTO::new));
     }
 
+    @GetMapping("/storage-files-by-user/{login}")
+    public ResponseEntity<List<AdminStorageFileDTO>> getStorageFileByUser(@PathVariable("login") String login, @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get Storage Files by User : {}", login);
+        if (!onlyContainsAllowedProperties(pageable)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        final Page<AdminStorageFileDTO> page = storageFileService.getStorageFilesByUserLogin(login, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     @PutMapping("/storage-files")
     public ResponseEntity<AdminStorageFileDTO> updateStorageFile(@Valid @RequestBody AdminStorageFileDTO adminStorageFileDTO) {
         log.debug("REST request to update Storage File : {}", adminStorageFileDTO);
