@@ -68,9 +68,9 @@ public class ReservationResource {
     public ResponseEntity<UserReservation> createReservation(@Valid @RequestBody AdminReservationDTO reservationDTO) throws URISyntaxException {
         log.debug("REST request to save Reservation : {}", reservationDTO);
 
-//        if (reservationDTO.getId() != null) {
-//            throw new BadRequestAlertException("A new reservation cannot already have an ID", "userReservationManagement", "idexists");
-//        }
+        if (reservationDTO.getId() != null) {
+            throw new BadRequestAlertException("A new reservation cannot already have an ID", "userReservationManagement", "idexists");
+        }
 
         if (userReservationRepository.findByUserId(reservationDTO.getUserId()).isPresent()) {
             throw new BadRequestAlertException("Reservation for that user already exists!", "userReservationManagement", "reservationexists");

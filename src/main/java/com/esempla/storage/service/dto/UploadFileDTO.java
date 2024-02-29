@@ -1,11 +1,22 @@
 package com.esempla.storage.service.dto;
 
+import com.esempla.storage.domain.StorageFile;
+
 import java.io.Serializable;
 
 public class UploadFileDTO implements Serializable {
     private String name;
     private Byte size;
     private String mimeType;
+
+    public UploadFileDTO() {
+    }
+
+    public UploadFileDTO(StorageFile storageFile) {
+        this.name = storageFile.getName();
+        this.size = storageFile.getSize().byteValue();
+        this.mimeType = storageFile.getMimeType();
+    }
 
     public String getName() {
         return name;
