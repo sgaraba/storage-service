@@ -79,6 +79,15 @@
           >
             <fa-icon icon="pencil-alt"></fa-icon>
           </button>
+
+          <button
+            type="button"
+            (click)="openModalDeleteReservation(reservation.id)"
+            class="btn btn-danger btn-sm"
+            [disabled]="!currentAccount"
+          >
+            <fa-icon icon="times"></fa-icon>
+          </button>
         </td>
       </tr>
       </tbody>

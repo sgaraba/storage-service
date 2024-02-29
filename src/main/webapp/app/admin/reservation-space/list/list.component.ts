@@ -19,6 +19,7 @@ import SortDirective from '../../../shared/sort/sort.directive';
 import SortByDirective from '../../../shared/sort/sort-by.directive';
 import { ITEMS_PER_PAGE } from '../../../config/pagination.constants';
 import CheckFirstLastName from '../../../shared/user/check-firstName-lastName.pipe';
+import { DeleteComponent } from '../delete/delete.component';
 
 registerLocaleData(localeRo); // register local Ro lang
 
@@ -46,12 +47,18 @@ export class ListComponent implements OnInit {
     private reservationSpaceService: ReservationSpaceService,
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {
+  }
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));
     this.handleNavigation();
+  }
+
+  openModalDeleteReservation(resevationID: number): void {
+    const modalRef = this.modalService.open(DeleteComponent);
+    modalRef.componentInstance.resevationID = resevationID;
   }
 
   openModalChangeTotalSize(): void {
@@ -60,8 +67,13 @@ export class ListComponent implements OnInit {
   }
 
   setActive(reservation: ReservationModel, isActivated: boolean): void {
-    this.reservationSpaceService.update({ ...reservation, activated: isActivated }).subscribe(() => this.loadAll());
-    this.alertService.addAlert( {type: 'info', message: "Reservation activation for user: " + reservation.user.firstName + " " + reservation.user.lastName + " has changed"} );
+    this.reservationSpaceService.update({ ...reservation, activated: isActivated }).subscribe(() => {
+      this.alertService.addAlert({
+        type: 'info',
+        message: 'Reservation activation for user: ' + reservation.user.firstName + ' ' + reservation.user.lastName + ' has changed'
+      });
+      this.loadAll();
+    });
   }
 
   loadAll(): void {
@@ -70,14 +82,14 @@ export class ListComponent implements OnInit {
       .query({
         page: this.page - 1,
         size: this.itemsPerPage,
-        sort: this.sort(),
+        sort: this.sort()
       })
       .subscribe({
         next: (res: HttpResponse<ReservationModel[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers);
         },
-        error: () => (this.isLoading = false),
+        error: () => (this.isLoading = false)
       });
   }
 
@@ -86,8 +98,8 @@ export class ListComponent implements OnInit {
       relativeTo: this.activatedRoute.parent,
       queryParams: {
         page: this.page,
-        sort: `${this.predicate},${this.ascending ? ASC : DESC}`,
-      },
+        sort: `${this.predicate},${this.ascending ? ASC : DESC}`
+      }
     });
   }
 

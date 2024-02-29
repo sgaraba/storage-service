@@ -19,6 +19,10 @@ export class ReservationSpaceService{
     return this.http.get<ReservationModel>(`${this.applicationConfigService.getEndpointFor('/api/admin/reservations/')}/${id}`);
   }
 
+  delete(id: number): Observable<HttpResponse<{}>>{
+    return this.http.delete(`${this.resourceUrl}/${id}`, {observe: 'response'});
+  }
+
   update(reservation: ReservationModel): Observable<ReservationModel> {
     return this.http.put<ReservationModel>(this.resourceUrl, reservation);
   }
