@@ -6,6 +6,7 @@ import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
 import com.esempla.storage.service.UserReservationService;
 import com.esempla.storage.service.dto.AdminReservationDTO;
+import com.esempla.storage.service.dto.UpdateReservationDTO;
 import com.esempla.storage.web.rest.errors.BadRequestAlertException;
 import com.esempla.storage.web.rest.errors.EmailAlreadyUsedException;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -121,6 +123,17 @@ public class ReservationResource {
             updatedReservation,
             HeaderUtil.createAlert(applicationName, "userReservationManagement.updated", adminReservationDTO.getId().toString())
         );
+    }
+
+    @PatchMapping("/reservations/update-size")
+    public ResponseEntity<UserReservation> updateReservationSize(@RequestBody UpdateReservationDTO updateReservationDTO){
+        log.debug("REST request to update Reservation Size : {}", updateReservationDTO);
+
+        UserReservation updatedReservation = userReservationService.updateReservationSize(updateReservationDTO);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createAlert(applicationName, "userReservationManagement.updated", "test"))
+            .body(updatedReservation);
     }
 
     @DeleteMapping("/reservations/{id}")

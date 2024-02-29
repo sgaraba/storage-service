@@ -5,6 +5,7 @@ import com.esempla.storage.domain.UserReservation;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.service.dto.AdminReservationDTO;
+import com.esempla.storage.service.dto.UpdateReservationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -56,6 +57,16 @@ public class UserReservationService {
                 return reservation;
             })
             .map(AdminReservationDTO::new);
+    }
+
+    public UserReservation updateReservationSize (UpdateReservationDTO updateReservationDTO){
+
+        UserReservation userReservation = userReservationRepository.findByUserId(updateReservationDTO.getUserId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        userReservation.setTotalSize(updateReservationDTO.getReservationSize().longValue());
+
+        return userReservationRepository.save(userReservation);
     }
 
     public void deleteReservation(Long id) {
