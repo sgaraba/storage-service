@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <h4 class="modal-title" jhiTranslate="files.confirmDeleteModal.modalTitle">Confirmarea actiunii</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" jhiTranslate="files.confirmDeleteModal.modalBody">
+  Sunteti siguri ca doriti sa stergeti acest file?
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-secondary btn-sm"
+    data-dismiss="modal"
+    (click)="closeModal()"
+  >
+    <fa-icon icon="ban"></fa-icon>&nbsp;
+    <span jhiTranslate="files.confirmDeleteModal.buttons.cancel">Anulare</span>
+  </button>
+
+  <button
+    type="submit"
+    class="btn btn-danger btn-sm"
+    (click)="confirmDeleteAction()"
+  >
+    <fa-icon icon="times"></fa-icon>&nbsp;
+    <span jhiTranslate="files.confirmDeleteModal.buttons.confirm">Ștergere</span>
+  </button>
+</div>

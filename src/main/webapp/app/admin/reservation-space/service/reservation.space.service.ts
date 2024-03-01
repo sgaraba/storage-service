@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from '../../../core/config/application-config.service';
-import { ReservationDTO } from '../reservation.dto';
+import { ReservationModel } from '../reservation.model';
 import { Pagination } from '../../../core/request/request.model';
 import { createRequestOption } from '../../../core/request/request-util';
-import { IUser } from '../../user-management/user-management.model';
 
 @Injectable({ providedIn: 'root' })
 export class ReservationSpaceService{
@@ -16,12 +15,20 @@ export class ReservationSpaceService{
     private applicationConfigService: ApplicationConfigService,
   ) {}
 
-  find(id: number): Observable<ReservationDTO> {
-    return this.http.get<ReservationDTO>(`${this.applicationConfigService.getEndpointFor('/api/admin/reservations/')}/${id}`);
+  find(id: number): Observable<ReservationModel> {
+    return this.http.get<ReservationModel>(`${this.applicationConfigService.getEndpointFor('/api/admin/reservations/')}/${id}`);
   }
 
-  query(req?: Pagination): Observable<HttpResponse<ReservationDTO[]>> {
+  delete(id: number): Observable<HttpResponse<{}>>{
+    return this.http.delete(`${this.resourceUrl}/${id}`, {observe: 'response'});
+  }
+
+  update(reservation: ReservationModel): Observable<ReservationModel> {
+    return this.http.put<ReservationModel>(this.resourceUrl, reservation);
+  }
+
+  query(req?: Pagination): Observable<HttpResponse<ReservationModel[]>> {
     const options = createRequestOption(req);
-    return this.http.get<ReservationDTO[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<ReservationModel[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 }

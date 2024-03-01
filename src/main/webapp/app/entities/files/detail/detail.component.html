@@ -1,0 +1,33 @@
+<section class="d-flex justify-content-center">
+  <div class="col-8">
+    @if(file){
+      <h2><span>Document</span></h2>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="files.table.thead.name">File name</span></dt>
+        <dd><span>{{file.name}}</span></dd>
+
+        <dt><span jhiTranslate="files.table.thead.size">Size</span></dt>
+        <dd><span>{{file.size}}</span></dd>
+
+        <dt><span jhiTranslate="files.table.thead.last_modified">Last modified</span></dt>
+        <dd><span>{{file.createdDate | date: 'dd/MM/yy HH:mm'}}</span></dd>
+
+        <dt><span jhiTranslate="files.table.thead.user">Created ny</span></dt>
+        <dd><span>{{file.createdBy}}</span></dd>
+
+        <div>
+          <a class="pull-start">Deschidere</a>
+        </div>
+      </dl>
+    } @else {
+      <div class="alert alert-warning" id="no-result">
+        <span>Document not found</span>
+      </div>
+    }
+
+    <button type="submit" routerLink="../../list" class="btn btn-info">
+      <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Înapoi</span>
+    </button>
+  </div>
+</section>

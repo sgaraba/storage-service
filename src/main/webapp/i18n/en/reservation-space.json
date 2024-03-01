@@ -31,7 +31,8 @@
       "modalButtons": {
         "cancel": "Cancel",
         "confirm": "Update"
-      }
+      },
+      "placeholder": "Write new total size"
     }
   }
 }

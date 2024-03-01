@@ -18,6 +18,9 @@
         "cancel": "Cancel",
         "confirm": "Delete"
       }
+    },
+    "buttons": {
+      "upload": "Upload new file"
     }
   }
 }

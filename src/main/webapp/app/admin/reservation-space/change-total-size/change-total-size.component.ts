@@ -17,8 +17,9 @@ export class ChangeTotalSizeComponent {
     public alertService: AlertService
   ) { }
 
-  confirmDeleteAction(): void {
-    alert("Confirmet ACtion");
+  updateTotalSize(): void {
+    this.alertService.addAlert({ type: 'success', message: 'Update change total size!' });
+    this.closeModal()
   }
 
   closeModal(): void {

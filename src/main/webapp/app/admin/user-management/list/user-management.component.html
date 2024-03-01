@@ -53,7 +53,11 @@
                 <td>{{ user.email }}</td>
                 <td>
                   @if (!user.activated) {
-                    <button class="btn btn-danger btn-sm" (click)="setActive(user, true)" jhiTranslate="userManagement.deactivated">
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="setActive(user, true)"
+                      jhiTranslate="userManagement.deactivated"
+                    >
                       Dezactivat
                     </button>
                   } @else {

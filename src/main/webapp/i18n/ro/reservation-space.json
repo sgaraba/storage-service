@@ -31,7 +31,8 @@
       "modalButtons": {
         "cancel": "Anulează",
         "confirm": "Actualizează"
-      }
+      },
+      "placeholder": "Scrieți noua dimensiune totală"
     }
   }
 }
