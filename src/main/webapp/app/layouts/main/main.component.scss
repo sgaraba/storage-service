@@ -1,0 +1,11 @@
+.main {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+}
+
+.centered_nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
