@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import SharedModule from '../../../shared/shared.module';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ReservationDTO } from '../reservation.dto';
+import { ReservationModel } from '../reservation.model';
 
 @Component({
   selector: 'jhi-reservation-space-detail',
@@ -10,8 +10,8 @@ import { ReservationDTO } from '../reservation.dto';
   templateUrl: './reservation-space-detail.component.html',
 })
 
-export class ReservationSpaceDetailComponent{
-  reservation: ReservationDTO | null = null;
+export class ReservationSpaceDetailComponent implements OnInit{
+  reservation: ReservationModel | null = null;
 
   constructor(private route: ActivatedRoute) {}
 

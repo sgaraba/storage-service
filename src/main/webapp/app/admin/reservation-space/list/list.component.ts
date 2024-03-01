@@ -5,7 +5,7 @@ import { Account } from 'app/core/auth/account.model';
 import { ItemCountComponent } from '../../../shared/pagination';
 import SharedModule from '../../../shared/shared.module';
 import { ReservationSpaceService } from '../service/reservation.space.service';
-import { ReservationDTO } from '../reservation.dto';
+import { ReservationModel } from '../reservation.model';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
 import localeRo from '@angular/common/locales/ro';
@@ -18,19 +18,21 @@ import { combineLatest } from 'rxjs';
 import SortDirective from '../../../shared/sort/sort.directive';
 import SortByDirective from '../../../shared/sort/sort-by.directive';
 import { ITEMS_PER_PAGE } from '../../../config/pagination.constants';
+import CheckFirstLastName from '../../../shared/user/check-firstName-lastName.pipe';
+import { DeleteComponent } from '../delete/delete.component';
 
 registerLocaleData(localeRo); // register local Ro lang
 
 @Component({
   selector: 'jhi-list',
   standalone: true,
-  imports: [SharedModule, ItemCountComponent, RouterModule, SortDirective, SortByDirective],
+  imports: [SharedModule, ItemCountComponent, RouterModule, SortDirective, SortByDirective, CheckFirstLastName],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })
 export class ListComponent implements OnInit {
   currentAccount: Account | null = null;
-  reservations: ReservationDTO[] | null = null;
+  reservations: ReservationModel[] | null = null;
 
   page!: number;
   totalItems: number = 0;
@@ -45,17 +47,33 @@ export class ListComponent implements OnInit {
     private reservationSpaceService: ReservationSpaceService,
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {
+  }
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));
     this.handleNavigation();
   }
 
+  openModalDeleteReservation(resevationID: number): void {
+    const modalRef = this.modalService.open(DeleteComponent);
+    modalRef.componentInstance.resevationID = resevationID;
+  }
+
   openModalChangeTotalSize(): void {
     const modalRef = this.modalService.open(ChangeTotalSizeComponent);
     // modalRef.componentInstance.fileID = fileID;
+  }
+
+  setActive(reservation: ReservationModel, isActivated: boolean): void {
+    this.reservationSpaceService.update({ ...reservation, activated: isActivated }).subscribe(() => {
+      this.alertService.addAlert({
+        type: 'info',
+        message: 'Reservation activation for user: ' + reservation.user.firstName + ' ' + reservation.user.lastName + ' has changed'
+      });
+      this.loadAll();
+    });
   }
 
   loadAll(): void {
@@ -64,14 +82,14 @@ export class ListComponent implements OnInit {
       .query({
         page: this.page - 1,
         size: this.itemsPerPage,
-        sort: this.sort(),
+        sort: this.sort()
       })
       .subscribe({
-        next: (res: HttpResponse<ReservationDTO[]>) => {
+        next: (res: HttpResponse<ReservationModel[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers);
         },
-        error: () => (this.isLoading = false),
+        error: () => (this.isLoading = false)
       });
   }
 
@@ -80,8 +98,8 @@ export class ListComponent implements OnInit {
       relativeTo: this.activatedRoute.parent,
       queryParams: {
         page: this.page,
-        sort: `${this.predicate},${this.ascending ? ASC : DESC}`,
-      },
+        sort: `${this.predicate},${this.ascending ? ASC : DESC}`
+      }
     });
   }
 
@@ -89,10 +107,6 @@ export class ListComponent implements OnInit {
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
       const page = params.get('page');
       this.page = +(page ?? 1);
-
-      console.log(params.get(SORT))
-      console.log(data['defaultSort'])
-
       const sort = (params.get(SORT) ?? data['defaultSort']).split(',');
       this.predicate = sort[0];
       this.ascending = sort[1] === ASC;
@@ -105,7 +119,7 @@ export class ListComponent implements OnInit {
     return result;
   }
 
-  private onSuccess(reservations: ReservationDTO[] | null, headers: HttpHeaders): void {
+  private onSuccess(reservations: ReservationModel[] | null, headers: HttpHeaders): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.reservations = reservations;
   }

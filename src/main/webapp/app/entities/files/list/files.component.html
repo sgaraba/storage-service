@@ -1,34 +1,50 @@
 @if (currentAccount !== null) {
   <div class="row p-2">
-    @if (files) {
-      <div class="d-flex justify-content-end my-2">
-        <button class="btn btn-info me-2" (click)="updatePage()" [disabled]="isLoading">
-          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-          <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
-        </button>
-      </div>
+    <div class="d-flex justify-content-end my-2">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
+      </button>
+      <button class="btn btn-primary jh-create-entity" [routerLink]="['../upload']">
+        <fa-icon icon="plus"></fa-icon> <span jhiTranslate="files.buttons.upload">Upload new file</span>
+      </button>
+    </div>
 
-      <jhi-alert-error></jhi-alert-error>
-      <jhi-alert></jhi-alert>
+    <jhi-alert-error></jhi-alert-error>
 
+    <jhi-alert></jhi-alert>
+
+    @if (files && files.length > 0) {
       <table class="table table-striped" aria-describedby="user-files-uploaded">
         <thead>
-        <tr>
-          <th jhiTranslate="files.table.thead.name" scope="col">file name</th>
-          <th jhiTranslate="files.table.thead.size" scope="col">size</th>
-          <th jhiTranslate="files.table.thead.last_modified" scope="col">last modified</th>
-          <th jhiTranslate="files.table.thead.user" scope="col">user</th>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
+          <th jhiSortBy="name" scope="col">
+            <span jhiTranslate="files.table.thead.name">file name</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th jhiSortBy="size" scope="col">
+            <span jhiTranslate="files.table.thead.size">size</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th jhiSortBy="last_modified" scope="col">
+            <span jhiTranslate="files.table.thead.last_modified">last modified</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th jhiSortBy="user" scope="col">
+            <span jhiTranslate="files.table.thead.user">user</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let file of pagedFiles">
+        <tr *ngFor="let file of files">
           <td>{{ file.name }}</td>
           <td>{{ file.size }}</td>
           <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm'  }}</td>
           <td>{{ file.createdBy }}</td>
           <td class="d-flex justify-content-center">
-            <button class="btn btn-info btn-sm">
+            <button [routerLink]="['../', file.id, 'detail']" class="btn btn-info btn-sm">
               <fa-icon icon="eye"></fa-icon>
             </button>
             <button (click)="call_donwload_fileService(file.id)" class="btn btn-primary btn-sm">
@@ -55,9 +71,13 @@
             [maxSize]="5"
             [rotate]="true"
             [boundaryLinks]="true"
-            (pageChange)="updatePage()"
+            (pageChange)="transition()"
           ></ngb-pagination>
         </div>
+      </div>
+    } @else {
+      <div class="alert alert-warning" id="no-result">
+        <span>No Documents found</span>
       </div>
     }
   </div>
