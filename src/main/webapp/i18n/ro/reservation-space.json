@@ -34,5 +34,6 @@
       },
       "placeholder": "Scrieți noua dimensiune totală"
     }
-  }
+  },
+  "userReservationManagement.updated": "Reservation activation for user: {{ user }}  has changed."
 }

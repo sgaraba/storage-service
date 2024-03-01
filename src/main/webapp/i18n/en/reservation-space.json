@@ -34,5 +34,6 @@
       },
       "placeholder": "Write new total size"
     }
-  }
+  },
+  "userReservationManagement.updated": "Reservation activation for user: {{ user }}  has changed."
 }

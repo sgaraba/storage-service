@@ -68,10 +68,6 @@ export class ListComponent implements OnInit {
 
   setActive(reservation: ReservationModel, isActivated: boolean): void {
     this.reservationSpaceService.update({ ...reservation, activated: isActivated }).subscribe(() => {
-      this.alertService.addAlert({
-        type: 'info',
-        message: 'Reservation activation for user: ' + reservation.user.firstName + ' ' + reservation.user.lastName + ' has changed'
-      });
       this.loadAll();
     });
   }
