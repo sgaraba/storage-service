@@ -13,6 +13,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import io.minio.errors.MinioException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -57,7 +59,12 @@ public class UserService {
             });
 
         // Create user bucket
-
+        try {
+            minioService.createSubdirectory(user1.get().getLogin());
+            minioService.uploadObject("","");
+        } catch (MinioException e) {
+            throw new RuntimeException(e);
+        }
         return user1;
     }
 

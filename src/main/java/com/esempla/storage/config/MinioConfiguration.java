@@ -11,6 +11,7 @@ import java.util.List;
 @Configuration
 public class MinioConfiguration {
 
+
     private final ApplicationProperties properties;
 
     public MinioConfiguration(ApplicationProperties properties) {
