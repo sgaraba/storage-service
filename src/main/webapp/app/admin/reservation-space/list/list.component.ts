@@ -59,6 +59,12 @@ export class ListComponent implements OnInit {
   openModalDeleteReservation(resevationID: number): void {
     const modalRef = this.modalService.open(DeleteComponent);
     modalRef.componentInstance.resevationID = resevationID;
+
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'deleted') {
+        this.loadAll();
+      }
+    });
   }
 
   openModalChangeTotalSize(): void {
