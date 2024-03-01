@@ -50,8 +50,8 @@ export class UploadComponent implements OnInit {
     fileReader.onload = () => {
       this.fileData = {
         name: file.name,
-        size: file.size,
-        mimeType: file.type,
+        data: file,
+        mimeType: file.type
       } as FileModel;
     };
     fileReader.readAsDataURL(file);
@@ -62,25 +62,12 @@ export class UploadComponent implements OnInit {
   }
 
   upload(): void {
+    console.log(this.fileData)
     if (this.fileData == null) {
       this.alertService.addAlert({ type: 'danger', message: 'No file data available to upload.' });
       return;
     }
 
-    this.fileService.upload(this.fileData).subscribe(
-      (response: HttpResponse<FileModel>) => {
-        if (response.status === 200) {
-          this.alertService.addAlert({ type: 'success', message: 'Upload complete.' });
-        } else {
-          this.alertService.addAlert({ type: 'danger', message: 'Upload failed. Please try again.' });
-        }
-      },
-      (error: any) => {
-        this.alertService.addAlert({
-          type: 'danger',
-          message: 'An error occurred during upload. Please try again later.'
-        });
-      }
-    );
+    this.fileService.upload(this.fileData).subscribe();
   }
 }

@@ -22,10 +22,10 @@
             <span jhiTranslate="files.table.thead.name">file name</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
-          <th jhiSortBy="size" scope="col">
-            <span jhiTranslate="files.table.thead.size">size</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
+<!--          <th jhiSortBy="size" scope="col">-->
+<!--            <span jhiTranslate="files.table.thead.size">size</span>-->
+<!--            <fa-icon icon="sort"></fa-icon>-->
+<!--          </th>-->
           <th jhiSortBy="last_modified" scope="col">
             <span jhiTranslate="files.table.thead.last_modified">last modified</span>
             <fa-icon icon="sort"></fa-icon>
@@ -40,7 +40,7 @@
         <tbody>
         <tr *ngFor="let file of files">
           <td>{{ file.name }}</td>
-          <td>{{ file.size }}</td>
+<!--          <td>{{ file.size }}</td>-->
           <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm'  }}</td>
           <td>{{ file.createdBy }}</td>
           <td class="d-flex justify-content-center">

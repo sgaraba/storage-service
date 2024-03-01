@@ -1,7 +1,7 @@
 export interface FileModel {
   id: number;
   name: string;
-  size: number;
+  data: File;
   mimeType: string;
   createdBy: string;
   createdDate: Date;
