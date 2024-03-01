@@ -52,7 +52,7 @@ public class AdminUserDTO implements Serializable {
     private Instant lastModifiedDate;
 
     @Min(1)//minim value
-    private Integer rezervationSize; //default value
+    private Long rezervationSize; //default value
 
     private Set<String> authorities;
 
@@ -180,11 +180,11 @@ public class AdminUserDTO implements Serializable {
         this.authorities = authorities;
     }
 
-    public Integer getRezervationSize() {
+    public Long getRezervationSize() {
         return rezervationSize;
     }
 
-    public void setRezervationSize(Integer rezervationSize) {
+    public void setRezervationSize(Long rezervationSize) {
         this.rezervationSize = rezervationSize;
     }
 

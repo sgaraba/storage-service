@@ -8,12 +8,15 @@ import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.service.dto.AdminReservationDTO;
 import com.esempla.storage.service.dto.AdminStorageFileDTO;
+import com.esempla.storage.service.dto.UploadFileDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -32,22 +35,35 @@ public class StorageFileService {
     }
 
     public StorageFile createStorageFile(AdminStorageFileDTO adminStorageFileDTO){
-        Optional
-            .of(userRepository.findById(adminStorageFileDTO.getUserId()))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .map(user -> {
-                StorageFile storageFile = new StorageFile();
-                storageFile.setName(adminStorageFileDTO.getName());
-                storageFile.setPath(adminStorageFileDTO.getPath());
-                storageFile.setUser(user);
-                storageFile.setCreatedBy(user.getLogin());
+        User user = userRepository.findById(adminStorageFileDTO.getUserId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-                storageFileRepository.save(storageFile);
+        StorageFile storageFile = new StorageFile();
+        storageFile.setName(adminStorageFileDTO.getName());
+        storageFile.setPath(adminStorageFileDTO.getPath());
+        storageFile.setMimeType(adminStorageFileDTO.getMimeType());
+        storageFile.setSize(adminStorageFileDTO.getSize());
+        storageFile.setUser(user);
+        storageFile.setCreatedBy(user.getLogin());
 
-                return storageFile;
-            });
-        return null;
+        storageFileRepository.save(storageFile);
+        return storageFile;
+    }
+
+    public StorageFile uploadNewFile(UploadFileDTO uploadFileDTO, String userLogin){
+        User user = userRepository.findOneByLogin(userLogin)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        StorageFile storageFile = new StorageFile();
+        storageFile.setName(uploadFileDTO.getName());
+        storageFile.setPath("test");
+        storageFile.setMimeType(uploadFileDTO.getMimeType());
+        storageFile.setSize(uploadFileDTO.getSize().longValue());
+        storageFile.setUser(user);
+        storageFile.setCreatedBy(user.getLogin());
+
+        storageFileRepository.save(storageFile);
+        return storageFile;
     }
 
     public Optional<AdminStorageFileDTO> updateStorageFile(AdminStorageFileDTO adminStorageFileDTO) {
@@ -67,6 +83,18 @@ public class StorageFileService {
             .map(AdminStorageFileDTO::new);
     }
 
+    public UploadFileDTO modifyStorageFile(Long id, UploadFileDTO uploadFileDTO){
+        StorageFile storageFile = storageFileRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        storageFile.setName(uploadFileDTO.getName());
+        storageFile.setSize(uploadFileDTO.getSize().longValue());
+        storageFile.setMimeType(uploadFileDTO.getMimeType());
+        storageFileRepository.save(storageFile);
+
+        return new UploadFileDTO(storageFile);
+    }
+
     public void deleteStorageFile(Long id) {
         storageFileRepository
             .findById(id)
@@ -79,5 +107,10 @@ public class StorageFileService {
     @Transactional(readOnly = true)
     public Page<AdminStorageFileDTO> getAllManagedStorageFiles(Pageable pageable) {
         return storageFileRepository.findAll(pageable).map(AdminStorageFileDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AdminStorageFileDTO> getStorageFilesByUserLogin(String login, Pageable pageable) {
+        return storageFileRepository.findAllByUserLogin(login, pageable).map(AdminStorageFileDTO::new);
     }
 }

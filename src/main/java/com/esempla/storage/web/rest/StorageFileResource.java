@@ -4,8 +4,10 @@ package com.esempla.storage.web.rest;
 import com.esempla.storage.domain.StorageFile;
 import com.esempla.storage.repository.StorageFileRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
+import com.esempla.storage.security.SecurityUtils;
 import com.esempla.storage.service.StorageFileService;
 import com.esempla.storage.service.dto.AdminStorageFileDTO;
+import com.esempla.storage.service.dto.UploadFileDTO;
 import com.esempla.storage.web.rest.errors.BadRequestAlertException;
 import com.esempla.storage.web.rest.errors.EmailAlreadyUsedException;
 import jakarta.validation.Valid;
@@ -48,6 +50,13 @@ public class StorageFileResource {
             "createdDate"
         )
     );
+
+    private static class StorageFileException extends RuntimeException {
+
+        private StorageFileException(String message) {
+            super(message);
+        }
+    }
 
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
 
@@ -95,13 +104,25 @@ public class StorageFileResource {
         return pageable.getSort().stream().map(Sort.Order::getProperty).allMatch(ALLOWED_ORDERED_PROPERTIES::contains);
     }
 
-    @GetMapping("/storageFiles/{id}")
+    @GetMapping("/storage-files/{id}")
     public ResponseEntity<AdminStorageFileDTO> getStorageFile(@PathVariable("id") Long id) {
         log.debug("REST request to get Storage File : {}", id);
         return ResponseUtil.wrapOrNotFound(storageFileRepository.findById(id).map(AdminStorageFileDTO::new));
     }
 
-    @PutMapping("/storageFiles")
+    @GetMapping("/storage-files-by-user/{login}")
+    public ResponseEntity<List<AdminStorageFileDTO>> getStorageFileByUser(@PathVariable("login") String login, @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get Storage Files by User : {}", login);
+        if (!onlyContainsAllowedProperties(pageable)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        final Page<AdminStorageFileDTO> page = storageFileService.getStorageFilesByUserLogin(login, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @PutMapping("/storage-files")
     public ResponseEntity<AdminStorageFileDTO> updateStorageFile(@Valid @RequestBody AdminStorageFileDTO adminStorageFileDTO) {
         log.debug("REST request to update Storage File : {}", adminStorageFileDTO);
         Optional<StorageFile> existingStorageFile = storageFileRepository.findByUserId(adminStorageFileDTO.getUserId());
@@ -117,10 +138,44 @@ public class StorageFileResource {
         );
     }
 
-    @DeleteMapping("/storageFiles/{id}")
+    @DeleteMapping("/storage-files/{id}")
     public ResponseEntity<Void> deleteStorageFile(@PathVariable("id") Long id) {
         log.debug("REST request to delete Storage File: {}", id);
         storageFileService.deleteStorageFile(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "storageFileManagement.deleted", id.toString())).build();
+    }
+
+    @PostMapping("/storage-files/upload-file")
+    public ResponseEntity<StorageFile> uploadStorageFile(@RequestBody UploadFileDTO uploadFileDTO) throws URISyntaxException {
+        log.debug("REST request to upload Storage File : {}", uploadFileDTO);
+
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(() -> new StorageFileException("Current user login not found"));
+
+        if (storageFileRepository.findByName(uploadFileDTO.getName()).isPresent()) {
+            throw new BadRequestAlertException("Storage File with that name already exists!", "userStorageFileManagement", "nameexists");
+        }
+
+        StorageFile storageFile = storageFileService.uploadNewFile(uploadFileDTO, userLogin);
+        //adaugat salvarea in minio
+        //adaugat schimb automat de usedSize la rezervare
+
+        return ResponseEntity
+            .created(new URI("/api/admin/storage-files/" + storageFile.getName()))
+            .headers(HeaderUtil.createAlert(applicationName, "userStorageFileManagement.created", storageFile.getName()))
+            .body(storageFile);
+    }
+
+    @PutMapping("/storage-files/{id}")
+    public ResponseEntity<UploadFileDTO> modifyStorageFile(@PathVariable("id") Long id, @Valid @RequestBody UploadFileDTO uploadFileDTO) {
+        log.debug("REST request to modify Storage File : {}", id);
+
+        UploadFileDTO updatedStorageFile = storageFileService.modifyStorageFile(id, uploadFileDTO);
+
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createAlert(applicationName, "userReservationManagement.updated", "test"))
+            .body(updatedStorageFile);
     }
 }
