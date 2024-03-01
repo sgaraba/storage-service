@@ -35,5 +35,5 @@
       "placeholder": "Scrieți noua dimensiune totală"
     }
   },
-  "userReservationManagement.updated": "Reservation activation for user: {{ user }}  has changed."
+  "userReservationManagement.updated": "Statutul spațiului rezervat pentru utilizatorul {{ param }} a fost modificat."
 }

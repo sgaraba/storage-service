@@ -35,5 +35,5 @@
       "placeholder": "Введите новый общий размер"
     }
   },
-  "userReservationManagement.updated": "Reservation activation for user: {{ user }}  has changed."
+  "userReservationManagement.updated": "Статус резервирования для пользователя {{ param }} изменился."
 }
