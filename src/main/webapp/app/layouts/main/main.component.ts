@@ -5,14 +5,16 @@ import dayjs from 'dayjs/esm';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
+import LeftMenuComponent from 'app/layouts/left-menu/left-menu.component'
 import FooterComponent from '../footer/footer.component';
 
 @Component({
   selector: 'jhi-main',
   standalone: true,
   templateUrl: './main.component.html',
+  styleUrl: './main.component.scss',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent],
+  imports: [RouterOutlet, FooterComponent, PageRibbonComponent, LeftMenuComponent],
 })
 export default class MainComponent implements OnInit {
   private renderer: Renderer2;
