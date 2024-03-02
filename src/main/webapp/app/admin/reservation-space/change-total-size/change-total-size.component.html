@@ -1,4 +1,4 @@
-<div>
+<form role="form" novalidate (ngSubmit)="updateTotalSize()">
   <div class="modal-header">
     <h4 class="modal-title" jhiTranslate="reservationSpace.modalChangeTotalSize.modalTitle">Schimbarea Dimensiune Totala</h4>
     <button (click)="closeModal()" aria-label="Close" class="close" type="button">
@@ -7,7 +7,7 @@
   </div>
   <div class="modal-body">
     <div class="input-group mb-2">
-      <input class="form-control" name="totalSizeValue" type="number" placeholder="{{ 'reservationSpace.modalChangeTotalSize.placeholder' | translate }}">
+      <input [(ngModel)]="userRequestedSize" class="form-control" name="totalSizeValue" type="number" placeholder="{{ 'reservationSpace.modalChangeTotalSize.placeholder' | translate }}">
       <div class="input-group-prepend">
         <div class="input-group-text">MB</div>
       </div>
@@ -25,7 +25,6 @@
     </button>
 
     <button
-      (click)="updateTotalSize()"
       class="btn btn-success btn-sm"
       type="submit"
     >
@@ -33,5 +32,5 @@
       <span jhiTranslate="reservationSpace.modalChangeTotalSize.modalButtons.confirm">Actualizeaza</span>
     </button>
   </div>
-</div>
+</form>
 

@@ -1,24 +1,29 @@
 import {Component} from '@angular/core';
 import SharedModule from '../../../shared/shared.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertService } from '../../../core/util/alert.service';
+import { ReservationSpaceService } from '../service/reservation.space.service';
 
 @Component({
   selector: 'jhi-change-total-size',
   standalone: true,
-  imports: [SharedModule, ReactiveFormsModule, RouterLink],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './change-total-size.component.html',
 })
 export class ChangeTotalSizeComponent {
+  userRequestedSize!: number;
+  userID!: number;
+
   constructor(
     public activeModal: NgbActiveModal,
-    public alertService: AlertService
+    public alertService: AlertService,
+    public reservationService: ReservationSpaceService,
   ) { }
 
   updateTotalSize(): void {
-    this.alertService.addAlert({ type: 'success', message: 'Update change total size!' });
+    this.reservationService.updateTotalSize(this.userID, this.userRequestedSize).subscribe();
     this.closeModal()
   }
 

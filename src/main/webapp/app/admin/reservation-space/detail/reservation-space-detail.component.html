@@ -3,15 +3,10 @@
     @if(reservation){
       <div>
         <h2>
-          <span jhiTranslate="reservationSpace.userDetail.title">Rezervarea Utilizatorului </span> [<strong>Login User</strong>]
+          <span jhiTranslate="reservationSpace.userDetail.title">Rezervarea Utilizatorului </span> [<strong>{{ fullName }}</strong>]
         </h2>
 
         <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="reservationSpace.userDetail.user">Utilizatorul</span></dt>
-          <dd>
-            <span>user</span>
-          </dd>
-
           <dt><span jhiTranslate="reservationSpace.userDetail.activationStatus">Status Activare</span></dt>
           <td>
             @if (!reservation.activated){

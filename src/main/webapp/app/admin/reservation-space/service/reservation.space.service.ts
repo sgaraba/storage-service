@@ -27,6 +27,10 @@ export class ReservationSpaceService{
     return this.http.put<ReservationModel>(this.resourceUrl, reservation);
   }
 
+  updateTotalSize(userId: number, reservationSize: number): Observable<any>{
+    return this.http.patch(this.applicationConfigService.getEndpointFor('/api/admin/reservations/update-size'), {userId, reservationSize}, { observe: 'response' })
+  }
+
   query(req?: Pagination): Observable<HttpResponse<ReservationModel[]>> {
     const options = createRequestOption(req);
     return this.http.get<ReservationModel[]>(this.resourceUrl, { params: options, observe: 'response' });
