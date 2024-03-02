@@ -52,7 +52,13 @@ export default class RegisterComponent implements AfterViewInit {
   constructor(
     private translateService: TranslateService,
     private registerService: RegisterService,
-  ) {}
+  ) { }
+
+  numericOnly(event: any): boolean {
+    let patt = /^([0-9])$/;
+    let result = patt.test(event.key);
+    return result;
+  }
 
   ngAfterViewInit(): void {
     if (this.login) {
