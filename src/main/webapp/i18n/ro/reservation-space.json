@@ -34,5 +34,6 @@
       },
       "placeholder": "Scrieți noua dimensiune totală"
     }
-  }
+  },
+  "userReservationManagement.updated": "Statutul spațiului rezervat pentru utilizatorul {{ param }} a fost modificat."
 }

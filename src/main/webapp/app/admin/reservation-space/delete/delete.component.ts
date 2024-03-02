@@ -22,11 +22,9 @@ export class DeleteComponent {
 
   confirmDeleteAction(): void {
     if (this.resevationID) {
-      this.closeModal()
-      this.reservationService.delete(this.resevationID);
-      this.alertService.addAlert({ type: 'success', message: 'User reservation was deleted!' });
-    } else {
-      console.error('No reservation ID provided.');
+      this.reservationService.delete(this.resevationID).subscribe(() => {
+        this.activeModal.close('deleted');
+      });
     }
   }
 

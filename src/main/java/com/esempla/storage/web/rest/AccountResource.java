@@ -89,7 +89,6 @@ public class AccountResource {
         reservationDTO.setActivated(true);
 
         userReservationService.updateUserReservation(reservationDTO);
-
     }
 
     /**
