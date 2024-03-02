@@ -59,6 +59,12 @@ export class ListComponent implements OnInit {
   openModalDeleteReservation(resevationID: number): void {
     const modalRef = this.modalService.open(DeleteComponent);
     modalRef.componentInstance.resevationID = resevationID;
+
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'deleted') {
+        this.loadAll();
+      }
+    });
   }
 
   openModalChangeTotalSize(): void {
@@ -68,10 +74,6 @@ export class ListComponent implements OnInit {
 
   setActive(reservation: ReservationModel, isActivated: boolean): void {
     this.reservationSpaceService.update({ ...reservation, activated: isActivated }).subscribe(() => {
-      this.alertService.addAlert({
-        type: 'info',
-        message: 'Reservation activation for user: ' + reservation.user.firstName + ' ' + reservation.user.lastName + ' has changed'
-      });
       this.loadAll();
     });
   }

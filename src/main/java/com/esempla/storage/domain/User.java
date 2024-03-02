@@ -16,6 +16,8 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 
+import static java.util.Objects.nonNull;
+
 /**
  * A user.
  */
@@ -199,6 +201,13 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getFullName(){
+        if (nonNull(firstName) && nonNull(firstName)){
+            return firstName + " " + lastName;
+        }
+        return login;
     }
 
     @Override

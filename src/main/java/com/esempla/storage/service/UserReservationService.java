@@ -31,7 +31,7 @@ public class UserReservationService {
         this.userRepository = userRepository;
     }
 
-    public UserReservation createReservation(AdminReservationDTO adminReservationDTO){
+    public UserReservation createReservation(AdminReservationDTO adminReservationDTO) {
         User user = userRepository.findById(adminReservationDTO.getUserId())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -41,25 +41,23 @@ public class UserReservationService {
         userReservation.setUser(user);
         userReservation.setCreatedBy(user.getLogin());
 
-       return userReservationRepository.save(userReservation);
+        return userReservationRepository.save(userReservation);
     }
 
-    public Optional<AdminReservationDTO> updateUserReservation(AdminReservationDTO adminReservationDTO) {
-        return Optional
-            .of(userReservationRepository.findById(adminReservationDTO.getId()))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
+    public AdminReservationDTO updateUserReservation(AdminReservationDTO adminReservationDTO) {
+        return userReservationRepository.findById(adminReservationDTO.getId())
             .map(reservation -> {
+                log.debug("Update reservation: {}", reservation);
                 reservation.setTotalSize(adminReservationDTO.getTotalSize());
                 reservation.setActivated(adminReservationDTO.isActivated());
                 userReservationRepository.save(reservation);
-                log.debug("Changed Information for Reservation: {}", reservation);
                 return reservation;
             })
-            .map(AdminReservationDTO::new);
+            .map(AdminReservationDTO::new)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public UserReservation updateReservationSize (UpdateReservationDTO updateReservationDTO){
+    public UserReservation updateReservationSize(UpdateReservationDTO updateReservationDTO) {
 
         UserReservation userReservation = userReservationRepository.findByUserId(updateReservationDTO.getUserId())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

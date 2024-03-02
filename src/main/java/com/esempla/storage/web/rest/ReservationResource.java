@@ -112,17 +112,11 @@ public class ReservationResource {
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<AdminReservationDTO> updateReservation(@Valid @RequestBody AdminReservationDTO adminReservationDTO) {
         log.debug("REST request to update Reservation : {}", adminReservationDTO);
-        Optional<UserReservation> existingReservation = userReservationRepository.findByUserId(adminReservationDTO.getUserId());
-        if (existingReservation.isPresent() && (!existingReservation.orElseThrow().getId().equals(adminReservationDTO.getId()))) {
-            throw new EmailAlreadyUsedException();  //nu stiu ce exception de facut
-        }
-
-        Optional<AdminReservationDTO> updatedReservation = userReservationService.updateUserReservation(adminReservationDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            updatedReservation,
-            HeaderUtil.createAlert(applicationName, "userReservationManagement.updated", adminReservationDTO.getId().toString())
-        );
+        AdminReservationDTO updatedReservation = userReservationService.updateUserReservation(adminReservationDTO);
+        return ResponseEntity
+            .ok()
+            .headers( HeaderUtil.createAlert(applicationName, "userReservationManagement.updated", updatedReservation.getFullName()))
+            .body(updatedReservation);
     }
 
     @PatchMapping("/reservations/update-size")
