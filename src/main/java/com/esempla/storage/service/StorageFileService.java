@@ -2,11 +2,8 @@ package com.esempla.storage.service;
 
 import com.esempla.storage.domain.StorageFile;
 import com.esempla.storage.domain.User;
-import com.esempla.storage.domain.UserReservation;
 import com.esempla.storage.repository.StorageFileRepository;
 import com.esempla.storage.repository.UserRepository;
-import com.esempla.storage.repository.UserReservationRepository;
-import com.esempla.storage.service.dto.AdminReservationDTO;
 import com.esempla.storage.service.dto.AdminStorageFileDTO;
 import com.esempla.storage.service.dto.UploadFileDTO;
 import org.slf4j.Logger;
@@ -58,7 +55,7 @@ public class StorageFileService {
         storageFile.setName(uploadFileDTO.getName());
         storageFile.setPath("test");
         storageFile.setMimeType(uploadFileDTO.getMimeType());
-        storageFile.setSize(uploadFileDTO.getSize().longValue());
+        storageFile.setSize((long) uploadFileDTO.getData().length);
         storageFile.setUser(user);
         storageFile.setCreatedBy(user.getLogin());
 
@@ -88,7 +85,7 @@ public class StorageFileService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         storageFile.setName(uploadFileDTO.getName());
-        storageFile.setSize(uploadFileDTO.getSize().longValue());
+        storageFile.setSize((long) uploadFileDTO.getData().length);
         storageFile.setMimeType(uploadFileDTO.getMimeType());
         storageFileRepository.save(storageFile);
 
