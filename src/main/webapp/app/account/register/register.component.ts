@@ -43,6 +43,10 @@ export default class RegisterComponent implements AfterViewInit {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
     }),
+    reservedSize: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
     confirmPassword: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
