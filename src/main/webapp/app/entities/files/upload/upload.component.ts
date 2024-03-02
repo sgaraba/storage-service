@@ -9,7 +9,6 @@ import { Account } from '../../../core/auth/account.model';
 import { AccountService } from '../../../core/auth/account.service';
 import { FileService } from '../service/file.service';
 import { AlertService } from '../../../core/util/alert.service';
-import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'jhi-upload-file',
@@ -23,7 +22,6 @@ export class UploadComponent implements OnInit {
 
   isSaving = false;
   fileToUpload: File | null = null;
-  fileData: FileModel | null = null;
 
   constructor(
     protected dataUtils: DataUtils,
@@ -41,33 +39,28 @@ export class UploadComponent implements OnInit {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement.files && inputElement.files.length > 0) {
       this.fileToUpload = inputElement.files[0];
-      this.readFileData(this.fileToUpload);
     }
-  }
-
-  readFileData(file: File): void {
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      this.fileData = {
-        name: file.name,
-        data: file,
-        mimeType: file.type
-      } as FileModel;
-    };
-    fileReader.readAsDataURL(file);
   }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
 
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    return this.dataUtils.openFile(base64String, contentType);
+  }
+
   upload(): void {
-    console.log(this.fileData)
-    if (this.fileData == null) {
+    if (this.fileToUpload == null) {
       this.alertService.addAlert({ type: 'danger', message: 'No file data available to upload.' });
       return;
     }
 
-    this.fileService.upload(this.fileData).subscribe();
+    // const fileData = {
+    //   name: this.fileToUpload.name,
+    //   size: this.fileToUpload.size.toString(),
+    //   mimeType: this.fileToUpload.type
+    // };
   }
+
 }

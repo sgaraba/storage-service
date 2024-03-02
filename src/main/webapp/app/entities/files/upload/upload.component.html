@@ -13,9 +13,10 @@
         <input (change)="onFileSelected($event)" class="form-control" type="file" id="formFile">
       </div>
 
-      @if(fileData != null && fileToUpload != null){
+      @if(fileToUpload != null){
+        <a (click)="openFile(fileToUpload.webkitRelativePath, fileToUpload.type)" class="pull-start">Deschide</a>
         <div class="form-text text-danger clearfix">
-          <span>File size: <code class="fw-bold">{{byteSize(fileData.mimeType)}}</code></span>
+          <span>File size: <code class="fw-bold">{{byteSize(fileToUpload.type)}}</code></span>
           <hr>
         </div>
       }

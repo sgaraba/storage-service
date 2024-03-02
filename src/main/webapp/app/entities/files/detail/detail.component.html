@@ -1,12 +1,9 @@
 <section class="d-flex justify-content-center">
   <div class="col-8">
     @if(file){
-      <h2><span>Document</span></h2>
+      <h2><span jhiTranslate="files.table.thead.name">File name</span> [{{file.name}}]</h2>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="files.table.thead.name">File name</span></dt>
-        <dd><span>{{file.name}}</span></dd>
-
         <dt><span jhiTranslate="files.table.thead.size">Size</span></dt>
         <dd><span>size</span></dd>
 
@@ -27,7 +24,7 @@
     }
 
     <button type="submit" routerLink="../../list" class="btn btn-info">
-      <fa-icon icon="arrow-left"></fa-icon>&nbsp
+      <fa-icon icon="arrow-left"></fa-icon>
       <span jhiTranslate="entity.action.back">Înapoi</span>
     </button>
   </div>
