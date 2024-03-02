@@ -125,7 +125,7 @@ public class StorageFileResource {
     @PutMapping("/storage-files")
     public ResponseEntity<AdminStorageFileDTO> updateStorageFile(@Valid @RequestBody AdminStorageFileDTO adminStorageFileDTO) {
         log.debug("REST request to update Storage File : {}", adminStorageFileDTO);
-        Optional<StorageFile> existingStorageFile = storageFileRepository.findByUserId(adminStorageFileDTO.getUserId());
+        Optional<StorageFile> existingStorageFile = storageFileRepository.findById(adminStorageFileDTO.getId());
         if (existingStorageFile.isPresent() && (!existingStorageFile.orElseThrow().getId().equals(adminStorageFileDTO.getId()))) {
             throw new EmailAlreadyUsedException();  //nu stiu ce exception de facut
         }
