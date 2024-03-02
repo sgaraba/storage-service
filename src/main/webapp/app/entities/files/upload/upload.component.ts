@@ -46,6 +46,18 @@ export class UploadComponent implements OnInit {
     return this.dataUtils.byteSize(base64String);
   }
 
+  getBase64(file: File): Promise<{ res: string | ArrayBuffer | null, name: string }> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onloadend = function () {
+        resolve({ res: reader.result, name: file.name });
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
   openFile(base64String: string, contentType: string | null | undefined): void {
     return this.dataUtils.openFile(base64String, contentType);
   }
@@ -56,11 +68,19 @@ export class UploadComponent implements OnInit {
       return;
     }
 
-    // const fileData = {
-    //   name: this.fileToUpload.name,
-    //   size: this.fileToUpload.size.toString(),
-    //   mimeType: this.fileToUpload.type
-    // };
+    this.getBase64(this.fileToUpload).then(fileByteArray => {
+      const fileData: FileModel = {
+        name: this.fileToUpload?.name,
+        data: [fileByteArray.res],
+        // data: [""],
+        mimeType: this.fileToUpload?.type
+      } as FileModel;
+
+      this.fileService.upload(fileData).subscribe();
+    }).catch(error => {
+      console.error('Error:', error);
+      this.alertService.addAlert({ type: 'danger', message: 'Error occurred while processing the file.' });
+    });
   }
 
 }

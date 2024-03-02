@@ -47,6 +47,11 @@
             <button [routerLink]="['../', file.id, 'detail']" class="btn btn-info btn-sm">
               <fa-icon icon="eye"></fa-icon>
             </button>
+            <button
+              class="btn btn-primary btn-sm"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
+            </button>
             <button (click)="call_donwload_fileService(file.id)" class="btn btn-primary btn-sm">
               <fa-icon icon="download"></fa-icon>
             </button>
