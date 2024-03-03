@@ -1,4 +1,4 @@
-<section class="d-flex justify-content-center">
+<section class="d-flex justify-content-center" (ngSubmit)="upload()" [formGroup]="uploadForm">
   <form role="form" novalidate class="col-md-8" enctype="multipart/form-data" method="post" >
     <h2>
       Creeare sau editare Document
@@ -27,7 +27,6 @@
       <button
         type="submit"
         class="btn btn-primary"
-        (click)="upload()"
       >
         <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
       </button>

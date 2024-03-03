@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import SharedModule from '../../../shared/shared.module';
 import { RouterModule } from '@angular/router';
-import { DataUtils } from 'app/core/util/data-util.service';
+import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { saveAs } from 'file-saver';
 import { FileModel } from '../file.model';
@@ -9,6 +9,10 @@ import { Account } from '../../../core/auth/account.model';
 import { AccountService } from '../../../core/auth/account.service';
 import { FileService } from '../service/file.service';
 import { AlertService } from '../../../core/util/alert.service';
+import { EventManager, EventWithContent } from '../../../core/util/event-manager.service';
+import { AlertError } from '../../../shared/alert/alert-error.model';
+import { DocumentFormGroup } from '../../document/update/document-form.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'jhi-upload-file',
@@ -22,13 +26,20 @@ export class UploadComponent implements OnInit {
 
   isSaving = false;
   fileToUpload: File | null = null;
+  uploadForm: FormGroup;
 
   constructor(
     protected dataUtils: DataUtils,
     private accountService: AccountService,
     private fileService: FileService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    protected eventManager: EventManager,
   ) {
+    this.uploadForm = new FormGroup({
+      name: new FormControl(null, Validators.required),
+      data: new FormControl(null, Validators.required),
+      mimeType: new FormControl(null, Validators.required),
+    });
   }
 
   ngOnInit(): void {
@@ -40,22 +51,25 @@ export class UploadComponent implements OnInit {
     if (inputElement.files && inputElement.files.length > 0) {
       this.fileToUpload = inputElement.files[0];
     }
+
+    this.uploadForm.patchValue({
+      name: this.fileToUpload?.name,
+      data: this.fileToUpload ?? '',
+      mimeType: this.fileToUpload?.type
+    });
+
+    this.setFileData(event, 'data', this.isImageFile(this.fileToUpload?.type ?? 'image/png'));
+  }
+
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils.loadFileToForm(event, this.uploadForm, field, isImage).subscribe({
+      error: (err: FileLoadError) =>
+        this.eventManager.broadcast(new EventWithContent<AlertError>('storageServiceApp.error', { ...err, key: 'error.file.' + err.key })),
+    });
   }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
-  }
-
-  getBase64(file: File): Promise<{ res: string | ArrayBuffer | null, name: string }> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onloadend = function () {
-        resolve({ res: reader.result, name: file.name });
-      };
-
-      reader.readAsDataURL(file);
-    });
   }
 
   openFile(base64String: string, contentType: string | null | undefined): void {
@@ -68,19 +82,11 @@ export class UploadComponent implements OnInit {
       return;
     }
 
-    this.getBase64(this.fileToUpload).then(fileByteArray => {
-      const fileData: FileModel = {
-        name: this.fileToUpload?.name,
-        data: [fileByteArray.res],
-        // data: [""],
-        mimeType: this.fileToUpload?.type
-      } as FileModel;
-
-      this.fileService.upload(fileData).subscribe();
-    }).catch(error => {
-      console.error('Error:', error);
-      this.alertService.addAlert({ type: 'danger', message: 'Error occurred while processing the file.' });
-    });
+    console.log(this.uploadForm.getRawValue())
+    this.fileService.upload(this.uploadForm.getRawValue());
   }
 
+  private isImageFile(fileType: string): boolean {
+    return fileType.startsWith('image/');
+  }
 }
