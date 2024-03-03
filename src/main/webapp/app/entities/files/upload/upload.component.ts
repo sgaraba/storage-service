@@ -22,7 +22,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class UploadComponent implements OnInit {
   currentAccount: Account | null = null;
 
-  isSaving = false;
+  isSaving: boolean = false;
   fileToUpload: File | null = null;
   uploadForm: FormGroup;
 
@@ -56,14 +56,7 @@ export class UploadComponent implements OnInit {
       mimeType: this.fileToUpload?.type
     });
 
-    this.setFileData(event, 'data', this.isImageFile(this.fileToUpload?.type ?? ''));
-  }
-
-  setFileData(event: Event, field: string, isImage: boolean): void {
-    this.dataUtils.loadFileToForm(event, this.uploadForm, field, isImage).subscribe({
-      error: (err: FileLoadError) =>
-        this.eventManager.broadcast(new EventWithContent<AlertError>('storageServiceApp.error', { ...err, key: 'error.file.' + err.key })),
-    });
+    this.setFileData(event, 'data', this.isImageFile(this.fileToUpload?.type ?? 'image/default'));
   }
 
   byteSize(base64String: string): string {
@@ -80,10 +73,28 @@ export class UploadComponent implements OnInit {
       return;
     }
 
-    this.fileService.upload(this.uploadForm.getRawValue() as FileModel).subscribe();
+    this.fileService.upload(this.uploadForm.getRawValue() as FileModel).subscribe(
+      () => {
+        this.isSaving = false;
+      }
+    );
   }
 
-  private isImageFile(fileType: string): boolean {
+  protected setFileData(event: Event, field: string, isImage: boolean): void {
+    this.isSaving = true;
+
+    this.dataUtils.loadFileToForm(event, this.uploadForm, field, isImage).subscribe({
+      error: (err: FileLoadError) => {
+        this.eventManager.broadcast(new EventWithContent<AlertError>('storageServiceApp.error', {
+          ...err,
+          key: 'error.file.' + err.key
+        })),
+        this.isSaving = false;
+      }
+    });
+  }
+
+  protected isImageFile(fileType: string): boolean {
     return fileType.startsWith('image/');
   }
 }

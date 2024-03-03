@@ -1,7 +1,7 @@
 <section class="d-flex justify-content-center" (ngSubmit)="upload()" [formGroup]="uploadForm">
-  <form role="form" novalidate class="col-md-8" enctype="multipart/form-data" method="post" >
+  <form role="form" novalidate class="col-md-8" enctype="multipart/form-data">
     <h2>
-      Creeare sau editare Document
+      Încărcarea Document
     </h2>
 
     <div>
@@ -9,13 +9,17 @@
       <jhi-alert></jhi-alert>
 
       <div class="mb-3">
-        <label for="formFile" class="form-label">Alegeti fisier spre incarcare</label>
+        <label for="formFile" class="form-label">Alegeti fisier</label>
         <input (change)="onFileSelected($event)" class="form-control" type="file" id="formFile">
       </div>
 
       @if(fileToUpload != null){
         <a (click)="openFile(fileToUpload.webkitRelativePath, fileToUpload.type)" class="pull-start">Deschide</a>
         <div class="form-text text-danger clearfix">
+          <span>Last modified: <code class="fw-bold">{{ fileToUpload.lastModified | date: 'dd/MM/yy HH:mm' }}</code></span>
+          <br/>
+          <span>File type: <code class="fw-bold">{{ fileToUpload.type }}</code></span>
+          <br/>
           <span>File size: <code class="fw-bold">{{byteSize(fileToUpload.type)}}</code></span>
           <hr>
         </div>
@@ -27,6 +31,7 @@
       <button
         type="submit"
         class="btn btn-primary"
+        [disabled]="uploadForm.invalid || !isSaving"
       >
         <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
       </button>

@@ -13,9 +13,12 @@
         <dt><span jhiTranslate="files.table.thead.user">Created ny</span></dt>
         <dd><span>{{file.createdBy}}</span></dd>
 
-        <div>
-          <a class="pull-start">Deschidere</a>
-        </div>
+        @if(file.data){
+          <div>
+            <a (click)="openFile(filePath, file.mimeType)" class="pull-start">Deschidere</a>
+            {{ byteSize(file.data[0]) }} - {{ file.mimeType }}
+          </div>
+        }
       </dl>
     } @else {
       <div class="alert alert-warning" id="no-result">

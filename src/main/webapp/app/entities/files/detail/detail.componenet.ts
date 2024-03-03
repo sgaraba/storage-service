@@ -13,6 +13,7 @@ import { DataUtils } from '../../../core/util/data-util.service';
 
 export class FilesDetailComponent implements OnInit{
   file: FileModel | null = null;
+  filePath!: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -22,10 +23,15 @@ export class FilesDetailComponent implements OnInit{
   ngOnInit(): void {
     this.route.data.subscribe(({ file }) => {
       this.file = file;
+      this.filePath = file.filePath;
     });
   }
 
   openFile(base64String: string, contentType: string | null | undefined): void {
     return this.dataUtils.openFile(base64String, contentType);
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
   }
 }

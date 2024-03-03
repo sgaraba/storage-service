@@ -30,7 +30,6 @@ registerLocaleData(localeRo);
 })
 export class FilesComponent  implements OnInit {
   currentAccount: Account | null = null;
-  userLogin!: string;
 
   files: FileModel[] | null = null;
   page!: number;
@@ -53,9 +52,9 @@ export class FilesComponent  implements OnInit {
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
         this.currentAccount = account;
-        this.userLogin = this.currentAccount?.login ?? '';
       }
     );
+
     this.handleNavigation();
   }
 
@@ -81,7 +80,7 @@ export class FilesComponent  implements OnInit {
   loadAll(): void {
     this.isLoading = true;
     this.fileService
-      .query(this.userLogin, {
+      .query(this.currentAccount?.login ?? '', {
         page: this.page - 1,
         size: this.itemsPerPage,
         sort: this.sort(),

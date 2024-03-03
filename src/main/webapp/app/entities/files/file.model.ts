@@ -6,4 +6,3 @@ export interface FileModel {
   createdBy: string;
   createdDate: Date;
 }
-export type NewFile = Omit<FileModel, 'id'> & { id: null };
