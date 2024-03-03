@@ -52,7 +52,7 @@ export class UploadComponent implements OnInit {
 
     this.uploadForm.patchValue({
       name: this.fileToUpload?.name,
-      data: this.fileToUpload ?? '',
+      data: [this.fileToUpload],
       mimeType: this.fileToUpload?.type
     });
 
@@ -78,6 +78,13 @@ export class UploadComponent implements OnInit {
         this.isSaving = false;
       }
     );
+
+    // this.fileService.upload({
+    //   ...this.uploadForm.getRawValue(),
+    //   data: [this.uploadForm.getRawValue().data]
+    // } as FileModel).subscribe(() => {
+    //   this.isSaving = false;
+    // });
   }
 
   protected setFileData(event: Event, field: string, isImage: boolean): void {
