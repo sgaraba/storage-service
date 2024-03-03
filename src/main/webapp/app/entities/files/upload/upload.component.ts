@@ -48,11 +48,13 @@ export class UploadComponent implements OnInit {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement.files && inputElement.files.length > 0) {
       this.fileToUpload = inputElement.files[0];
+      const sanitizedFileName = this.clearFileName(this.fileToUpload.name);
+      this.fileToUpload = new File([this.fileToUpload], sanitizedFileName, { type: this.fileToUpload.type });
     }
 
     this.uploadForm.patchValue({
       name: this.fileToUpload?.name,
-      data: [this.fileToUpload],
+      data: this.fileToUpload,
       mimeType: this.fileToUpload?.type
     });
 
@@ -63,9 +65,11 @@ export class UploadComponent implements OnInit {
     return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(base64String: string, contentType: string | null | undefined): void {
-    return this.dataUtils.openFile(base64String, contentType);
+  openFile(): void {
+    const formData = this.uploadForm.getRawValue();
+    return this.dataUtils.openFile(formData.data, formData.mimeType);
   }
+
 
   upload(): void {
     if (this.fileToUpload == null) {
@@ -76,15 +80,14 @@ export class UploadComponent implements OnInit {
     this.fileService.upload(this.uploadForm.getRawValue() as FileModel).subscribe(
       () => {
         this.isSaving = false;
+        this.uploadForm.reset();
       }
     );
+  }
 
-    // this.fileService.upload({
-    //   ...this.uploadForm.getRawValue(),
-    //   data: [this.uploadForm.getRawValue().data]
-    // } as FileModel).subscribe(() => {
-    //   this.isSaving = false;
-    // });
+  protected clearFileName(fileName: string): string {
+    // Replace illegal characters with underscores
+    return fileName.replace(/[^\w.-]/g, '_');
   }
 
   protected setFileData(event: Event, field: string, isImage: boolean): void {
