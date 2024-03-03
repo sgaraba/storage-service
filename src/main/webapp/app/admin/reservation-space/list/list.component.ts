@@ -70,6 +70,12 @@ export class ListComponent implements OnInit {
   openModalChangeTotalSize(user: User): void {
     const modalRef = this.modalService.open(ChangeTotalSizeComponent);
     modalRef.componentInstance.userID = user.id;
+
+    modalRef.closed.subscribe( reason => {
+      if(reason === 'updated') {
+        this.loadAll();
+      }
+    })
   }
 
   setActive(reservation: ReservationModel, isActivated: boolean): void {

@@ -62,6 +62,14 @@ export class FilesComponent  implements OnInit {
   openModal(fileID: number): void {
     const modalRef = this.modalService.open(DeleteComponent);
     modalRef.componentInstance.fileID = fileID;
+
+    modalRef.closed.subscribe(
+      reason => {
+        if(reason === 'deleted'){
+          this.loadAll();
+        }
+      }
+    );
   }
 
   call_donwload_fileService(id: number): void {

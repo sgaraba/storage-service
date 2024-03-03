@@ -22,5 +22,10 @@
     "buttons": {
       "upload": "Upload new file"
     }
-  }
+  },
+
+  "storageFileManagement": {
+    "deleted": "The file was deleted!"
+  },
+  "userStorageFileManagement.created": "The file was uploaded successfully!"
 }

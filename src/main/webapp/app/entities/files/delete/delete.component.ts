@@ -24,18 +24,8 @@ export class DeleteComponent {
   confirmDeleteAction(): void {
     if (this.fileID) {
       this.fileService.deleteFile(this.fileID).subscribe(
-        (response: HttpResponse<any>) => {
-          if (response.status === 200) {
-            this.closeModal();
-            this.alertService.addAlert({ type: 'success', message: 'Your file is deleted!' });
-          } else {
-            console.error('Failed to delete file. Server returned status code:', response.status);
-            this.alertService.addAlert({ type: 'danger', message: 'Failed to delete file. Please try again later.' });
-          }
-        },
-        (error: any) => {
-          console.error('An error occurred while deleting the file:', error);
-          this.alertService.addAlert({ type: 'danger', message: 'An error occurred while deleting the file. Please try again later.' });
+        () => {
+          this.activeModal.close('deleted');
         }
       );
     } else {
@@ -44,6 +34,6 @@ export class DeleteComponent {
   }
 
   closeModal(): void {
-    this.activeModal.close('Modal closed');
+    this.activeModal.close('deleted');
   }
 }

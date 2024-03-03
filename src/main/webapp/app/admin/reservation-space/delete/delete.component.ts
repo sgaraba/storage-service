@@ -29,6 +29,6 @@ export class DeleteComponent {
   }
 
   closeModal(): void {
-    this.activeModal.close('Modal closed');
+    this.activeModal.close('deleted');
   }
 }

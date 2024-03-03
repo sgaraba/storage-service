@@ -23,5 +23,11 @@
     "buttons": {
       "upload": "Загрузить новый файл"
     }
-  }
+  },
+
+  "storageFileManagement": {
+    "deleted": "Файл был удален!"
+  },
+
+  "userStorageFileManagement.created": "Файл успешно загружен!"
 }

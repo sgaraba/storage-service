@@ -23,11 +23,14 @@ export class ChangeTotalSizeComponent {
   ) { }
 
   updateTotalSize(): void {
-    this.reservationService.updateTotalSize(this.userID, this.userRequestedSize).subscribe();
-    this.closeModal()
+    this.reservationService.updateTotalSize(this.userID, this.userRequestedSize).subscribe(
+      () => {
+        this.activeModal.close('updated');
+      }
+    );
   }
 
   closeModal(): void {
-    this.activeModal.close('Modal closed');
+    this.activeModal.close('updated');
   }
 }

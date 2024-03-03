@@ -3,7 +3,6 @@ import SharedModule from '../../../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { saveAs } from 'file-saver';
 import { FileModel } from '../file.model';
 import { Account } from '../../../core/auth/account.model';
 import { AccountService } from '../../../core/auth/account.service';
@@ -11,7 +10,6 @@ import { FileService } from '../service/file.service';
 import { AlertService } from '../../../core/util/alert.service';
 import { EventManager, EventWithContent } from '../../../core/util/event-manager.service';
 import { AlertError } from '../../../shared/alert/alert-error.model';
-import { DocumentFormGroup } from '../../document/update/document-form.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -58,7 +56,7 @@ export class UploadComponent implements OnInit {
       mimeType: this.fileToUpload?.type
     });
 
-    this.setFileData(event, 'data', this.isImageFile(this.fileToUpload?.type ?? 'image/png'));
+    this.setFileData(event, 'data', this.isImageFile(this.fileToUpload?.type ?? ''));
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
@@ -82,8 +80,7 @@ export class UploadComponent implements OnInit {
       return;
     }
 
-    console.log(this.uploadForm.getRawValue())
-    this.fileService.upload(this.uploadForm.getRawValue());
+    this.fileService.upload(this.uploadForm.getRawValue() as FileModel).subscribe();
   }
 
   private isImageFile(fileType: string): boolean {
