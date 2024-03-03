@@ -7,6 +7,7 @@ import {errorRoute} from './layouts/error/error.route';
 import HomeComponent from './home/home.component';
 import NavbarComponent from './layouts/navbar/navbar.component';
 import LoginComponent from './login/login.component';
+import { SidebarComponent } from './layouts/sidebar/sidebar.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,11 @@ const routes: Routes = [
     path: '',
     component: NavbarComponent,
     outlet: 'navbar',
+  },
+  {
+    path: '',
+    component: SidebarComponent,
+    outlet: 'sidebar',
   },
   {
     path: 'admin',
