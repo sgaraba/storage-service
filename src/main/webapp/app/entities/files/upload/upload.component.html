@@ -1,5 +1,7 @@
-<section class="d-flex justify-content-center" (ngSubmit)="upload()" [formGroup]="uploadForm">
-  <form role="form" novalidate class="col-md-8" enctype="multipart/form-data">
+<section class="d-flex justify-content-center">
+  <form (ngSubmit)="upload()" [formGroup]="uploadForm"
+        class="d-flex justify-content-center" class="col-md-8"
+        enctype="multipart/form-data" novalidate role="form">
     <h2>
       Încărcarea Document
     </h2>
@@ -9,29 +11,31 @@
       <jhi-alert></jhi-alert>
 
       <div class="mb-3">
-        <label for="formFile" class="form-label">Alegeti fisier</label>
-        <input (change)="onFileSelected($event)" class="form-control" type="file" id="formFile">
+        <label class="form-label" for="formFile">Alegeti fisier</label>
+        <input formControlName="file" (change)="onFileSelected($event)" class="form-control" id="formFile" type="file">
       </div>
 
-      @if(fileToUpload != null){
+      @if (fileToUpload != null) {
         <a (click)="openFile()" class="pull-start">Deschide</a>
         <div class="form-text text-danger clearfix">
-          <span>Last modified: <code class="fw-bold">{{ fileToUpload.lastModified | date: 'dd/MM/yy HH:mm' }}</code></span>
-          <br/>
+          <span>Last modified: <code
+            class="fw-bold">{{ fileToUpload.lastModified | date: 'dd/MM/yy HH:mm' }}</code></span>
+          <br />
           <span>File type: <code class="fw-bold">{{ fileToUpload.type }}</code></span>
-          <br/>
-          <span>File size: <code class="fw-bold">{{byteSize(fileToUpload.type)}}</code></span>
+          <br />
+          <span>File size: <code class="fw-bold">{{ byteSize(fileToUpload.type) }}</code></span>
           <hr>
         </div>
       }
 
-      <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" routerLink="../list">
+      <button class="btn btn-secondary" data-cy="entityCreateCancelButton" id="cancel-save" routerLink="../list"
+              type="button">
         <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
       </button>
       <button
-        type="submit"
-        class="btn btn-primary"
         [disabled]="uploadForm.invalid || !isSaving"
+        class="btn btn-primary"
+        type="submit"
       >
         <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvare</span>
       </button>

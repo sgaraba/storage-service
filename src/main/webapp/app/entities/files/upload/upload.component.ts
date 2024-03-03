@@ -80,6 +80,7 @@ export class UploadComponent implements OnInit {
     this.fileService.upload(this.uploadForm.getRawValue() as FileModel).subscribe(
       () => {
         this.isSaving = false;
+        this.fileToUpload = null;
         this.uploadForm.reset();
       }
     );
@@ -100,6 +101,8 @@ export class UploadComponent implements OnInit {
           key: 'error.file.' + err.key
         })),
         this.isSaving = false;
+        this.fileToUpload = null;
+        this.uploadForm.reset();
       }
     });
   }
