@@ -49,6 +49,7 @@
       "currentpassword.placeholder": "Current password",
       "newpassword.label": "New password",
       "newpassword.placeholder": "New password",
+      "reservedSize.label": "MB to allocate",
       "confirmpassword.label": "New password confirmation",
       "confirmpassword.placeholder": "Confirm the new password",
       "email.label": "Email",
@@ -80,6 +81,9 @@
           "required": "Your confirmation password is required.",
           "minlength": "Your confirmation password is required to be at least 4 characters.",
           "maxlength": "Your confirmation password cannot be longer than 50 characters."
+        },
+        "reservedSize": {
+          "required": "MB to allocate is required"
         },
         "email": {
           "required": "Your email is required.",

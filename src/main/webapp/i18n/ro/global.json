@@ -58,6 +58,7 @@
       "currentpassword.placeholder": "Current password",
       "newpassword.label": "Parolă nouă",
       "newpassword.placeholder": "Parolă nouă",
+      "reservedSize.label": "MB pentru alocare",
       "confirmpassword.label": "Confirma parolă",
       "confirmpassword.placeholder": "Confirmați noua parolă",
       "email.label": "Email",
@@ -89,6 +90,9 @@
           "required": "Confirmarea parolei este necesară.",
           "minlength": "Confirmarea parolei trebuie să aibă cel puțin 4 caractere.",
           "maxlength": "Confirmarea parolei poate avea maxim 50 de caractere."
+        },
+        "reservedSize": {
+          "required": "MB de alocat sunt necesari."
         },
         "email": {
           "required": "Emailul dumneavoastră este necesar.",
