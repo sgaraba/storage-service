@@ -27,8 +27,11 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -104,8 +107,9 @@ public class StorageFileResource {
         return pageable.getSort().stream().map(Sort.Order::getProperty).allMatch(ALLOWED_ORDERED_PROPERTIES::contains);
     }
 
-    @GetMapping("/storage-files/{id}")
-    public ResponseEntity<AdminStorageFileDTO> getStorageFile(@PathVariable("id") Long id) {
+    @GetMapping("admin/storage-files/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<AdminStorageFileDTO> getAdminStorageFile(@PathVariable("id") Long id) {
         log.debug("REST request to get Storage File : {}", id);
         return ResponseUtil.wrapOrNotFound(storageFileRepository.findById(id).map(AdminStorageFileDTO::new));
     }
@@ -165,6 +169,16 @@ public class StorageFileResource {
             .created(new URI("/api/admin/storage-files/" + storageFile.getName()))
             .headers(HeaderUtil.createAlert(applicationName, "userStorageFileManagement.created", storageFile.getName()))
             .body(storageFile);
+    }
+
+    @GetMapping("/storage-files/test")
+    public ResponseEntity<UploadFileDTO> getStorageFile() {
+        log.debug("REST request to get Storage File");
+        UploadFileDTO fileDTO = storageFileService.getFile();
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createAlert(applicationName, "userStorageFileManagement.created", fileDTO.getName()))
+            .body(fileDTO);
     }
 
     @PutMapping("/storage-files/{id}")

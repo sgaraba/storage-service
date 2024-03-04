@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class UploadFileDTO implements Serializable {
     private String name;
-    private Byte[] data;
+    private byte[] data;
     private String mimeType;
 
     public UploadFileDTO() {
@@ -25,11 +25,11 @@ public class UploadFileDTO implements Serializable {
         this.name = name;
     }
 
-    public Byte[] getData() {
+    public byte[] getData() {
         return data;
     }
 
-    public void setData(Byte[] data) {
+    public void setData(byte[] data) {
         this.data = data;
     }
 
