@@ -35,5 +35,5 @@
       "placeholder": "Введите новый общий размер"
     }
   },
-  "userReservationManagement.updated": "Статус резервирования для пользователя {{ param }} изменился."
+  "userReservationManagement.updated": "Статус резервирования для пользователя <strong>{{ param }}</strong> изменился."
 }

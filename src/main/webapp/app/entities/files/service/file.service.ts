@@ -8,7 +8,7 @@ import { ApplicationConfigService } from '../../../core/config/application-confi
 
 @Injectable({ providedIn: 'root' })
 export class FileService {
-  private resourceUrl = this.applicationConfigService.getEndpointFor('/api/admin/storage-files-by-user/');
+  private resourceUrl = this.applicationConfigService.getEndpointFor('/api/storage-files-by-user/');
 
   constructor(
     private http: HttpClient,
@@ -21,15 +21,15 @@ export class FileService {
   }
 
   find(id: number): Observable<FileModel> {
-    return this.http.get<FileModel>(`${this.applicationConfigService.getEndpointFor('/api/admin/storage-files/')}/${id}`);
+    return this.http.get<FileModel>(`${this.applicationConfigService.getEndpointFor('/api/storage-files/')}/${id}`);
   }
 
   upload(file: FileModel): Observable<FileModel>{
-    return this.http.post<FileModel>(this.applicationConfigService.getEndpointFor('/api/admin/storage-files/upload-file'), file);
+    return this.http.post<FileModel>(this.applicationConfigService.getEndpointFor('/api/storage-files/upload-file'), file);
   }
 
   deleteFile(id: number): Observable<{}> {
-    return this.http.delete(`${this.applicationConfigService.getEndpointFor('/api/admin/storage-files/')}/${id}`);
+    return this.http.delete(`${this.applicationConfigService.getEndpointFor('/api/storage-files/')}/${id}`);
   }
 
   downloadFile(id: number): void  {
