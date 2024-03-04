@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -191,5 +192,11 @@ public class StorageFileResource {
             .ok()
             .headers(HeaderUtil.createAlert(applicationName, "userReservationManagement.updated", "test"))
             .body(updatedStorageFile);
+    }
+
+    @PostMapping("/upload-file")
+    public void handleFileUpload(@RequestParam("file") MultipartFile file) {
+        System.err.println("file.getSize() = " + file.getSize());
+        System.err.println("file.getOriginalFilename() = " + file.getOriginalFilename());
     }
 }
