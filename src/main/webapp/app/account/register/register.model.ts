@@ -3,7 +3,7 @@ export class Registration {
     public login: string,
     public email: string,
     public password: string,
-    public reservedSize: string,
+    public rezervationSize: string,
     public langKey: string,
   ) {}
 }
