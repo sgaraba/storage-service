@@ -21,15 +21,15 @@ export class FileService {
   }
 
   find(id: number): Observable<FileModel> {
-    return this.http.get<FileModel>(`${this.applicationConfigService.getEndpointFor('/api/admin/storageFiles/')}/${id}`);
+    return this.http.get<FileModel>(`${this.applicationConfigService.getEndpointFor('/api/admin/storage-files/')}/${id}`);
   }
 
-  upload(file: FileModel): Observable<HttpResponse<FileModel>>{
-    return this.http.post<FileModel>(this.applicationConfigService.getEndpointFor('/api/admin/storage-files/upload-file'), file, { observe: 'response' });
+  upload(file: FileModel): Observable<FileModel>{
+    return this.http.post<FileModel>(this.applicationConfigService.getEndpointFor('/api/admin/storage-files/upload-file'), file);
   }
 
-  deleteFile(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.applicationConfigService.getEndpointFor('/api/admin/storage-files/')}/${id}`, { observe: 'response' });
+  deleteFile(id: number): Observable<{}> {
+    return this.http.delete(`${this.applicationConfigService.getEndpointFor('/api/admin/storage-files/')}/${id}`);
   }
 
   downloadFile(id: number): void  {

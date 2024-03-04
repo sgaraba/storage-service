@@ -23,5 +23,11 @@
     "buttons": {
       "upload": "Încărcați fișier nou"
     }
-  }
+  },
+
+  "storageFileManagement": {
+    "deleted": "Fișierul a fost șters!"
+  },
+
+  "userStorageFileManagement.created": "Fișierul a fost încărcat cu succes!"
 }

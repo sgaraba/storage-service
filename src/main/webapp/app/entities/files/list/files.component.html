@@ -6,7 +6,8 @@
         <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
       </button>
       <button class="btn btn-primary jh-create-entity" [routerLink]="['../upload']">
-        <fa-icon icon="plus"></fa-icon> <span jhiTranslate="files.buttons.upload">Upload new file</span>
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="files.buttons.upload">Upload new file</span>
       </button>
     </div>
 
@@ -22,11 +23,7 @@
             <span jhiTranslate="files.table.thead.name">file name</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
-          <th jhiSortBy="size" scope="col">
-            <span jhiTranslate="files.table.thead.size">size</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th jhiSortBy="last_modified" scope="col">
+          <th jhiSortBy="createdDate" scope="col">
             <span jhiTranslate="files.table.thead.last_modified">last modified</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
@@ -40,12 +37,16 @@
         <tbody>
         <tr *ngFor="let file of files">
           <td>{{ file.name }}</td>
-          <td>{{ file.size }}</td>
-          <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm'  }}</td>
+          <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
           <td>{{ file.createdBy }}</td>
           <td class="d-flex justify-content-center">
             <button [routerLink]="['../', file.id, 'detail']" class="btn btn-info btn-sm">
               <fa-icon icon="eye"></fa-icon>
+            </button>
+            <button
+              class="btn btn-primary btn-sm"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
             </button>
             <button (click)="call_donwload_fileService(file.id)" class="btn btn-primary btn-sm">
               <fa-icon icon="download"></fa-icon>

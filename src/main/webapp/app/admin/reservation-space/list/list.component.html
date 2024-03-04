@@ -26,9 +26,8 @@
             <span jhiTranslate="reservationSpace.table.thead.usedSize">Used Size</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="user">
+          <th scope="col">
             <span jhiTranslate="reservationSpace.table.thead.user">User</span>
-            <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="activated">
             <span jhiTranslate="reservationSpace.table.thead.activated">Activated</span>
@@ -53,11 +52,11 @@
         <td>{{ reservation.user | checkFirstLastName }}</td>
         <td>
           @if (!reservation.activated){
-            <button class="btn btn-danger btn-sm border-0" (click)="setActive(reservation, true)" jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">
+            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, true)" jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">
               Deactivat
             </button>
           } @else {
-            <button class="btn btn-danger btn-sm border-0" (click)="setActive(reservation, false)"  jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">
+            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, false)"  jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">
               Activat
             </button>
           }
@@ -76,7 +75,7 @@
           <button
             type="submit"
             class="btn btn-primary btn-sm"
-            (click)="openModalChangeTotalSize()"
+            (click)="openModalChangeTotalSize(reservation.user)"
           >
             <fa-icon icon="pencil-alt"></fa-icon>
           </button>

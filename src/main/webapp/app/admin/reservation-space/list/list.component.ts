@@ -67,9 +67,15 @@ export class ListComponent implements OnInit {
     });
   }
 
-  openModalChangeTotalSize(): void {
+  openModalChangeTotalSize(user: User): void {
     const modalRef = this.modalService.open(ChangeTotalSizeComponent);
-    // modalRef.componentInstance.fileID = fileID;
+    modalRef.componentInstance.userID = user.id;
+
+    modalRef.closed.subscribe( reason => {
+      if(reason === 'updated') {
+        this.loadAll();
+      }
+    })
   }
 
   setActive(reservation: ReservationModel, isActivated: boolean): void {

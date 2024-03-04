@@ -30,7 +30,6 @@ registerLocaleData(localeRo);
 })
 export class FilesComponent  implements OnInit {
   currentAccount: Account | null = null;
-  userLogin!: string;
 
   files: FileModel[] | null = null;
   page!: number;
@@ -53,15 +52,23 @@ export class FilesComponent  implements OnInit {
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
         this.currentAccount = account;
-        this.userLogin = this.currentAccount?.login ?? '';
       }
     );
+
     this.handleNavigation();
   }
 
   openModal(fileID: number): void {
     const modalRef = this.modalService.open(DeleteComponent);
     modalRef.componentInstance.fileID = fileID;
+
+    modalRef.closed.subscribe(
+      reason => {
+        if(reason === 'deleted'){
+          this.loadAll();
+        }
+      }
+    );
   }
 
   call_donwload_fileService(id: number): void {
@@ -73,7 +80,7 @@ export class FilesComponent  implements OnInit {
   loadAll(): void {
     this.isLoading = true;
     this.fileService
-      .query(this.userLogin, {
+      .query(this.currentAccount?.login ?? '', {
         page: this.page - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
