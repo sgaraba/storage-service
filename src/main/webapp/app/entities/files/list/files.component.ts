@@ -71,9 +71,8 @@ export class FilesComponent  implements OnInit {
     );
   }
 
-  call_donwload_fileService(id: number): void {
+  call_download_fileService(id: number): void {
     this.fileService.downloadFile(id);
-    this.alertService.addAlert({ type: 'success', message: 'Your file is donwloaded' });
   }
 
   // pagination

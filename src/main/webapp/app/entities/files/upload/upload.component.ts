@@ -11,6 +11,7 @@ import { AlertService } from '../../../core/util/alert.service';
 import { EventManager, EventWithContent } from '../../../core/util/event-manager.service';
 import { AlertError } from '../../../shared/alert/alert-error.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'jhi-upload-file',
@@ -77,13 +78,14 @@ export class UploadComponent implements OnInit {
       return;
     }
 
-    this.fileService.upload(this.uploadForm.getRawValue() as FileModel).subscribe(
-      () => {
+    this.fileService.upload(this.uploadForm.getRawValue() as FileModel).pipe(finalize(() => this.isSaving)).subscribe({
+      next: () => window.history.back(),
+      error: () => {
         this.isSaving = false;
         this.fileToUpload = null;
         this.uploadForm.reset();
-      }
-    );
+      },
+    });
   }
 
   protected clearFileName(fileName: string): string {

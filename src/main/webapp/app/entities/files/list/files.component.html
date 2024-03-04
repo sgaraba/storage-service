@@ -5,10 +5,22 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
       </button>
-      <button class="btn btn-primary jh-create-entity" [routerLink]="['../upload']">
+
+      <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['../upload']">
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="files.buttons.upload">Upload new file</span>
       </button>
+
+      <div ngbDropdown class="dropdown">
+        <button ngbDropdownToggle class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <fa-icon icon="file-export"></fa-icon>
+          <span jhiTranslate="files.buttons.export.title">Export</span>
+        </button>
+        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
+          <a jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
+          <a jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item">Export to Excel</a>
+        </div>
+      </div>
     </div>
 
     <jhi-alert-error></jhi-alert-error>
@@ -43,12 +55,7 @@
             <button [routerLink]="['../', file.id, 'detail']" class="btn btn-info btn-sm">
               <fa-icon icon="eye"></fa-icon>
             </button>
-            <button
-              class="btn btn-primary btn-sm"
-            >
-              <fa-icon icon="pencil-alt"></fa-icon>
-            </button>
-            <button (click)="call_donwload_fileService(file.id)" class="btn btn-primary btn-sm">
+            <button (click)="call_download_fileService(file.id)" class="btn btn-primary btn-sm">
               <fa-icon icon="download"></fa-icon>
             </button>
             <button (click)="openModal(file.id)" class="btn btn-danger btn-sm">

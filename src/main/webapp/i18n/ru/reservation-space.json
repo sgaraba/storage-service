@@ -1,5 +1,6 @@
 {
   "reservationSpace": {
+    "title": "Список зон бронирования для пользователей",
     "table": {
       "thead": {
         "totalSize": "Общий размер",

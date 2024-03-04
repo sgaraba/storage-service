@@ -1,13 +1,26 @@
 @if (currentAccount !== null) {
   <div class="row p-2">
     <h2>
-      <span>Rezervari</span>
+      <span jhiTranslate="reservationSpace.title">Rezervari</span>
 
       <div class="d-flex justify-content-end">
-        <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-          <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
-        </button>
+        <div>
+          <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+            <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+            <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
+          </button>
+        </div>
+
+        <div ngbDropdown class="dropdown">
+          <button ngbDropdownToggle class="btn btn-primary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <fa-icon icon="file-export"></fa-icon>
+            <span jhiTranslate="files.buttons.export.title">Export</span>
+          </button>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
+            <a jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
+            <a jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item">Export to Excel</a>
+          </div>
+        </div>
       </div>
     </h2>
 

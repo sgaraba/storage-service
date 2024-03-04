@@ -21,7 +21,12 @@
     },
 
     "buttons": {
-      "upload": "Загрузить новый файл"
+      "upload": "Загрузить новый файл",
+      "export": {
+        "title": "Экспорт",
+        "downloadCSV": "Скачать CSV",
+        "exportEXCEL": "Экспорт в Excel"
+      }
     }
   },
 
