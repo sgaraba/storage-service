@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 @Service
@@ -90,6 +94,24 @@ public class StorageFileService {
         storageFileRepository.save(storageFile);
 
         return new UploadFileDTO(storageFile);
+    }
+
+    public UploadFileDTO getFile(){
+        File file = new File("src/main/resources/Raport1.docx");
+        Path path = file.toPath();
+        try {
+            String mimeType = Files.probeContentType(path);
+            byte[] array = Files.readAllBytes(path);
+
+            UploadFileDTO fileDTO = new UploadFileDTO();
+            fileDTO.setName(file.getName());
+            fileDTO.setData(array);
+            fileDTO.setMimeType(mimeType);
+
+            return fileDTO;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void deleteStorageFile(Long id) {
