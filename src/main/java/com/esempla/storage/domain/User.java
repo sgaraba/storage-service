@@ -204,7 +204,7 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     }
 
     public String getFullName(){
-        if (nonNull(firstName) && nonNull(firstName)){
+        if (nonNull(firstName) && nonNull(lastName)){
             return firstName + " " + lastName;
         }
         return login;
