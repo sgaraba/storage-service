@@ -9,6 +9,10 @@ import com.esempla.storage.security.AuthoritiesConstants;
 import com.esempla.storage.security.SecurityUtils;
 import com.esempla.storage.service.dto.AdminUserDTO;
 import com.esempla.storage.service.dto.UserDTO;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -59,12 +63,22 @@ public class UserService {
             });
 
         // Create user bucket
-        try {
-            minioService.createSubdirectory(user1.get().getLogin());
-            minioService.uploadObject("","");
-        } catch (MinioException e) {
-            throw new RuntimeException(e);
-        }
+        user1.ifPresent(user -> {
+            //minioService.createSubdirectory(user.getLogin());
+            // Upload
+            String filePath = "C:/Users/rusla/Desktop/imagine.png";
+            File file = new File(filePath);
+            byte[] data;
+            try {
+                data = Files.readAllBytes(file.toPath());
+                minioService.uploadObject("imagine.png", data, user.getLogin());
+                log.debug("Uploaded test.txt for user: {}", user.getLogin());
+            } catch (IOException e) {
+                log.error("Failed to read file or upload to Minio: {}", e.getMessage());
+                throw new RuntimeException(e);
+            }
+        });
+
         return user1;
     }
 

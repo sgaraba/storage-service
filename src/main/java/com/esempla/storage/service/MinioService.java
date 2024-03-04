@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 @Service
@@ -58,22 +59,38 @@ public class MinioService {
         }
     }
     //path ="C:\Users\rusla\Desktop\imagine.png"
-    public  void uploadObject(String path, String objectName){
-        path ="C:/Users/rusla/Desktop/imagine.png";
-        objectName = "imagine.png";
+//    path ="C:/Users/rusla/Desktop/test.txt";
+//    objectName = "test.txt";
+    public void uploadObject(String objectName, byte[] data, String login) {
+        String fullObjectName = login + "/" + objectName;
         try {
-
-
-        minioClient.uploadObject(
-            UploadObjectArgs.builder()
-                .bucket(applicationProperties.minio().bucket())
-                .object(objectName)
-                .filename(path)
-                .build());
-        System.out.println(objectName + " is successfully uploaded from " + path + " to bucket " + applicationProperties.minio().bucket() + ".");
-
-    } catch (Exception e) {
-        throw new RuntimeException(e);
+            minioClient.putObject(
+                PutObjectArgs.builder()
+                    .bucket(applicationProperties.minio().bucket())
+                    .object(fullObjectName)
+                    .stream(new ByteArrayInputStream(data), data.length, -1)
+                    .build());
+            System.out.println(objectName + " is successfully uploaded to bucket " + applicationProperties.minio().bucket() + ".");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    public void deleteObject(String objectName, String login) {
+        try {
+            String bucketName = applicationProperties.minio().bucket();
+            objectName = "test.txt";
+            String fullObjectName = login + "/" + objectName;
+
+            minioClient.removeObject(
+                RemoveObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(fullObjectName)
+                    .build());
+
+            System.out.println(objectName + " is successfully deleted from subdirectory " + login + " of bucket " + bucketName + ".");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
