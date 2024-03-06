@@ -1,19 +1,19 @@
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { HttpResponse, HttpHeaders } from '@angular/common/http';
-import { combineLatest } from 'rxjs';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { combineLatest } from 'rxjs';
 
-import SharedModule from 'app/shared/shared.module';
-import { SortDirective, SortByDirective } from 'app/shared/sort';
-import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT } from 'app/config/navigation.constants';
-import { ItemCountComponent } from 'app/shared/pagination';
-import { AccountService } from 'app/core/auth/account.service';
+import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { ItemCountComponent } from 'app/shared/pagination';
+import SharedModule from 'app/shared/shared.module';
+import { SortByDirective, SortDirective } from 'app/shared/sort';
+import UserManagementDeleteDialogComponent from '../delete/user-management-delete-dialog.component';
 import { UserManagementService } from '../service/user-management.service';
 import { User } from '../user-management.model';
-import UserManagementDeleteDialogComponent from '../delete/user-management-delete-dialog.component';
 
 @Component({
   standalone: true,
@@ -37,7 +37,7 @@ export default class UserManagementComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));

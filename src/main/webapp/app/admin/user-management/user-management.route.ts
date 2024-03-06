@@ -30,6 +30,7 @@ const userManagementRoute: Routes = [
     resolve: {
       user: UserManagementResolve,
     },
+    data: { breadcrumb: "userManagement.detail.title" }
   },
   {
     path: 'new',
@@ -37,6 +38,7 @@ const userManagementRoute: Routes = [
     resolve: {
       user: UserManagementResolve,
     },
+    data: { breadcrumb: "userManagement.home.createLabel" }
   },
   {
     path: ':login/edit',
@@ -44,6 +46,7 @@ const userManagementRoute: Routes = [
     resolve: {
       user: UserManagementResolve,
     },
+    data: { breadcrumb: "entity.action.edit" }
   },
 ];
 

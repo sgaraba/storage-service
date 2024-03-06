@@ -8,6 +8,7 @@ const settingsRoute: Route = {
   component: SettingsComponent,
   title: 'global.menu.account.settings',
   canActivate: [UserRouteAccessService],
+  data: { breadcrumb: "global.menu.account.settings" }
 };
 
 export default settingsRoute;
