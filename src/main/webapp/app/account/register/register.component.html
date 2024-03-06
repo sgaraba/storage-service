@@ -38,11 +38,11 @@
     <div class="col-md-8">
       @if (!success) {
       <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm">
-        <div class="d-flex flex-row justify-content-center gap-5">
-          <span>
+        <div class="d-flex flex-row justify-content-around gap-5 ">
+          <div class="flex-grow-1">
             <div class="mb-3">
               <label class="form-label" for="login" jhiTranslate="global.form.username.label">Utilizator</label>
-              <input type="text" class="form-control" id="login" name="login"
+              <input type="text" class="form-control " id="login" name="login"
                 placeholder="{{ 'global.form.username.placeholder' | translate }}" formControlName="login"
                 data-cy="username" #login />
 
@@ -104,6 +104,26 @@
               </div>
               }
             </div>
+            <div class="mb-3">
+              <label class="form-label" for="reservedSize" jhiTranslate="global.form.reservedSize.label">MB pentru
+                alocare</label>
+              <input type="number" class="form-control" id="reservedSize" name="reservedSize"
+                formControlName="reservedSize" data-cy="reservedSize" (keypress)="numericOnly($event)" />
+
+              @if (
+              registerForm.get('reservedSize')!.invalid &&
+              (registerForm.get('reservedSize')!.dirty || registerForm.get('reservedSize')!.touched)
+              ) {
+              <div>
+                @if (registerForm.get('reservedSize')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="global.messages.validate.reservedSize.required">MB de
+                  alocat sunt necesari.</small>
+                }
+              </div>
+              }
+            </div>
+          </div>
+          <div class="flex-grow-1">
             <div class="mb-3">
               <label class="form-label" for="password" jhiTranslate="global.form.newpassword.label">Parolă nouă</label>
               <input type="password" class="form-control" id="password" name="password"
@@ -170,27 +190,7 @@
               </div>
               }
             </div>
-          </span>
-          <span>
-            <div class="mb-3">
-              <label class="form-label" for="reservedSize" jhiTranslate="global.form.reservedSize.label">MB pentru
-                alocare</label>
-              <input type="number" class="form-control" id="reservedSize" name="reservedSize"
-                formControlName="reservedSize" data-cy="reservedSize" (keypress)="numericOnly($event)" />
-
-              @if (
-              registerForm.get('reservedSize')!.invalid &&
-              (registerForm.get('reservedSize')!.dirty || registerForm.get('reservedSize')!.touched)
-              ) {
-              <div>
-                @if (registerForm.get('reservedSize')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="global.messages.validate.reservedSize.required">MB de
-                  alocat sunt necesari.</small>
-                }
-              </div>
-              }
-            </div>
-          </span>
+          </div>
         </div>
         <span class="d-flex justify-content-center">
           <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary"
