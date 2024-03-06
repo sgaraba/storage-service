@@ -9,7 +9,8 @@
         "administration": "администрация",
         "users": "Пользователи",
         "documents": "Документы",
-        "journal": " Журнал"
+        "journal": " Журнал",
+        "api": "API"
       },
       "home": "Главная",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
