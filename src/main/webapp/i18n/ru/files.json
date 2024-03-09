@@ -1,5 +1,33 @@
 {
   "files": {
-    "home": "Документы"
-  }
+    "home": "Документы",
+    "table": {
+      "thead": {
+        "name": "Имя файла",
+        "size": "Размер",
+        "last_modified": "Последнее изменение",
+        "user": "Пользователь",
+        "Actions": "Действия"
+      }
+    },
+
+    "confirmDeleteModal": {
+      "modalTitle": "Подтвердите действие удаления",
+      "modalBody": "Вы уверены, что хотите удалить этот файл?",
+      "buttons": {
+        "cancel": "Отмена",
+        "confirm": "Удалить"
+      }
+    },
+
+    "buttons": {
+      "upload": "Загрузить новый файл"
+    }
+  },
+
+  "storageFileManagement": {
+    "deleted": "Файл был удален!"
+  },
+
+  "userStorageFileManagement.created": "Файл успешно загружен!"
 }

@@ -1,6 +1,6 @@
-import { User } from "../user/user.model";
+import {User} from "../user-management/user-management.model";
 
-export interface ReservationDTO {
+export interface ReservationModel {
     id: number;
     totalSize: number;
     usedSize: number;
@@ -10,7 +10,7 @@ export interface ReservationDTO {
     createdDate: Date;
 }
 
-export class Reservation implements ReservationDTO {
+export class Reservation implements ReservationModel {
     constructor(
         public id: number,
         public totalSize: number,

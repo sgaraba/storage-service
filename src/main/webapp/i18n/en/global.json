@@ -2,18 +2,15 @@
   "global": {
     "title": "StorageService",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
-    "documents": {
-      "table": {
-        "thead": {
-          "name": "name file",
-          "size": "size",
-          "last_modified": "last modified",
-          "user": "user",
-          "Actions": "actions"
-        }
-      }
-    },
     "menu": {
+      "sidebar": {
+        "personalDocuments": "Personal Documents",
+        "storage": "Storage",
+        "administration": "Administration",
+        "users": "Users",
+        "documents": "Documents",
+        "journal": "Journal"
+      },
       "home": "Home",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
@@ -52,6 +49,7 @@
       "currentpassword.placeholder": "Current password",
       "newpassword.label": "New password",
       "newpassword.placeholder": "New password",
+      "reservedSize.label": "MB to allocate",
       "confirmpassword.label": "New password confirmation",
       "confirmpassword.placeholder": "Confirm the new password",
       "email.label": "Email",
@@ -83,6 +81,9 @@
           "required": "Your confirmation password is required.",
           "minlength": "Your confirmation password is required to be at least 4 characters.",
           "maxlength": "Your confirmation password cannot be longer than 50 characters."
+        },
+        "reservedSize": {
+          "required": "MB to allocate is required"
         },
         "email": {
           "required": "Your email is required.",

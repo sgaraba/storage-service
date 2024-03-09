@@ -4,7 +4,9 @@ import com.esempla.storage.domain.User;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.security.SecurityUtils;
 import com.esempla.storage.service.MailService;
+import com.esempla.storage.service.UserReservationService;
 import com.esempla.storage.service.UserService;
+import com.esempla.storage.service.dto.AdminReservationDTO;
 import com.esempla.storage.service.dto.AdminUserDTO;
 import com.esempla.storage.service.dto.PasswordChangeDTO;
 import com.esempla.storage.web.rest.errors.*;
@@ -37,11 +39,13 @@ public class AccountResource {
     private final UserRepository userRepository;
     private final UserService userService;
     private final MailService mailService;
+    private final UserReservationService userReservationService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, UserReservationService userReservationService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.userReservationService = userReservationService;
     }
 
     /**
@@ -60,6 +64,12 @@ public class AccountResource {
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         mailService.sendActivationEmail(user);
+
+        AdminReservationDTO reservationDTO = new AdminReservationDTO();
+        reservationDTO.setTotalSize(managedUserVM.getRezervationSize());
+        reservationDTO.setUserId(user.getId());
+
+        userReservationService.createReservation(reservationDTO);
     }
 
     /**
@@ -74,6 +84,10 @@ public class AccountResource {
         if (!user.isPresent()) {
             throw new AccountResourceException("No user was found for this activation key");
         }
+        AdminReservationDTO reservationDTO = new AdminReservationDTO();
+        reservationDTO.setActivated(true);
+
+        userReservationService.updateUserReservation(reservationDTO);
     }
 
     /**

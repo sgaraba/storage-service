@@ -1,5 +1,33 @@
 {
   "files": {
-    "home": "Documente"
-  }
+    "home": "Documente",
+    "table": {
+      "thead": {
+        "name": "Nume fișier",
+        "size": "Mărime",
+        "last_modified": "Ultima modificare",
+        "user": "Utilizator",
+        "Actions": "Acțiuni"
+      }
+    },
+
+    "confirmDeleteModal": {
+      "modalTitle": "Confirmați acțiunea de ștergere",
+      "modalBody": "Sunteți sigur că doriți să ștergeți acest fișier?",
+      "buttons": {
+        "cancel": "Anulează",
+        "confirm": "Șterge"
+      }
+    },
+
+    "buttons": {
+      "upload": "Încărcați fișier nou"
+    }
+  },
+
+  "storageFileManagement": {
+    "deleted": "Fișierul a fost șters!"
+  },
+
+  "userStorageFileManagement.created": "Fișierul a fost încărcat cu succes!"
 }

@@ -5,6 +5,7 @@ import com.esempla.storage.domain.UserReservation;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.service.dto.AdminReservationDTO;
+import com.esempla.storage.service.dto.UpdateReservationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -30,7 +31,7 @@ public class UserReservationService {
         this.userRepository = userRepository;
     }
 
-    public UserReservation createReservation(AdminReservationDTO adminReservationDTO){
+    public UserReservation createReservation(AdminReservationDTO adminReservationDTO) {
         User user = userRepository.findById(adminReservationDTO.getUserId())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -40,22 +41,30 @@ public class UserReservationService {
         userReservation.setUser(user);
         userReservation.setCreatedBy(user.getLogin());
 
-       return userReservationRepository.save(userReservation);
+        return userReservationRepository.save(userReservation);
     }
 
-    public Optional<AdminReservationDTO> updateUserReservation(AdminReservationDTO adminReservationDTO) {
-        return Optional
-            .of(userReservationRepository.findById(adminReservationDTO.getId()))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
+    public AdminReservationDTO updateUserReservation(AdminReservationDTO adminReservationDTO) {
+        return userReservationRepository.findById(adminReservationDTO.getId())
             .map(reservation -> {
+                log.debug("Update reservation: {}", reservation);
                 reservation.setTotalSize(adminReservationDTO.getTotalSize());
                 reservation.setActivated(adminReservationDTO.isActivated());
                 userReservationRepository.save(reservation);
-                log.debug("Changed Information for Reservation: {}", reservation);
                 return reservation;
             })
-            .map(AdminReservationDTO::new);
+            .map(AdminReservationDTO::new)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    public UserReservation updateReservationSize(UpdateReservationDTO updateReservationDTO) {
+
+        UserReservation userReservation = userReservationRepository.findByUserId(updateReservationDTO.getUserId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        userReservation.setTotalSize(updateReservationDTO.getReservationSize().longValue());
+
+        return userReservationRepository.save(userReservation);
     }
 
     public void deleteReservation(Long id) {
@@ -68,7 +77,7 @@ public class UserReservationService {
     }
 
     @Transactional(readOnly = true)
-    public Page<AdminReservationDTO> getAllManagedReservations(Pageable pageable) {
-        return userReservationRepository.findAll(pageable).map(AdminReservationDTO::new);
+    public Page<UserReservation> getAllManagedReservations(Pageable pageable) {
+        return userReservationRepository.findAll(pageable);
     }
 }

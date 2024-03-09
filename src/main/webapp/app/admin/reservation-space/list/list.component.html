@@ -1,42 +1,92 @@
 @if (currentAccount !== null) {
   <div class="row p-2">
+    <h2>
+      <span>Rezervari</span>
+
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+          <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
+        </button>
+      </div>
+    </h2>
+
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
 
+
     <table class="table table-striped" aria-describedby="user-files-uploaded">
       <thead>
-      <tr>
-        <th jhiTranslate="reservationSpace.table.thead.totalSize">Total Size</th>
-        <th jhiTranslate="reservationSpace.table.thead.usedSize">Used Size</th>
-        <th jhiTranslate="reservationSpace.table.thead.user">User</th>
-        <th jhiTranslate="reservationSpace.table.thead.activated">Activated</th>
-        <th jhiTranslate="reservationSpace.table.thead.createdBy">Created By</th>
-        <th jhiTranslate="reservationSpace.table.thead.createdDate">Created Date</th>
-        <th jhiTranslate="reservationSpace.table.thead.actions">Actions</th>
-      </tr>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
+          <th scope="col" jhiSortBy="totalSize">
+            <span jhiTranslate="reservationSpace.table.thead.totalSize">Total Size</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="usedSize">
+            <span jhiTranslate="reservationSpace.table.thead.usedSize">Used Size</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col">
+            <span jhiTranslate="reservationSpace.table.thead.user">User</span>
+          </th>
+          <th scope="col" jhiSortBy="activated">
+            <span jhiTranslate="reservationSpace.table.thead.activated">Activated</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="createdBy">
+            <span jhiTranslate="reservationSpace.table.thead.createdBy">Created By</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="createdDate">
+            <span jhiTranslate="reservationSpace.table.thead.createdDate">Created Date</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
       </thead>
 
       <tbody>
-      <tr *ngFor="let reservation of pagedReservations">
+      <tr *ngFor="let reservation of reservations">
         <td>{{ reservation.totalSize }}</td>
         <td>{{ reservation.usedSize }}</td>
-        <td>{{ reservation.user.login }}</td>
-        <td>{{ reservation.activated }}</td>
+        <td>{{ reservation.user | checkFirstLastName }}</td>
+        <td>
+          @if (!reservation.activated){
+            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, true)" jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">
+              Deactivat
+            </button>
+          } @else {
+            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, false)"  jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">
+              Activat
+            </button>
+          }
+        </td>
         <td>{{ reservation.createdBy }}</td>
         <td>{{ reservation.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-        <td class="d-flex justify-content-center">
-          <button [routerLink]="['../detail']" type="submit" class="btn btn-info btn-sm">
+        <td>
+          <button
+            [routerLink]="['../', reservation.id,'detail']"
+            type="submit"
+            class="btn btn-info btn-sm"
+          >
             <fa-icon icon="eye"></fa-icon>
-            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vizualizare</span>
           </button>
 
           <button
             type="submit"
             class="btn btn-primary btn-sm"
-            [routerLink]="['../change-total-size']"
+            (click)="openModalChangeTotalSize(reservation.user)"
           >
             <fa-icon icon="pencil-alt"></fa-icon>
-            <span class="d-none d-md-inline">Change Total Size</span>
+          </button>
+
+          <button
+            type="button"
+            (click)="openModalDeleteReservation(reservation.id)"
+            class="btn btn-danger btn-sm"
+            [disabled]="!currentAccount"
+          >
+            <fa-icon icon="times"></fa-icon>
           </button>
         </td>
       </tr>
@@ -56,7 +106,7 @@
           [maxSize]="5"
           [rotate]="true"
           [boundaryLinks]="true"
-          (pageChange)="updatePage()"
+          (pageChange)="transition()"
         ></ngb-pagination>
       </div>
     </div>

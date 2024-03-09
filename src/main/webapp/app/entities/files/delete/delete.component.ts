@@ -5,14 +5,15 @@ import { FileService } from '../service/file.service';
 import { AlertService } from '../../../core/util/alert.service';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import TranslateDirective from '../../../shared/language/translate.directive';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'jhi-confirm-delete-modal',
   standalone: true,
   imports: [CommonModule, FaIconComponent, TranslateDirective],
-  templateUrl: './confirm-delete-modal.component.html',
+  templateUrl: './delete.component.html',
 })
-export class ConfirmDeleteModalComponent {
+export class DeleteComponent {
   @Input() fileID!: number;
   constructor(
     public activeModal: NgbActiveModal,
@@ -22,15 +23,17 @@ export class ConfirmDeleteModalComponent {
 
   confirmDeleteAction(): void {
     if (this.fileID) {
-      this.fileService.deleteFile(this.fileID);
-      this.closeModal()
-      this.alertService.addAlert({ type: 'success', message: 'Your file is deleted!' });
+      this.fileService.deleteFile(this.fileID).subscribe(
+        () => {
+          this.activeModal.close('deleted');
+        }
+      );
     } else {
       console.error('No file ID provided.');
     }
   }
 
   closeModal(): void {
-    this.activeModal.close('Modal closed');
+    this.activeModal.close('deleted');
   }
 }

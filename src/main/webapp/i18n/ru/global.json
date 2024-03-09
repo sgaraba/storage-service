@@ -2,18 +2,15 @@
   "global": {
     "title": "StorageService",
     "browsehappy": "Ваш браузер <strong>устарел</strong>. Пожалуйста <a href=\"http://browsehappy.com/?locale=ru\">обновите ваш браузер</a>.",
-    "documents": {
-      "table": {
-        "thead": {
-          "name": "имя файла",
-          "size": "размер",
-          "last_modified": "последнее изменение",
-          "user": "пользователь",
-          "Actions": "действия"
-        }
-      }
-    },
     "menu": {
+      "sidebar": {
+        "personalDocuments": "Личные документы",
+        "storage": "Хранилище",
+        "administration": "администрация",
+        "users": "Пользователи",
+        "documents": "Документы",
+        "journal": " Журнал"
+      },
       "home": "Главная",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
@@ -52,6 +49,7 @@
       "currentpassword.placeholder": "Текущий пароль",
       "newpassword.label": "Новый пароль",
       "newpassword.placeholder": "Новый пароль",
+      "reservedSize.label": "МБ для выделения",
       "confirmpassword.label": "Подтверждение нового пароля",
       "confirmpassword.placeholder": "Подтвердите новый пароль",
       "email.label": "Эл. почта",
@@ -83,6 +81,9 @@
           "required": "подтверждение пароля должно быть указано.",
           "minlength": "Длина подтверждения пароля должна быть хотя-бы 4 символов",
           "maxlength": "Подтверждение пароля не может быть больше чем 50 символов"
+        },
+        "reservedSize": {
+          "required": "МБ для выделения должно быть указано."
         },
         "email": {
           "required": "Email должен быть указан.",

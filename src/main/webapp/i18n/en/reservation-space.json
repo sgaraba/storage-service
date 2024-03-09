@@ -2,14 +2,38 @@
   "reservationSpace": {
     "table": {
       "thead": {
-        "totalSize": "total size",
-        "usedSize": "used size",
-        "user": "user",
-        "activated": "activated",
-        "createdBy": "created by",
-        "createdDate": "created date",
-        "actions": "actions"
+        "totalSize": "Total size",
+        "usedSize": "Used size",
+        "user": "User",
+        "activated": "Activated",
+        "createdBy": "Created by",
+        "createdDate": "Created date",
+        "actions": "Actions"
       }
+    },
+
+    "userDetail": {
+      "title": "Reservation for user",
+      "user": "User",
+      "activationStatus": "Activation status",
+      "totalSize": "Total reserved space",
+      "usedSize": "Used space",
+      "createdBy": "Created by",
+      "createdDate": "Created on date"
+    },
+
+    "buttons": {
+      "changeTotalSize": "Change Total Size"
+    },
+
+    "modalChangeTotalSize": {
+      "modalTitle": "Modify total size",
+      "modalButtons": {
+        "cancel": "Cancel",
+        "confirm": "Update"
+      },
+      "placeholder": "Write new total size"
     }
-  }
+  },
+  "userReservationManagement.updated": "Reservation activation for user  <strong>{{ param }}</strong>  has changed."
 }

@@ -2,18 +2,15 @@
   "global": {
     "title": "StorageService",
     "browsehappy": "Folosiți un browser <strong>vechi</strong>. Va rugăm <a href=\"http://browsehappy.com/?locale=en\"> să îl actualizați</a> pentru o experiență îmbunătațită.",
-    "documents": {
-      "table": {
-        "thead": {
-          "name": "nume fisier",
-          "size": "mărimea",
-          "last_modified": "ultima modificare",
-          "user": "utilizatorul",
-          "Actions": "acțiuni"
-        }
-      }
-    },
     "menu": {
+      "sidebar": {
+        "personalDocuments": "Documente personale",
+        "storage": "Storage",
+        "administration": "Administrare",
+        "users": "Utilizatori",
+        "documents": "Documente",
+        "journal": "Jurnal"
+      },
       "home": "Acasă",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
@@ -61,6 +58,7 @@
       "currentpassword.placeholder": "Current password",
       "newpassword.label": "Parolă nouă",
       "newpassword.placeholder": "Parolă nouă",
+      "reservedSize.label": "MB pentru alocare",
       "confirmpassword.label": "Confirma parolă",
       "confirmpassword.placeholder": "Confirmați noua parolă",
       "email.label": "Email",
@@ -92,6 +90,9 @@
           "required": "Confirmarea parolei este necesară.",
           "minlength": "Confirmarea parolei trebuie să aibă cel puțin 4 caractere.",
           "maxlength": "Confirmarea parolei poate avea maxim 50 de caractere."
+        },
+        "reservedSize": {
+          "required": "MB de alocat sunt necesari."
         },
         "email": {
           "required": "Emailul dumneavoastră este necesar.",

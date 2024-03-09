@@ -6,6 +6,7 @@ import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
 import com.esempla.storage.service.UserReservationService;
 import com.esempla.storage.service.dto.AdminReservationDTO;
+import com.esempla.storage.service.dto.UpdateReservationDTO;
 import com.esempla.storage.web.rest.errors.BadRequestAlertException;
 import com.esempla.storage.web.rest.errors.EmailAlreadyUsedException;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -66,9 +68,9 @@ public class ReservationResource {
     public ResponseEntity<UserReservation> createReservation(@Valid @RequestBody AdminReservationDTO reservationDTO) throws URISyntaxException {
         log.debug("REST request to save Reservation : {}", reservationDTO);
 
-//        if (reservationDTO.getId() != null) {
-//            throw new BadRequestAlertException("A new reservation cannot already have an ID", "userReservationManagement", "idexists");
-//        }
+        if (reservationDTO.getId() != null) {
+            throw new BadRequestAlertException("A new reservation cannot already have an ID", "userReservationManagement", "idexists");
+        }
 
         if (userReservationRepository.findByUserId(reservationDTO.getUserId()).isPresent()) {
             throw new BadRequestAlertException("Reservation for that user already exists!", "userReservationManagement", "reservationexists");
@@ -85,13 +87,13 @@ public class ReservationResource {
 
 
     @GetMapping("/reservations")
-    public ResponseEntity<List<AdminReservationDTO>> getAllReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<UserReservation>> getAllReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get all Reservations for an admin");
         if (!onlyContainsAllowedProperties(pageable)) {
             return ResponseEntity.badRequest().build();
         }
 
-        final Page<AdminReservationDTO> page = userReservationService.getAllManagedReservations(pageable);
+        final Page<UserReservation> page = userReservationService.getAllManagedReservations(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -110,17 +112,22 @@ public class ReservationResource {
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<AdminReservationDTO> updateReservation(@Valid @RequestBody AdminReservationDTO adminReservationDTO) {
         log.debug("REST request to update Reservation : {}", adminReservationDTO);
-        Optional<UserReservation> existingReservation = userReservationRepository.findByUserId(adminReservationDTO.getUserId());
-        if (existingReservation.isPresent() && (!existingReservation.orElseThrow().getId().equals(adminReservationDTO.getId()))) {
-            throw new EmailAlreadyUsedException();  //nu stiu ce exception de facut
-        }
+        AdminReservationDTO updatedReservation = userReservationService.updateUserReservation(adminReservationDTO);
+        return ResponseEntity
+            .ok()
+            .headers( HeaderUtil.createAlert(applicationName, "userReservationManagement.updated", updatedReservation.getFullName()))
+            .body(updatedReservation);
+    }
 
-        Optional<AdminReservationDTO> updatedReservation = userReservationService.updateUserReservation(adminReservationDTO);
+    @PatchMapping("/reservations/update-size")
+    public ResponseEntity<UserReservation> updateReservationSize(@RequestBody UpdateReservationDTO updateReservationDTO){
+        log.debug("REST request to update Reservation Size : {}", updateReservationDTO);
 
-        return ResponseUtil.wrapOrNotFound(
-            updatedReservation,
-            HeaderUtil.createAlert(applicationName, "userReservationManagement.updated", adminReservationDTO.getId().toString())
-        );
+        UserReservation updatedReservation = userReservationService.updateReservationSize(updateReservationDTO);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createAlert(applicationName, "userReservationManagement.updated", "test"))
+            .body(updatedReservation);
     }
 
     @DeleteMapping("/reservations/{id}")

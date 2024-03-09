@@ -1,6 +1,10 @@
 package com.esempla.storage.service.dto;
 
+import com.esempla.storage.domain.User;
 import com.esempla.storage.domain.UserReservation;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -12,14 +16,18 @@ public class AdminReservationDTO implements Serializable {
 
     private Long id;
 
-    private Long usedSize;
+    private Long usedSize = 0L;
 
+    @NotNull
     private Long totalSize;
 
     private Long userId;
 
-    private boolean activated;
+    private String fullName;
 
+    private boolean activated = false;
+
+    @Size(max=50)
     private String createdBy;
 
     private Instant createdDate;
@@ -29,10 +37,12 @@ public class AdminReservationDTO implements Serializable {
     }
 
     public AdminReservationDTO(UserReservation userReservation) {
+        User user = userReservation.getUser();
         this.id = userReservation.getId();
         this.usedSize = userReservation.getUsedSize();
         this.totalSize = userReservation.getTotalSize();
-        this.userId = userReservation.getUser().getId();
+        this.userId = user.getId();
+        this.fullName = user.getFullName();
         this.activated = userReservation.isActivated();
         this.createdBy = userReservation.getCreatedBy();
         this.createdDate = userReservation.getCreatedDate();
@@ -92,6 +102,10 @@ public class AdminReservationDTO implements Serializable {
 
     public void setCreatedDate(Instant createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
     @Override

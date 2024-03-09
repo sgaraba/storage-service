@@ -2,14 +2,38 @@
   "reservationSpace": {
     "table": {
       "thead": {
-        "totalSize": "общий размер",
-        "usedSize": "использованный размер",
-        "user": "пользователь",
-        "activated": "активирован",
-        "createdBy": "создано",
-        "createdDate": "дата создания",
-        "actions": "действия"
+        "totalSize": "Общий размер",
+        "usedSize": "Используемый размер",
+        "user": "Пользователь",
+        "activated": "Активировано",
+        "createdBy": "Создано",
+        "createdDate": "Дата создания",
+        "actions": "Действия"
       }
+    },
+
+    "userDetail": {
+      "title": "Бронирование для пользователя",
+      "user": "Пользователь",
+      "activationStatus": "Статус активации",
+      "totalSize": "Общий зарезервированный объем",
+      "usedSize": "Использованный объем",
+      "createdBy": "Создано",
+      "createdDate": "Создано на дату"
+    },
+
+    "buttons": {
+      "changeTotalSize": "Изменить общий размер"
+    },
+
+    "modalChangeTotalSize": {
+      "modalTitle": "Изменить общий размер",
+      "modalButtons": {
+        "cancel": "Отмена",
+        "confirm": "Обновить"
+      },
+      "placeholder": "Введите новый общий размер"
     }
-  }
+  },
+  "userReservationManagement.updated": "Статус резервирования для пользователя <strong>{{ param }}</strong> изменился."
 }
