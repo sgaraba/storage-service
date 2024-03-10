@@ -210,7 +210,7 @@ jhipster:
 # ===================================================================
 storage:
   minio:
-    url: http://localhost:9000
+    url: http://localhost:9001
     access-key: access_key
     secret-key: secret_key
     bucket: storage

@@ -31,7 +31,6 @@ public class MinioService {
     }
 
     public void createBucket(String bucketName) throws MinioException {
-        //log.info("Minio Service"+ applicationProperties.minio().bucket());
         try {
             boolean bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if (!bucketExists) {
@@ -58,9 +57,6 @@ public class MinioService {
             throw new MinioException("Unexpected error occurred while creating subdirectory: " + subdirectoryName + " in bucket: " + bucketName + e);
         }
     }
-    //path ="C:\Users\rusla\Desktop\imagine.png"
-//    path ="C:/Users/rusla/Desktop/test.txt";
-//    objectName = "test.txt";
     public void uploadObject(String objectName, byte[] data, String login) {
         String fullObjectName = login + "/" + objectName;
         try {

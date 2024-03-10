@@ -21,8 +21,8 @@ public class FileUploadController {
 
     @PostMapping("/api/upload")
     @PreAuthorize("permitAll()") // Allow unauthenticated access
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("login") String login) {
-        
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+
         try {
             if (file.isEmpty()) {
                 return new ResponseEntity<>("Please select a file to upload", HttpStatus.BAD_REQUEST);
@@ -37,7 +37,7 @@ public class FileUploadController {
 
             String fileName = file.getOriginalFilename();
 
-            minioService.uploadObject(fileName, data, login);
+            minioService.uploadObject(fileName, data, "test");
 
             return new ResponseEntity<>("File uploaded successfully: " + fileName, HttpStatus.OK);
         } catch (RuntimeException e) {
