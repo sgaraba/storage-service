@@ -4,6 +4,7 @@ import com.esempla.storage.domain.User;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.security.SecurityUtils;
 import com.esempla.storage.service.MailService;
+import com.esempla.storage.service.MinioService;
 import com.esempla.storage.service.UserReservationService;
 import com.esempla.storage.service.UserService;
 import com.esempla.storage.service.dto.AdminReservationDTO;
@@ -12,6 +13,7 @@ import com.esempla.storage.service.dto.PasswordChangeDTO;
 import com.esempla.storage.web.rest.errors.*;
 import com.esempla.storage.web.rest.vm.KeyAndPasswordVM;
 import com.esempla.storage.web.rest.vm.ManagedUserVM;
+import io.minio.errors.MinioException;
 import jakarta.validation.Valid;
 import java.util.*;
 import org.apache.commons.lang3.StringUtils;
@@ -40,12 +42,14 @@ public class AccountResource {
     private final UserService userService;
     private final MailService mailService;
     private final UserReservationService userReservationService;
+    private final MinioService minioService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, UserReservationService userReservationService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, UserReservationService userReservationService, MinioService minioService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.userReservationService = userReservationService;
+        this.minioService = minioService;
     }
 
     /**
@@ -70,6 +74,12 @@ public class AccountResource {
         reservationDTO.setUserId(user.getId());
 
         userReservationService.createReservation(reservationDTO);
+
+        try {
+            minioService.createSubdirectory(managedUserVM.getLogin());
+        } catch (MinioException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
