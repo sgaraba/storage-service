@@ -1,11 +1,9 @@
 <div class="adaptive-width">
   <h2>
-    <div class="row align-items-center">
-      <div class="col-md-4">
-        <span class="w-100 d-block" id="user-management-page-heading" jhiTranslate="userManagement.home.title" data-cy="userManagementPageHeading">Utilizatori</span>
-      </div>
+    <div class="d-flex flex-wrap justify-content-between">
+      <span id="user-management-page-heading" jhiTranslate="userManagement.home.title" data-cy="userManagementPageHeading">Utilizatori</span>
 
-      <div class="col-md-8 d-flex flex-wrap justify-content-end align-items-center">
+      <div class="d-flex flex-wrap justify-content-end align-items-center">
         <div class="mb-2 mb-md-0">
           <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
             <fa-icon icon="sync" [spin]="isLoading"></fa-icon>

@@ -1,9 +1,9 @@
 @if (currentAccount !== null) {
   <div class="row p-2 adaptive-width">
-    <h2 class="row align-items-center">
-      <span class="col-md-8" jhiTranslate="reservationSpace.title">Rezervari</span>
+    <h2 class="d-flex flex-wrap justify-content-between">
+      <span jhiTranslate="reservationSpace.title">Rezervari</span>
 
-      <div class="col-md-4 d-flex justify-content-end">
+      <div class="d-flex flex-wrap justify-content-end">
         <div>
           <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
             <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
