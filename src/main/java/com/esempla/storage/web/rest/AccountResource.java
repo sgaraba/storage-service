@@ -2,7 +2,9 @@ package com.esempla.storage.web.rest;
 
 import com.esempla.storage.config.MinioConfiguration;
 import com.esempla.storage.domain.User;
+import com.esempla.storage.domain.UserReservation;
 import com.esempla.storage.repository.UserRepository;
+import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.security.SecurityUtils;
 import com.esempla.storage.service.MailService;
 import com.esempla.storage.service.UserReservationService;
@@ -20,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * REST controller for managing the current user's account.
@@ -41,12 +44,14 @@ public class AccountResource {
     private final UserService userService;
     private final MailService mailService;
     private final UserReservationService userReservationService;
+    private final UserReservationRepository userReservationRepository;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, UserReservationService userReservationService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, UserReservationService userReservationService, UserReservationRepository userReservationRepository) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.userReservationService = userReservationService;
+        this.userReservationRepository = userReservationRepository;
     }
 
     /**
@@ -85,7 +90,8 @@ public class AccountResource {
         if (!user.isPresent()) {
             throw new AccountResourceException("No user was found for this activation key");
         }
-        AdminReservationDTO reservationDTO = new AdminReservationDTO();
+        UserReservation reservation = userReservationRepository.findByUserId(user.get().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        AdminReservationDTO reservationDTO = new AdminReservationDTO(reservation);
         reservationDTO.setActivated(true);
 
         userReservationService.updateUserReservation(reservationDTO);
