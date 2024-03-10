@@ -1,70 +1,81 @@
 @if (currentAccount !== null) {
-  <div class="row p-2">
-    <div class="d-flex justify-content-end my-2">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
-      </button>
+  <div class="row p-2 adaptive-width">
+    <h2 class="row align-items-center">
+      <span class="col-md-8">Lista cu documente personale</span>
 
-      <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['../upload']">
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="files.buttons.upload">Upload new file</span>
-      </button>
+      <div class="col-md-4 d-flex flex-wrap justify-content-end">
+        <div>
+          <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+            <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+            <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
+          </button>
+        </div>
 
-      <div ngbDropdown class="dropdown">
-        <button ngbDropdownToggle class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <fa-icon icon="file-export"></fa-icon>
-          <span jhiTranslate="files.buttons.export.title">Export</span>
-        </button>
-        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
-          <a jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
-          <a jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item">Export to Excel</a>
+        <div>
+          <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['../upload']">
+            <fa-icon icon="plus"></fa-icon>
+            <span jhiTranslate="files.buttons.upload">Upload new file</span>
+          </button>
+        </div>
+
+
+        <div ngbDropdown class="dropdown">
+          <button ngbDropdownToggle class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <fa-icon icon="file-export"></fa-icon>
+            <span jhiTranslate="files.buttons.export.title">Export</span>
+          </button>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
+            <a jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
+            <a jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item">Export to Excel</a>
+          </div>
         </div>
       </div>
-    </div>
+    </h2>
 
     <jhi-alert-error></jhi-alert-error>
 
     <jhi-alert></jhi-alert>
 
     @if (files && files.length > 0) {
-      <table class="table table-responsive table-striped" aria-describedby="user-files-uploaded">
-        <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
-          <th jhiSortBy="name" scope="col">
-            <span jhiTranslate="files.table.thead.name">file name</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th jhiSortBy="createdDate" scope="col">
-            <span jhiTranslate="files.table.thead.last_modified">last modified</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th jhiSortBy="user" scope="col">
-            <span jhiTranslate="files.table.thead.user">user</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let file of files">
-          <td>{{ file.name }}</td>
-          <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-          <td>{{ file.createdBy }}</td>
-          <td class="d-flex justify-content-center">
-            <button [routerLink]="['../', file.id, 'detail']" class="btn btn-info btn-sm">
-              <fa-icon icon="eye"></fa-icon>
-            </button>
-            <button (click)="call_download_fileService(file.id)" class="btn btn-primary btn-sm">
-              <fa-icon icon="download"></fa-icon>
-            </button>
-            <button (click)="openModal(file.id)" class="btn btn-danger btn-sm">
-              <fa-icon icon="trash-alt"></fa-icon>
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-striped" aria-describedby="user-files-uploaded">
+          <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
+            <th jhiSortBy="name" scope="col">
+              <span jhiTranslate="files.table.thead.name">file name</span>
+              <fa-icon icon="sort"></fa-icon>
+            </th>
+            <th jhiSortBy="createdDate" scope="col">
+              <span jhiTranslate="files.table.thead.last_modified">last modified</span>
+              <fa-icon icon="sort"></fa-icon>
+            </th>
+            <th jhiSortBy="user" scope="col">
+              <span jhiTranslate="files.table.thead.user">user</span>
+              <fa-icon icon="sort"></fa-icon>
+            </th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let file of files">
+            <td>{{ file.name }}</td>
+            <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+            <td>{{ file.createdBy }}</td>
+            <td class="d-flex justify-content-center">
+              <button [routerLink]="['../', file.id, 'detail']" class="btn btn-info btn-sm">
+                <fa-icon icon="eye"></fa-icon>
+              </button>
+              <button (click)="call_download_fileService(file.id)" class="btn btn-primary btn-sm">
+                <fa-icon icon="download"></fa-icon>
+              </button>
+              <button (click)="openModal(file.id)" class="btn btn-danger btn-sm">
+                <fa-icon icon="trash-alt"></fa-icon>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
 
       <div>
         <div class="d-flex justify-content-center">

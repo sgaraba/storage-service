@@ -26,6 +26,7 @@ registerLocaleData(localeRo);
   selector: 'jhi-files-list',
   standalone: true,
   imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective],
+  styleUrls: ['./files.component.scss'],
   templateUrl: './files.component.html',
 })
 export class FilesComponent  implements OnInit {

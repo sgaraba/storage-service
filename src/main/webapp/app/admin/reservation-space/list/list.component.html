@@ -1,9 +1,9 @@
 @if (currentAccount !== null) {
-  <div class="row p-2">
-    <h2>
-      <span jhiTranslate="reservationSpace.title">Rezervari</span>
+  <div class="row p-2 adaptive-width">
+    <h2 class="row align-items-center">
+      <span class="col-md-8" jhiTranslate="reservationSpace.title">Rezervari</span>
 
-      <div class="d-flex justify-content-end">
+      <div class="col-md-4 d-flex justify-content-end">
         <div>
           <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
             <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
@@ -28,8 +28,9 @@
     <jhi-alert></jhi-alert>
 
 
-    <table class="table table-striped" aria-describedby="user-files-uploaded">
-      <thead>
+    <div class="table-responsive">
+      <table class="table table-striped" aria-describedby="user-files-uploaded">
+        <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
           <th scope="col" jhiSortBy="totalSize">
             <span jhiTranslate="reservationSpace.table.thead.totalSize">Total Size</span>
@@ -56,55 +57,57 @@
           </th>
           <th scope="col"></th>
         </tr>
-      </thead>
+        </thead>
 
-      <tbody>
-      <tr *ngFor="let reservation of reservations">
-        <td>{{ reservation.totalSize }}</td>
-        <td>{{ reservation.usedSize }}</td>
-        <td>{{ reservation.user | checkFirstLastName }}</td>
-        <td>
-          @if (!reservation.activated){
-            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, true)" jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">
-              Deactivat
+        <tbody>
+        <tr *ngFor="let reservation of reservations">
+          <td>{{ reservation.totalSize }}</td>
+          <td>{{ reservation.usedSize }}</td>
+          <td>{{ reservation.user | checkFirstLastName }}</td>
+          <td>
+            @if (!reservation.activated){
+              <button class="btn btn-danger btn-sm" (click)="setActive(reservation, true)" jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">
+                Deactivat
+              </button>
+            } @else {
+              <button class="btn btn-danger btn-sm" (click)="setActive(reservation, false)"  jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">
+                Activat
+              </button>
+            }
+          </td>
+          <td>{{ reservation.createdBy }}</td>
+          <td>{{ reservation.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td>
+            <button
+              [routerLink]="['../', reservation.id,'detail']"
+              type="submit"
+              class="btn btn-info btn-sm"
+            >
+              <fa-icon icon="eye"></fa-icon>
             </button>
-          } @else {
-            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, false)"  jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">
-              Activat
+
+            <button
+              type="submit"
+              class="btn btn-primary btn-sm"
+              (click)="openModalChangeTotalSize(reservation.user)"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
             </button>
-          }
-        </td>
-        <td>{{ reservation.createdBy }}</td>
-        <td>{{ reservation.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-        <td>
-          <button
-            [routerLink]="['../', reservation.id,'detail']"
-            type="submit"
-            class="btn btn-info btn-sm"
-          >
-            <fa-icon icon="eye"></fa-icon>
-          </button>
 
-          <button
-            type="submit"
-            class="btn btn-primary btn-sm"
-            (click)="openModalChangeTotalSize(reservation.user)"
-          >
-            <fa-icon icon="pencil-alt"></fa-icon>
-          </button>
+            <button
+              type="button"
+              (click)="openModalDeleteReservation(reservation.id)"
+              class="btn btn-danger btn-sm"
+              [disabled]="!currentAccount"
+            >
+              <fa-icon icon="times"></fa-icon>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
-          <button
-            type="button"
-            (click)="openModalDeleteReservation(reservation.id)"
-            class="btn btn-danger btn-sm"
-            [disabled]="!currentAccount"
-          >
-            <fa-icon icon="times"></fa-icon>
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
 
     <div>
       <div class="d-flex justify-content-center">
