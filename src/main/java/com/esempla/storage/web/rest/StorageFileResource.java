@@ -3,8 +3,8 @@ package com.esempla.storage.web.rest;
 
 import com.esempla.storage.domain.StorageFile;
 import com.esempla.storage.repository.StorageFileRepository;
-import com.esempla.storage.security.AuthoritiesConstants;
 import com.esempla.storage.security.SecurityUtils;
+import com.esempla.storage.service.MinioService;
 import com.esempla.storage.service.StorageFileService;
 import com.esempla.storage.service.dto.AdminStorageFileDTO;
 import com.esempla.storage.service.dto.UploadFileDTO;
@@ -20,7 +20,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,15 +28,9 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -70,10 +63,12 @@ public class StorageFileResource {
 
     private final StorageFileService storageFileService;
     private final StorageFileRepository storageFileRepository;
+    private final MinioService minioService;
 
-    public StorageFileResource(StorageFileService storageFileService, StorageFileRepository storageFileRepository) {
+    public StorageFileResource(StorageFileService storageFileService, StorageFileRepository storageFileRepository, MinioService minioService) {
         this.storageFileService = storageFileService;
         this.storageFileRepository = storageFileRepository;
+        this.minioService = minioService;
     }
 
     @PostMapping("/storage-files")
@@ -177,11 +172,13 @@ public class StorageFileResource {
         }
 
         StorageFile storageFile = storageFileService.uploadNewFile(uploadFileDTO, userLogin);
-        //adaugat salvarea in minio
+
+
+        minioService.uploadObject(UUID.randomUUID().toString(), uploadFileDTO.getData(), uploadFileDTO.getMimeType(), userLogin);
         //adaugat schimb automat de usedSize la rezervare
 
         return ResponseEntity
-            .created(new URI("/api/admin/storage-files/" + storageFile.getName()))
+            .created(new URI("/api/storage-files/" + storageFile.getName()))
             .headers(HeaderUtil.createAlert(applicationName, "userStorageFileManagement.created", storageFile.getName()))
             .body(storageFile);
     }

@@ -57,13 +57,14 @@ public class MinioService {
             throw new MinioException("Unexpected error occurred while creating subdirectory: " + subdirectoryName + " in bucket: " + bucketName + e);
         }
     }
-    public void uploadObject(String objectName, byte[] data, String login) {
+    public void uploadObject(String objectName, byte[] data, String mimeType, String login) {
         String fullObjectName = login + "/" + objectName;
         try {
             minioClient.putObject(
                 PutObjectArgs.builder()
                     .bucket(applicationProperties.minio().bucket())
                     .object(fullObjectName)
+                    .contentType(mimeType)
                     .stream(new ByteArrayInputStream(data), data.length, -1)
                     .build());
             System.out.println(objectName + " is successfully uploaded to bucket " + applicationProperties.minio().bucket() + ".");
