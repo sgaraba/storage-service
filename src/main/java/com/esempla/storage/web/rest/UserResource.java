@@ -4,6 +4,7 @@ import com.esempla.storage.config.Constants;
 import com.esempla.storage.domain.User;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
+import com.esempla.storage.service.ExcelService;
 import com.esempla.storage.service.MailService;
 import com.esempla.storage.service.UserReservationService;
 import com.esempla.storage.service.UserService;
@@ -20,11 +21,14 @@ import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -88,11 +92,13 @@ public class UserResource {
     private final UserRepository userRepository;
 
     private final MailService mailService;
+    private final ExcelService excelService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserReservationService userReservationService) {
+    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserReservationService userReservationService, ExcelService excelService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.excelService = excelService;
     }
 
     /**
@@ -205,5 +211,17 @@ public class UserResource {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "userManagement.deleted", login)).build();
+    }
+
+    @GetMapping("/users/download")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Resource> getFile() {
+        String filename = "users.xlsx";
+        InputStreamResource file = new InputStreamResource(excelService.usersLoad());
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+            .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+            .body(file);
     }
 }

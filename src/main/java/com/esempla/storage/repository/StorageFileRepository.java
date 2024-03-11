@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StorageFileRepository extends JpaRepository<StorageFile, Long> {
-    Optional<StorageFile> findByUserId (Long id);
+    Optional<List<StorageFile>> findByUserId (Long id);
+
+    List<StorageFile> findAllByUserLogin(String login);
 
     Optional<StorageFile> findByName (String name);
 
