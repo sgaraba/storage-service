@@ -23,7 +23,7 @@ export class FileService {
   }
 
   find(id: number): Observable<FileModel> {
-    return this.http.get<FileModel>(`${this.applicationConfigService.getEndpointFor('/api/admin/storage-files/')}/${id}`);
+    return this.http.get<FileModel>(`${this.applicationConfigService.getEndpointFor('/api/storage-files/')}/${id}`);
   }
 
   upload(file: FileModel): Observable<FileModel>{

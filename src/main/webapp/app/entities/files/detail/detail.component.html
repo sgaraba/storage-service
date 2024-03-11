@@ -1,4 +1,4 @@
-<section class="d-flex justify-content-center">
+<section class="d-flex">
   <div class="col-8">
     @if(file){
       <h2><span jhiTranslate="files.table.thead.name">File name</span> [{{file.name}}]</h2>
@@ -25,10 +25,5 @@
         <span>Document not found</span>
       </div>
     }
-
-    <button type="submit" routerLink="../../list" class="btn btn-info">
-      <fa-icon icon="arrow-left"></fa-icon>
-      <span jhiTranslate="entity.action.back">Înapoi</span>
-    </button>
   </div>
 </section>

@@ -92,7 +92,6 @@ public class StorageFileResource {
     }
 
     @GetMapping("/storage-files")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<List<AdminStorageFileDTO>> getAllReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get all Storage Files for an admin");
         if (!onlyContainsAllowedProperties(pageable)) {
@@ -108,8 +107,7 @@ public class StorageFileResource {
         return pageable.getSort().stream().map(Sort.Order::getProperty).allMatch(ALLOWED_ORDERED_PROPERTIES::contains);
     }
 
-    @GetMapping("admin/storage-files/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @GetMapping("/storage-files/{id}")
     public ResponseEntity<AdminStorageFileDTO> getAdminStorageFile(@PathVariable("id") Long id) {
         log.debug("REST request to get Storage File : {}", id);
         return ResponseUtil.wrapOrNotFound(storageFileRepository.findById(id).map(AdminStorageFileDTO::new));
