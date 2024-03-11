@@ -1,5 +1,6 @@
 {
   "files": {
+    "title": "Lista cu documente personale",
     "home": "Documente",
     "table": {
       "thead": {
@@ -21,7 +22,12 @@
     },
 
     "buttons": {
-      "upload": "Încărcați fișier nou"
+      "upload": "Încărcați fișier nou",
+      "export": {
+        "title": "Export",
+        "downloadCSV": "Descărcați CSV",
+        "exportEXCEL": "Exportați în Excel"
+      }
     }
   },
 

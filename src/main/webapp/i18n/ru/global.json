@@ -9,8 +9,9 @@
         "administration": "администрация",
         "users": "Пользователи",
         "documents": "Документы",
-        "journal": " Журнал",
         "api": "API"
+        "journal": "Журнал",
+        "rezervation":"Бронирование"
       },
       "home": "Главная",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",

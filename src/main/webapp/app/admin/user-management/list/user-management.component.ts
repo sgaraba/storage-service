@@ -15,10 +15,15 @@ import UserManagementDeleteDialogComponent from '../delete/user-management-delet
 import { UserManagementService } from '../service/user-management.service';
 import { User } from '../user-management.model';
 
+import localeRo from '@angular/common/locales/ro';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeRo); // register local Ro lang
+
 @Component({
   standalone: true,
   selector: 'jhi-user-mgmt',
   templateUrl: './user-management.component.html',
+  styleUrls: ['./user-management.component.scss'],
   imports: [RouterModule, SharedModule, SortDirective, SortByDirective, UserManagementDeleteDialogComponent, ItemCountComponent],
 })
 export default class UserManagementComponent implements OnInit {
