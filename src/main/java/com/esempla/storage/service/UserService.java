@@ -9,10 +9,16 @@ import com.esempla.storage.security.AuthoritiesConstants;
 import com.esempla.storage.security.SecurityUtils;
 import com.esempla.storage.service.dto.AdminUserDTO;
 import com.esempla.storage.service.dto.UserDTO;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import io.minio.errors.MinioException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -57,6 +63,21 @@ public class UserService {
             });
 
         // Create user bucket
+        user1.ifPresent(user -> {
+            //minioService.createSubdirectory(user.getLogin());
+            // Upload
+            String filePath = "C:/Users/rusla/Desktop/imagine.png";
+            File file = new File(filePath);
+            byte[] data;
+            try {
+                data = Files.readAllBytes(file.toPath());
+                minioService.uploadObject("imagine.png", data, user.getLogin());
+                log.debug("Uploaded test.txt for user: {}", user.getLogin());
+            } catch (IOException e) {
+                log.error("Failed to read file or upload to Minio: {}", e.getMessage());
+                throw new RuntimeException(e);
+            }
+        });
 
         return user1;
     }

@@ -2,7 +2,9 @@ package com.esempla.storage.web.rest;
 
 import com.esempla.storage.config.Constants;
 import com.esempla.storage.domain.User;
+import com.esempla.storage.domain.UserReservation;
 import com.esempla.storage.repository.UserRepository;
+import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
 import com.esempla.storage.service.MailService;
 import com.esempla.storage.service.UserReservationService;
@@ -89,10 +91,16 @@ public class UserResource {
 
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserReservationService userReservationService) {
+    private final UserReservationService userReservationService;
+
+    private final UserReservationRepository userReservationRepository;
+
+    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserReservationService userReservationService, UserReservationService userReservationService1, UserReservationRepository userReservationRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.userReservationService = userReservationService1;
+        this.userReservationRepository = userReservationRepository;
     }
 
     /**
@@ -203,6 +211,8 @@ public class UserResource {
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteUser(@PathVariable("login") @Pattern(regexp = Constants.LOGIN_REGEX) String login) {
         log.debug("REST request to delete User: {}", login);
+        Optional<UserReservation> reservation = userReservationRepository.findByUserLogin(login);
+        reservation.ifPresent(userReservation -> userReservationService.deleteReservation(userReservation.getId()));
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "userManagement.deleted", login)).build();
     }
