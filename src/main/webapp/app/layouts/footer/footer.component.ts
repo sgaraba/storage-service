@@ -5,4 +5,10 @@ import { Component } from '@angular/core';
   selector: 'jhi-footer',
   templateUrl: './footer.component.html',
 })
-export default class FooterComponent {}
+export default class FooterComponent {
+  currentYear: number;
+
+  constructor() {
+    this.currentYear = new Date().getFullYear();
+  }
+}
