@@ -1,11 +1,14 @@
 package com.esempla.storage.service;
 
+import com.esempla.storage.domain.StorageFile;
 import com.esempla.storage.domain.User;
 import com.esempla.storage.domain.UserReservation;
+import com.esempla.storage.repository.StorageFileRepository;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.service.dto.AdminReservationDTO;
 import com.esempla.storage.service.dto.UpdateReservationDTO;
+import com.esempla.storage.web.rest.errors.StorageInUseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,9 +30,12 @@ public class UserReservationService {
 
     private final UserRepository userRepository;
 
-    public UserReservationService(UserReservationRepository userReservationRepository, UserRepository userRepository) {
+    private final StorageFileRepository storageFileRepository;
+
+    public UserReservationService(UserReservationRepository userReservationRepository, UserRepository userRepository, StorageFileRepository storageFileRepository) {
         this.userReservationRepository = userReservationRepository;
         this.userRepository = userRepository;
+        this.storageFileRepository = storageFileRepository;
     }
 
     public UserReservation createReservation(AdminReservationDTO adminReservationDTO) {
@@ -71,6 +78,9 @@ public class UserReservationService {
         userReservationRepository
             .findById(id)
             .ifPresent(reservation -> {
+                if(!storageFileRepository.findByUserId(reservation.getUser().getId()).get().isEmpty()){
+                    throw new StorageInUseException();
+                }
                 userReservationRepository.delete(reservation);
                 log.debug("Deleted Reservation: {}", reservation);
             });

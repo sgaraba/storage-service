@@ -1,12 +1,8 @@
 <nav data-cy="sidebar" class="sidebar mx-3 mt-4 d-flex flex-column gap-3">
     <div class="list-group list-group-flush">
-        <a class="list-group-item list-group-item-action ripple" routerLink="/document">
-            <fa-icon icon="file-alt" [fixedWidth]="true"></fa-icon>
-            <span jhiTranslate="global.menu.sidebar.personalDocuments">Documente personale</span>
-        </a>
         <a class="list-group-item list-group-item-action ripple" routerLink="/files/list">
             <fa-icon icon="database" [fixedWidth]="true"></fa-icon>
-            <span jhiTranslate="global.menu.sidebar.storage">Storage</span>
+          <span jhiTranslate="global.menu.sidebar.documents">Documente</span>
         </a>
     </div>
     <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="list-group list-group-flush">
@@ -20,8 +16,8 @@
             <span jhiTranslate="global.menu.sidebar.documents">Documente</span>
         </a>
         <a class="list-group-item list-group-item-action ripple" routerLink="/admin/reservation-space/list">
-            <fa-icon icon="database" [fixedWidth]="true"></fa-icon>
-            <span jhiTranslate="global.menu.sidebar.storage">Storage</span>
+            <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
+            <span jhiTranslate="global.menu.sidebar.rezervation">Rezervari</span>
         </a>
         <a class="list-group-item list-group-item-action ripple" routerLink="/admin/logs">
             <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
@@ -29,7 +25,7 @@
         </a>
         <a class="list-group-item list-group-item-action ripple" routerLink="/admin/docs">
             <fa-icon icon="cloud" [fixedWidth]="true"></fa-icon>
-            <span>API</span>
+            <span jhiTranslate="global.menu.sidebar.api">API</span>
         </a>
     </div>
 </nav>

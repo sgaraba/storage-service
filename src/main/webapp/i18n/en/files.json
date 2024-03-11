@@ -1,5 +1,6 @@
 {
   "files": {
+    "title": "List of personal documents",
     "home": "Documents",
     "table": {
       "thead": {
@@ -20,7 +21,12 @@
       }
     },
     "buttons": {
-      "upload": "Upload new file"
+      "upload": "Upload new file",
+      "export": {
+        "title": "Export",
+        "downloadCSV": "Download CSV",
+        "exportEXCEL": "Export to excel"
+      }
     }
   },
 

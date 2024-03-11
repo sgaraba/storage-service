@@ -1,13 +1,26 @@
 @if (currentAccount !== null) {
-  <div class="row p-2">
-    <h2>
-      <span>Rezervari</span>
+  <div class="row p-2 adaptive-width">
+    <h2 class="d-flex flex-wrap justify-content-between">
+      <span jhiTranslate="reservationSpace.title">Rezervari</span>
 
-      <div class="d-flex justify-content-end">
-        <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-          <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
-        </button>
+      <div class="d-flex flex-wrap justify-content-end">
+        <div>
+          <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+            <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+            <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
+          </button>
+        </div>
+
+        <div ngbDropdown class="dropdown">
+          <button ngbDropdownToggle class="btn btn-primary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <fa-icon icon="file-export"></fa-icon>
+            <span jhiTranslate="files.buttons.export.title">Export</span>
+          </button>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
+            <a jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
+            <a jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item">Export to Excel</a>
+          </div>
+        </div>
       </div>
     </h2>
 
@@ -15,8 +28,9 @@
     <jhi-alert></jhi-alert>
 
 
-    <table class="table table-striped" aria-describedby="user-files-uploaded">
-      <thead>
+    <div class="table-responsive">
+      <table class="table table-striped" aria-describedby="user-files-uploaded">
+        <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
           <th scope="col" jhiSortBy="totalSize">
             <span jhiTranslate="reservationSpace.table.thead.totalSize">Total Size</span>
@@ -43,55 +57,57 @@
           </th>
           <th scope="col"></th>
         </tr>
-      </thead>
+        </thead>
 
-      <tbody>
-      <tr *ngFor="let reservation of reservations">
-        <td>{{ reservation.totalSize }}</td>
-        <td>{{ reservation.usedSize }}</td>
-        <td>{{ reservation.user | checkFirstLastName }}</td>
-        <td>
-          @if (!reservation.activated){
-            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, true)" jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">
-              Deactivat
+        <tbody>
+        <tr *ngFor="let reservation of reservations">
+          <td>{{ reservation.totalSize }}</td>
+          <td>{{ reservation.usedSize }}</td>
+          <td>{{ reservation.user | checkFirstLastName }}</td>
+          <td>
+            @if (!reservation.activated){
+              <button class="btn btn-danger btn-sm" (click)="setActive(reservation, true)" jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">
+                Deactivat
+              </button>
+            } @else {
+              <button class="btn btn-danger btn-sm" (click)="setActive(reservation, false)"  jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">
+                Activat
+              </button>
+            }
+          </td>
+          <td>{{ reservation.createdBy }}</td>
+          <td>{{ reservation.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td>
+            <button
+              [routerLink]="['../', reservation.id,'detail']"
+              type="submit"
+              class="btn btn-info btn-sm"
+            >
+              <fa-icon icon="eye"></fa-icon>
             </button>
-          } @else {
-            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, false)"  jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">
-              Activat
+
+            <button
+              type="submit"
+              class="btn btn-primary btn-sm"
+              (click)="openModalChangeTotalSize(reservation.user)"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
             </button>
-          }
-        </td>
-        <td>{{ reservation.createdBy }}</td>
-        <td>{{ reservation.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-        <td>
-          <button
-            [routerLink]="['../', reservation.id,'detail']"
-            type="submit"
-            class="btn btn-info btn-sm"
-          >
-            <fa-icon icon="eye"></fa-icon>
-          </button>
 
-          <button
-            type="submit"
-            class="btn btn-primary btn-sm"
-            (click)="openModalChangeTotalSize(reservation.user)"
-          >
-            <fa-icon icon="pencil-alt"></fa-icon>
-          </button>
+            <button
+              type="button"
+              (click)="openModalDeleteReservation(reservation.id)"
+              class="btn btn-danger btn-sm"
+              [disabled]="!currentAccount"
+            >
+              <fa-icon icon="times"></fa-icon>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
-          <button
-            type="button"
-            (click)="openModalDeleteReservation(reservation.id)"
-            class="btn btn-danger btn-sm"
-            [disabled]="!currentAccount"
-          >
-            <fa-icon icon="times"></fa-icon>
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
 
     <div>
       <div class="d-flex justify-content-center">

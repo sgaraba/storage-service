@@ -1,5 +1,6 @@
 {
   "reservationSpace": {
+    "title": "Reservation space list for users",
     "table": {
       "thead": {
         "totalSize": "Total size",

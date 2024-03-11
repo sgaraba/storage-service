@@ -5,6 +5,7 @@ import { Pagination } from '../../../core/request/request.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../../../core/request/request-util';
 import { ApplicationConfigService } from '../../../core/config/application-config.service';
+import { AlertService } from '../../../core/util/alert.service';
 
 @Injectable({ providedIn: 'root' })
 export class FileService {
@@ -12,7 +13,8 @@ export class FileService {
 
   constructor(
     private http: HttpClient,
-    private applicationConfigService: ApplicationConfigService
+    private applicationConfigService: ApplicationConfigService,
+    private alertService: AlertService
   ) {}
 
   query(userLogin: string, req?: Pagination): Observable<HttpResponse<FileModel[]>> {
@@ -33,6 +35,6 @@ export class FileService {
   }
 
   downloadFile(id: number): void  {
-    alert('Donwloading file with id: ' + id);
+    this.alertService.addAlert({ message: `Donwloading file with id: ${id}`, type: "success" });
   }
 }

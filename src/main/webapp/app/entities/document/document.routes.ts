@@ -23,6 +23,7 @@ const documentRoute: Routes = [
       document: DocumentResolve,
     },
     canActivate: [UserRouteAccessService],
+    data: { breadcrumb: "entity.action.view" }
   },
   {
     path: 'new',
@@ -31,6 +32,7 @@ const documentRoute: Routes = [
       document: DocumentResolve,
     },
     canActivate: [UserRouteAccessService],
+    data: { breadcrumb: "storageServiceApp.document.home.createOrEditLabel" }
   },
   {
     path: ':id/edit',
@@ -39,6 +41,7 @@ const documentRoute: Routes = [
       document: DocumentResolve,
     },
     canActivate: [UserRouteAccessService],
+    data: { breadcrumb: "entity.action.edit" }
   },
 ];
 

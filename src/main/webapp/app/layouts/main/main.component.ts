@@ -1,20 +1,21 @@
-import { Component, OnInit, RendererFactory2, Renderer2 } from '@angular/core';
-import { RouterOutlet, Router } from '@angular/router';
-import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { Component, OnInit, Renderer2, RendererFactory2 } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
 import dayjs from 'dayjs/esm';
 
-import { AccountService } from 'app/core/auth/account.service';
 import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
-import FooterComponent from '../footer/footer.component';
-import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
+import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
+import { BreadcrumbModule } from 'xng-breadcrumb';
+import FooterComponent from '../footer/footer.component';
 
 @Component({
   selector: 'jhi-main',
   standalone: true,
   templateUrl: './main.component.html',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, HasAnyAuthorityDirective],
+  imports: [RouterOutlet, FooterComponent, HasAnyAuthorityDirective, BreadcrumbModule, TranslateModule],
 })
 export default class MainComponent implements OnInit {
   private renderer: Renderer2;

@@ -38,167 +38,167 @@
     <div class="col-md-8">
       @if (!success) {
       <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm">
-        <div class="d-flex flex-row justify-content-center gap-5">
-          <span>
+        <div class="d-flex flex-row justify-content-around gap-5 ">
+          <div class="flex-grow-1">
             <div class="mb-3">
               <label class="form-label" for="login" jhiTranslate="global.form.username.label">Utilizator</label>
-              <input type="text" class="form-control" id="login" name="login"
+              <input type="text" class="form-control " id="login" name="login"
                 placeholder="{{ 'global.form.username.placeholder' | translate }}" formControlName="login"
                 data-cy="username" #login />
 
               @if (registerForm.get('login')!.invalid && (registerForm.get('login')!.dirty ||
               registerForm.get('login')!.touched)) {
-              <div>
-                @if (registerForm.get('login')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="register.messages.validate.login.required">Numele de
-                  utilizator este necesar.</small>
-                }
+      <div>
+        @if (registerForm.get('login')?.errors?.required) {
+        <small class="form-text text-danger" jhiTranslate="register.messages.validate.login.required">Numele de
+          utilizator este necesar.</small>
+        }
 
-                @if (registerForm.get('login')?.errors?.minlength) {
-                <small class="form-text text-danger" jhiTranslate="register.messages.validate.login.minlength">Numele de
-                  utilizator nu poate fi mai scurt de 1 caracter.</small>
-                }
+        @if (registerForm.get('login')?.errors?.minlength) {
+        <small class="form-text text-danger" jhiTranslate="register.messages.validate.login.minlength">Numele de
+          utilizator nu poate fi mai scurt de 1 caracter.</small>
+        }
 
-                @if (registerForm.get('login')?.errors?.maxlength) {
-                <small class="form-text text-danger" jhiTranslate="register.messages.validate.login.maxlength">Numele de
-                  utilizator nu poate fi mai lung de 50 caractere.</small>
-                }
+        @if (registerForm.get('login')?.errors?.maxlength) {
+        <small class="form-text text-danger" jhiTranslate="register.messages.validate.login.maxlength">Numele de
+          utilizator nu poate fi mai lung de 50 caractere.</small>
+        }
 
-                @if (registerForm.get('login')?.errors?.pattern) {
-                <small class="form-text text-danger" jhiTranslate="register.messages.validate.login.pattern">Your
-                  username
-                  is invalid.</small>
-                }
-              </div>
-              }
-            </div>
+        @if (registerForm.get('login')?.errors?.pattern) {
+        <small class="form-text text-danger" jhiTranslate="register.messages.validate.login.pattern">Your
+          username
+          is invalid.</small>
+        }
+      </div>
+      }
+      </div>
 
-            <div class="mb-3">
-              <label class="form-label" for="email" jhiTranslate="global.form.email.label">Email</label>
-              <input type="email" class="form-control" id="email" name="email"
-                placeholder="{{ 'global.form.email.placeholder' | translate }}" formControlName="email"
+      <div class="mb-3">
+        <label class="form-label" for="email" jhiTranslate="global.form.email.label">Email</label>
+        <input type="email" class="form-control" id="email" name="email"
+          placeholder="{{ 'global.form.email.placeholder' | translate }}" formControlName="email"
                 data-cy="email" />
 
               @if (registerForm.get('email')!.invalid && (registerForm.get('email')!.dirty ||
               registerForm.get('email')!.touched)) {
-              <div>
-                @if (registerForm.get('email')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="global.messages.validate.email.required">Emailul
-                  dumneavoastră este necesar.</small>
-                }
+      <div>
+        @if (registerForm.get('email')?.errors?.required) {
+        <small class="form-text text-danger" jhiTranslate="global.messages.validate.email.required">Emailul
+          dumneavoastră este necesar.</small>
+        }
 
-                @if (registerForm.get('email')?.errors?.invalid) {
-                <small class="form-text text-danger" jhiTranslate="global.messages.validate.email.invalid">Email
-                  invalid.</small>
-                }
+        @if (registerForm.get('email')?.errors?.invalid) {
+        <small class="form-text text-danger" jhiTranslate="global.messages.validate.email.invalid">Email
+          invalid.</small>
+        }
 
-                @if (registerForm.get('email')?.errors?.minlength) {
-                <small class="form-text text-danger" jhiTranslate="global.messages.validate.email.minlength">Emailul
-                  dumneavoastră trebuie să aibă cel puțin 5 caractere</small>
-                }
+        @if (registerForm.get('email')?.errors?.minlength) {
+        <small class="form-text text-danger" jhiTranslate="global.messages.validate.email.minlength">Emailul
+          dumneavoastră trebuie să aibă cel puțin 5 caractere</small>
+        }
 
-                @if (registerForm.get('email')?.errors?.maxlength) {
-                <small class="form-text text-danger" jhiTranslate="global.messages.validate.email.maxlength">Emailul
-                  dumneavoastră nu poate avea mai mult de 50 de caractere.</small>
-                }
-              </div>
-              }
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="password" jhiTranslate="global.form.newpassword.label">Parolă nouă</label>
-              <input type="password" class="form-control" id="password" name="password"
-                placeholder="{{ 'global.form.newpassword.placeholder' | translate }}" formControlName="password"
+        @if (registerForm.get('email')?.errors?.maxlength) {
+        <small class="form-text text-danger" jhiTranslate="global.messages.validate.email.maxlength">Emailul
+          dumneavoastră nu poate avea mai mult de 50 de caractere.</small>
+        }
+      </div>
+      }
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="reservedSize" jhiTranslate="global.form.reservedSize.label">MB pentru
+          alocare</label>
+        <input type="number" class="form-control" id="reservedSize" name="reservedSize"
+          formControlName="reservedSize" data-cy="reservedSize" (keypress)="numericOnly($event)" />
+
+        @if (
+        registerForm.get('reservedSize')!.invalid &&
+        (registerForm.get('reservedSize')!.dirty || registerForm.get('reservedSize')!.touched)
+        ) {
+      <div>
+        @if (registerForm.get('reservedSize')?.errors?.required) {
+        <small class="form-text text-danger" jhiTranslate="global.messages.validate.reservedSize.required">MB de
+          alocat sunt necesari.</small>
+        }
+      </div>
+      }
+      </div>
+    </div>
+    <div class="flex-grow-1">
+      <div class="mb-3">
+        <label class="form-label" for="password" jhiTranslate="global.form.newpassword.label">Parolă nouă</label>
+        <input type="password" class="form-control" id="password" name="password"
+          placeholder="{{ 'global.form.newpassword.placeholder' | translate }}" formControlName="password"
                 data-cy="firstPassword" />
 
               @if (registerForm.get('password')!.invalid && (registerForm.get('password')!.dirty ||
               registerForm.get('password')!.touched)) {
-              <div>
-                @if (registerForm.get('password')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="global.messages.validate.newpassword.required">Parola
-                  dumneavoastră este necesară.</small>
-                }
+      <div>
+        @if (registerForm.get('password')?.errors?.required) {
+        <small class="form-text text-danger" jhiTranslate="global.messages.validate.newpassword.required">Parola
+          dumneavoastră este necesară.</small>
+        }
 
-                @if (registerForm.get('password')?.errors?.minlength) {
-                <small class="form-text text-danger"
-                  jhiTranslate="global.messages.validate.newpassword.minlength">Parola
-                  dumneavoastră trebuie să aibă cel puțin 4 caractere.</small>
-                }
+        @if (registerForm.get('password')?.errors?.minlength) {
+        <small class="form-text text-danger"
+          jhiTranslate="global.messages.validate.newpassword.minlength">Parola
+          dumneavoastră trebuie să aibă cel puțin 4 caractere.</small>
+        }
 
-                @if (registerForm.get('password')?.errors?.maxlength) {
-                <small class="form-text text-danger"
-                  jhiTranslate="global.messages.validate.newpassword.maxlength">Parola
-                  dumneavoastră poate avea maxim 50 de caractere.</small>
-                }
-              </div>
-              }
+        @if (registerForm.get('password')?.errors?.maxlength) {
+        <small class="form-text text-danger"
+          jhiTranslate="global.messages.validate.newpassword.maxlength">Parola
+          dumneavoastră poate avea maxim 50 de caractere.</small>
+        }
+      </div>
+      }
 
-              <jhi-password-strength-bar
-                [passwordToCheck]="registerForm.get('password')!.value"></jhi-password-strength-bar>
-            </div>
+      <jhi-password-strength-bar
+        [passwordToCheck]="registerForm.get('password')!.value"></jhi-password-strength-bar>
+    </div>
 
-            <div class="mb-3">
-              <label class="form-label" for="confirmPassword" jhiTranslate="global.form.confirmpassword.label">Confirma
-                parolă</label>
-              <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                placeholder="{{ 'global.form.confirmpassword.placeholder' | translate }}"
+    <div class="mb-3">
+      <label class="form-label" for="confirmPassword" jhiTranslate="global.form.confirmpassword.label">Confirma
+        parolă</label>
+      <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+        placeholder="{{ 'global.form.confirmpassword.placeholder' | translate }}"
                 formControlName="confirmPassword" data-cy="secondPassword" />
 
               @if (
               registerForm.get('confirmPassword')!.invalid &&
               (registerForm.get('confirmPassword')!.dirty || registerForm.get('confirmPassword')!.touched)
               ) {
-              <div>
-                @if (registerForm.get('confirmPassword')?.errors?.required) {
-                <small class="form-text text-danger"
-                  jhiTranslate="global.messages.validate.confirmpassword.required">Confirmarea parolei este
-                  necesară.</small>
-                }
+      <div>
+        @if (registerForm.get('confirmPassword')?.errors?.required) {
+        <small class="form-text text-danger"
+          jhiTranslate="global.messages.validate.confirmpassword.required">Confirmarea parolei este
+          necesară.</small>
+        }
 
-                @if (registerForm.get('confirmPassword')?.errors?.minlength) {
-                <small class="form-text text-danger"
-                  jhiTranslate="global.messages.validate.confirmpassword.minlength">Confirmarea parolei trebuie să aibă
-                  cel
-                  puțin 4 caractere.</small>
-                }
+        @if (registerForm.get('confirmPassword')?.errors?.minlength) {
+        <small class="form-text text-danger"
+          jhiTranslate="global.messages.validate.confirmpassword.minlength">Confirmarea parolei trebuie să aibă
+          cel
+          puțin 4 caractere.</small>
+        }
 
-                @if (registerForm.get('confirmPassword')?.errors?.maxlength) {
-                <small class="form-text text-danger"
-                  jhiTranslate="global.messages.validate.confirmpassword.maxlength">Confirmarea parolei poate avea maxim
-                  50
-                  de caractere.</small>
-                }
-              </div>
-              }
-            </div>
-          </span>
-          <span>
-            <div class="mb-3">
-              <label class="form-label" for="rezervationSize" jhiTranslate="global.form.reservedSize.label">MB pentru
-                alocare</label>
-              <input type="number" class="form-control" id="rezervationSize" name="rezervationSize"
-                formControlName="rezervationSize" data-cy="rezervationSize" (keypress)="numericOnly($event)" />
-
-              @if (
-              registerForm.get('rezervationSize')!.invalid &&
-              (registerForm.get('rezervationSize')!.dirty || registerForm.get('rezervationSize')!.touched)
-              ) {
-              <div>
-                @if (registerForm.get('rezervationSize')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="global.messages.validate.rezervationSize.required">MB de
-                  alocat sunt necesari.</small>
-                }
-              </div>
-              }
-            </div>
-          </span>
-        </div>
-        <span class="d-flex justify-content-center">
-          <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary"
-            jhiTranslate="register.form.button" data-cy="submit">
-            Înregistrare
-          </button>
-        </span>
-      </form>
+        @if (registerForm.get('confirmPassword')?.errors?.maxlength) {
+        <small class="form-text text-danger"
+          jhiTranslate="global.messages.validate.confirmpassword.maxlength">Confirmarea parolei poate avea maxim
+          50
+          de caractere.</small>
+        }
+      </div>
+      }
+      </div>
+    </div>
+  </div>
+  <span class="d-flex">
+    <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary"
+      jhiTranslate="register.form.button" data-cy="submit">
+      Înregistrare
+    </button>
+  </span>
+</form>
       }
     </div>
   </div>

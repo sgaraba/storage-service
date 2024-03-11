@@ -1,5 +1,5 @@
 import { ActivatedRouteSnapshot, ResolveFn, Routes } from '@angular/router';
-import {FilesComponent} from "./list/files.component";
+import { FilesComponent } from "./list/files.component";
 import { UploadComponent } from './upload/upload.component';
 import { inject } from '@angular/core';
 import { of } from 'rxjs';
@@ -21,17 +21,25 @@ const filesRoutes: Routes = [
     component: FilesComponent,
     data: {
       defaultSort: 'id,asc',
+      breadcrumb: "global.menu.sidebar.storage"
     },
   },
   {
     path: 'upload',
     component: UploadComponent,
+    data: {
+      defaultSort: 'id,asc',
+      breadcrumb: "files.buttons.upload"
+    },
   },
   {
     path: ':idFile/detail',
     component: FilesDetailComponent,
     resolve: {
       file: FileResolve
+    },
+    data: {
+      breadcrumb: "entity.action.view"
     }
   }
 ];

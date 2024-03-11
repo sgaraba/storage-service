@@ -26,6 +26,7 @@ registerLocaleData(localeRo);
   selector: 'jhi-files-list',
   standalone: true,
   imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective],
+  styleUrls: ['./files.component.scss'],
   templateUrl: './files.component.html',
 })
 export class FilesComponent  implements OnInit {
@@ -71,9 +72,8 @@ export class FilesComponent  implements OnInit {
     );
   }
 
-  call_donwload_fileService(id: number): void {
+  call_download_fileService(id: number): void {
     this.fileService.downloadFile(id);
-    this.alertService.addAlert({ type: 'success', message: 'Your file is donwloaded' });
   }
 
   // pagination

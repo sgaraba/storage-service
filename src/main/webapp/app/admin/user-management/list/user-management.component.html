@@ -1,15 +1,33 @@
-<div>
+<div class="adaptive-width">
   <h2>
-    <span id="user-management-page-heading" jhiTranslate="userManagement.home.title" data-cy="userManagementPageHeading">Utilizatori</span>
+    <div class="d-flex flex-wrap justify-content-between">
+      <span id="user-management-page-heading" jhiTranslate="userManagement.home.title" data-cy="userManagementPageHeading">Utilizatori</span>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
-      </button>
-      <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
-        <fa-icon icon="plus"></fa-icon> <span jhiTranslate="userManagement.home.createLabel">Creare utilizator nou</span>
-      </button>
+      <div class="d-flex flex-wrap justify-content-end align-items-center">
+        <div class="mb-2 mb-md-0">
+          <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+            <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+            <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
+          </button>
+        </div>
+
+        <div class="mb-2 mb-md-0">
+          <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['./new']">
+            <fa-icon icon="plus"></fa-icon> <span jhiTranslate="userManagement.home.createLabel">Creare utilizator nou</span>
+          </button>
+        </div>
+
+        <div ngbDropdown class="dropdown">
+          <button ngbDropdownToggle class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <fa-icon icon="file-export"></fa-icon>
+            <span jhiTranslate="files.buttons.export.title">Export</span>
+          </button>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
+            <a jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
+            <a jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item">Export to Excel</a>
+          </div>
+        </div>
+      </div>
     </div>
   </h2>
 

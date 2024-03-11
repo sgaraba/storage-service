@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import SharedModule from '../../../shared/shared.module';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { FileModel } from '../file.model';
 import { DataUtils } from '../../../core/util/data-util.service';
+import SharedModule from '../../../shared/shared.module';
+import { FileModel } from '../file.model';
 
 @Component({
   selector: 'jhi-files-detail',
@@ -11,14 +11,14 @@ import { DataUtils } from '../../../core/util/data-util.service';
   templateUrl: './detail.component.html',
 })
 
-export class FilesDetailComponent implements OnInit{
+export class FilesDetailComponent implements OnInit {
   file: FileModel | null = null;
   filePath!: string;
 
   constructor(
     private route: ActivatedRoute,
     protected dataUtils: DataUtils,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(({ file }) => {

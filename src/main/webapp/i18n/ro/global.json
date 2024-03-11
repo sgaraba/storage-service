@@ -5,11 +5,13 @@
     "menu": {
       "sidebar": {
         "personalDocuments": "Documente personale",
-        "storage": "Storage",
+        "storage": "Depozit",
         "administration": "Administrare",
         "users": "Utilizatori",
         "documents": "Documente",
-        "journal": "Jurnal"
+        "journal": "Jurnal",
+        "api": "API",
+        "rezervation": "Rezervari"
       },
       "home": "Acasă",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",

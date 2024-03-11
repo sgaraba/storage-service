@@ -1,5 +1,6 @@
 {
   "reservationSpace": {
+    "title": "Lista spațiilor de rezervare pentru utilizatori",
     "table": {
       "thead": {
         "totalSize": "Dimensiune totală",

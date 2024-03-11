@@ -8,6 +8,7 @@ const passwordRoute: Route = {
   component: PasswordComponent,
   title: 'global.menu.account.password',
   canActivate: [UserRouteAccessService],
+  data: { breadcrumb: "global.menu.account.password" }
 };
 
 export default passwordRoute;
