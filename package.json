@@ -89,7 +89,8 @@
     "file-saver": "^2.0.5",
     "ngx-infinite-scroll": "17.0.0",
     "rxjs": "7.8.1",
-    "tslib": "2.6.2",
+    "tslib": "^2.6.2",
+    "xng-breadcrumb": "^10.0.2",
     "zone.js": "0.14.2"
   },
   "devDependencies": {

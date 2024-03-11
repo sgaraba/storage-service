@@ -9,15 +9,20 @@ import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
 import MainComponent from './layouts/main/main.component';
+import { BreadcrumbModule, BreadcrumbService } from 'xng-breadcrumb';
 
 @Component({
   selector: 'jhi-app',
   standalone: true,
   template: '<jhi-main></jhi-main>',
   imports: [
-    MainComponent
+    MainComponent,
+    BreadcrumbModule
     // jhipster-needle-angular-add-module JHipster will add new module here
   ],
+  providers: [
+    BreadcrumbService
+  ]
 })
 export default class AppComponent {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {

@@ -6,6 +6,7 @@ const passwordResetInitRoute: Route = {
   path: 'reset/request',
   component: PasswordResetInitComponent,
   title: 'global.menu.account.password',
+  data: { breadcrumb: { skip: true } }
 };
 
 export default passwordResetInitRoute;

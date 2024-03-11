@@ -20,6 +20,7 @@ const ReservationSpaceRoute: Routes = [
     component: ListComponent,
     data: {
       defaultSort: 'id,asc',
+      breadcrumb: { skip: true }
     },
   },
   {

@@ -6,6 +6,7 @@ const passwordResetFinishRoute: Route = {
   path: 'reset/finish',
   component: PasswordResetFinishComponent,
   title: 'global.menu.account.password',
+  data: { breadcrumb: { skip: true } }
 };
 
 export default passwordResetFinishRoute;

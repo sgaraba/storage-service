@@ -8,6 +8,15 @@
   }
   <div class="flex-fill">
     <div class="card jh-card">
+      @if (account !== null) {
+      <div>
+        <xng-breadcrumb>
+          <ng-container *xngBreadcrumbItem="let breadcrumb; let info = info">
+            <ng-container>{{ info || (breadcrumb | translate)}}</ng-container>
+          </ng-container>
+        </xng-breadcrumb>
+      </div>
+      }
       <router-outlet></router-outlet>
     </div>
 
