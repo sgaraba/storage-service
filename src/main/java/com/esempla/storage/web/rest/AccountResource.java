@@ -90,7 +90,10 @@ public class AccountResource {
         if (!user.isPresent()) {
             throw new AccountResourceException("No user was found for this activation key");
         }
-        UserReservation reservation = userReservationRepository.findByUserId(user.get().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        UserReservation reservation = user.map(User::getId)
+            .flatMap(userReservationRepository::findByUserId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
         AdminReservationDTO reservationDTO = new AdminReservationDTO(reservation);
         reservationDTO.setActivated(true);
 
