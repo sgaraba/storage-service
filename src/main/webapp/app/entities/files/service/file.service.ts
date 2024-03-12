@@ -37,4 +37,10 @@ export class FileService {
   downloadFile(id: number): void  {
     this.alertService.addAlert({ message: `Donwloading file with id: ${id}`, type: "success" });
   }
+
+  exportFilesToExcel(): Observable<any> {
+    return this.http.get(this.applicationConfigService.getEndpointFor('/api/admin/storage-files/download'), {
+      responseType: 'blob',
+    });
+  }
 }

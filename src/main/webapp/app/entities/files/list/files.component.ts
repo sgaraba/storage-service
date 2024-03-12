@@ -18,6 +18,7 @@ import { ASC, DESC, SORT } from '../../../config/navigation.constants';
 import { ITEMS_PER_PAGE } from '../../../config/pagination.constants';
 import SortDirective from '../../../shared/sort/sort.directive';
 import SortByDirective from '../../../shared/sort/sort-by.directive';
+import { saveAs } from 'file-saver';
 
 // Register the 'ro' locale data
 registerLocaleData(localeRo);
@@ -102,6 +103,14 @@ export class FilesComponent  implements OnInit {
         sort: `${this.predicate},${this.ascending ? ASC : DESC}`,
       },
     });
+  }
+
+  exportListFilesToExcel(){
+    this.fileService.exportFilesToExcel().subscribe(
+      (blob: Blob) => {
+        saveAs(blob, 'files.xlsx');
+      }
+    )
   }
 
   private handleNavigation(): void {
