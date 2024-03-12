@@ -204,27 +204,25 @@ public class StorageFileResource {
         System.err.println("file.getOriginalFilename() = " + file.getOriginalFilename());
     }
 
-    @GetMapping("/admin/storage-files/download")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @GetMapping("/storage-files/download")
     public ResponseEntity<Resource> getFile() {
         String filename = "files.xlsx";
-        InputStreamResource file = new InputStreamResource(excelService.adminFilesLoad());
 
-        return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-            .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-            .body(file);
-    }
+        if(SecurityUtils.hasCurrentUserThisAuthority("ADMIN")){
+            log.debug("REST request to get all Storage Files for admin");
+            InputStreamResource file = new InputStreamResource(excelService.adminFilesLoad());
 
-    @GetMapping("/storage-files/download")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<Resource> getUserFile() {
+            return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(file);
+            }
 
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(() -> new StorageFileException("Current user login not found"));
 
-        String filename = "files.xlsx";
+        log.debug("REST request to get all Storage Files for user");
         InputStreamResource file = new InputStreamResource(excelService.userFilesLoad(userLogin));
 
         return ResponseEntity.ok()

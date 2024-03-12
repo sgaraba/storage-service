@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class UsersExcel {
-    static String[] HEADERs = { "Id", "Login", "First Name", "Last Name", "Email", "Activated", "Image Url", "Activated" };
+    static String[] HEADERs = { "Id", "Login", "First Name", "Last Name", "Email", "Activated", "Image Url" };
     static String SHEET = "Users";
 
     public static ByteArrayInputStream usersToExcel(List<User> users) {
@@ -39,8 +39,8 @@ public class UsersExcel {
                 row.createCell(2).setCellValue(user.getFirstName());
                 row.createCell(3).setCellValue(user.getLastName());
                 row.createCell(4).setCellValue(user.getEmail());
-                row.createCell(5).setCellValue(user.getImageUrl());
-                row.createCell(6).setCellValue(user.isActivated());
+                row.createCell(5).setCellValue(user.isActivated());
+                row.createCell(6).setCellValue(user.getImageUrl());
             }
 
             workbook.write(out);

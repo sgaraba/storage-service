@@ -3,8 +3,8 @@ package com.esempla.storage.service;
 import com.esempla.storage.domain.StorageFile;
 import com.esempla.storage.domain.User;
 import com.esempla.storage.domain.UserReservation;
-import com.esempla.storage.helper.AdminFilesExcel;
 import com.esempla.storage.helper.ReservationExcel;
+import com.esempla.storage.helper.StorageFilesExcel;
 import com.esempla.storage.helper.UsersExcel;
 import com.esempla.storage.repository.StorageFileRepository;
 import com.esempla.storage.repository.UserRepository;
@@ -29,7 +29,7 @@ public class ExcelService {
     public ByteArrayInputStream reservationLoad() {
         List<UserReservation> reservations = userReservationRepository.findAll();
 
-        return ReservationExcel.tutorialsToExcel(reservations);
+        return ReservationExcel.reservationsToExcel(reservations);
     }
 
     public ByteArrayInputStream usersLoad() {
@@ -41,12 +41,12 @@ public class ExcelService {
     public ByteArrayInputStream adminFilesLoad() {
         List<StorageFile> files = storageFileRepository.findAll();
 
-        return AdminFilesExcel.adminFilesToExcel(files);
+        return StorageFilesExcel.adminFilesToExcel(files);
     }
 
     public ByteArrayInputStream userFilesLoad(String login) {
         List<StorageFile> files = storageFileRepository.findAllByUserLogin(login);
 
-        return AdminFilesExcel.adminFilesToExcel(files);
+        return StorageFilesExcel.adminFilesToExcel(files);
     }
 }

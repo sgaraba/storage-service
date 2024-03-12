@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class AdminFilesExcel {
+public class StorageFilesExcel {
     static String[] HEADERs = { "Id", "Name", "Size", "Mime Type", "Path", "User",  "Created By", "Created Date" };
     static String SHEET = "Files";
 

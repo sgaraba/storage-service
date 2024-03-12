@@ -16,7 +16,7 @@ public class ReservationExcel {
     static String[] HEADERs = { "Id", "Total Size", "Used Size", "User", "Activated", "Created By", "Created Date" };
     static String SHEET = "Reservations";
 
-    public static ByteArrayInputStream tutorialsToExcel(List<UserReservation> reservationList) {
+    public static ByteArrayInputStream reservationsToExcel(List<UserReservation> reservationList) {
 
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             Sheet sheet = workbook.createSheet(SHEET);
