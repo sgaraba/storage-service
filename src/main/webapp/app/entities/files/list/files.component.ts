@@ -108,7 +108,7 @@ export class FilesComponent  implements OnInit {
   exportListFilesToExcel(){
     this.fileService.exportFilesToExcel().subscribe(
       (blob: Blob) => {
-        saveAs(blob, 'files.xlsx');
+        saveAs(blob, 'list of files');
       }
     )
   }

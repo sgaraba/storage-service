@@ -40,4 +40,10 @@ export class UserManagementService {
   authorities(): Observable<string[]> {
     return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/authorities'));
   }
+
+  exportUsersToExcel(): Observable<any> {
+    return this.http.get(this.applicationConfigService.getEndpointFor('/api/admin/users/download'), {
+      responseType: 'blob',
+    });
+  }
 }

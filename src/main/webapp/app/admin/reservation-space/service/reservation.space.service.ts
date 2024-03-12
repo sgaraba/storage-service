@@ -35,4 +35,10 @@ export class ReservationSpaceService{
     const options = createRequestOption(req);
     return this.http.get<ReservationModel[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
+
+  exportReservationsToExcel(): Observable<any> {
+    return this.http.get(this.applicationConfigService.getEndpointFor('/api/admin/reservations/download'), {
+      responseType: 'blob',
+    });
+  }
 }

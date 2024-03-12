@@ -20,6 +20,7 @@ import SortByDirective from '../../../shared/sort/sort-by.directive';
 import { ITEMS_PER_PAGE } from '../../../config/pagination.constants';
 import CheckFirstLastName from '../../../shared/user/check-firstName-lastName.pipe';
 import { DeleteComponent } from '../delete/delete.component';
+import { saveAs } from 'file-saver';
 
 registerLocaleData(localeRo); // register local Ro lang
 
@@ -109,6 +110,14 @@ export class ListComponent implements OnInit {
         sort: `${this.predicate},${this.ascending ? ASC : DESC}`
       }
     });
+  }
+
+  exportListReservationToExcel(){
+    this.reservationSpaceService.exportReservationsToExcel().subscribe(
+      (blob: Blob) => {
+        saveAs(blob, 'list of reservations');
+      }
+    )
   }
 
   private handleNavigation(): void {

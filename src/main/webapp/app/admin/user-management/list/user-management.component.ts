@@ -17,6 +17,7 @@ import { User } from '../user-management.model';
 
 import localeRo from '@angular/common/locales/ro';
 import { registerLocaleData } from '@angular/common';
+import { saveAs } from 'file-saver';
 registerLocaleData(localeRo); // register local Ro lang
 
 @Component({
@@ -93,6 +94,14 @@ export default class UserManagementComponent implements OnInit {
         sort: `${this.predicate},${this.ascending ? ASC : DESC}`,
       },
     });
+  }
+
+  exportListUsersToExcel(){
+    this.userService.exportUsersToExcel().subscribe(
+      (blob: Blob) => {
+        saveAs(blob, 'list of users');
+      }
+    )
   }
 
   private handleNavigation(): void {
