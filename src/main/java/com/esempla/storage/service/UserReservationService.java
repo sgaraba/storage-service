@@ -78,7 +78,8 @@ public class UserReservationService {
         userReservationRepository
             .findById(id)
             .ifPresent(reservation -> {
-                if(!storageFileRepository.findByUserId(reservation.getUser().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)).isEmpty()){
+                if(!storageFileRepository.findByUserId(reservation.getUser().getId()).
+                    orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)).isEmpty()){
                     throw new StorageInUseException();
                 }
                 userReservationRepository.delete(reservation);
