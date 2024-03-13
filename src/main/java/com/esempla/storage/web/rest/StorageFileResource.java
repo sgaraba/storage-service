@@ -208,7 +208,7 @@ public class StorageFileResource {
     public ResponseEntity<Resource> getFile() {
         String filename = "files.xlsx";
 
-        if(SecurityUtils.hasCurrentUserThisAuthority("ADMIN")){
+        if(SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)){
             log.debug("REST request to get all Storage Files for admin");
             InputStreamResource file = new InputStreamResource(excelService.adminFilesLoad());
 
