@@ -39,7 +39,7 @@ export class FileService {
   }
 
   exportFilesToExcel(): Observable<any> {
-    return this.http.get(this.applicationConfigService.getEndpointFor('/api/admin/storage-files/download'), {
+    return this.http.get(this.applicationConfigService.getEndpointFor('/api/storage-files/download'), {
       responseType: 'blob',
     });
   }
