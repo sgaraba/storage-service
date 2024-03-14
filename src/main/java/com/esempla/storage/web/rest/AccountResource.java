@@ -1,10 +1,12 @@
 package com.esempla.storage.web.rest;
 
+import com.esempla.storage.config.MinioConfiguration;
 import com.esempla.storage.domain.User;
+import com.esempla.storage.domain.UserReservation;
 import com.esempla.storage.repository.UserRepository;
+import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.security.SecurityUtils;
 import com.esempla.storage.service.MailService;
-import com.esempla.storage.service.MinioService;
 import com.esempla.storage.service.UserReservationService;
 import com.esempla.storage.service.UserService;
 import com.esempla.storage.service.dto.AdminReservationDTO;
@@ -13,7 +15,6 @@ import com.esempla.storage.service.dto.PasswordChangeDTO;
 import com.esempla.storage.web.rest.errors.*;
 import com.esempla.storage.web.rest.vm.KeyAndPasswordVM;
 import com.esempla.storage.web.rest.vm.ManagedUserVM;
-import io.minio.errors.MinioException;
 import jakarta.validation.Valid;
 import java.util.*;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * REST controller for managing the current user's account.
@@ -42,14 +44,14 @@ public class AccountResource {
     private final UserService userService;
     private final MailService mailService;
     private final UserReservationService userReservationService;
-    private final MinioService minioService;
+    private final UserReservationRepository userReservationRepository;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, UserReservationService userReservationService, MinioService minioService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, UserReservationService userReservationService, UserReservationRepository userReservationRepository) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.userReservationService = userReservationService;
-        this.minioService = minioService;
+        this.userReservationRepository = userReservationRepository;
     }
 
     /**
@@ -74,12 +76,6 @@ public class AccountResource {
         reservationDTO.setUserId(user.getId());
 
         userReservationService.createReservation(reservationDTO);
-
-        try {
-            minioService.createSubdirectory(managedUserVM.getLogin());
-        } catch (MinioException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**
@@ -94,7 +90,11 @@ public class AccountResource {
         if (!user.isPresent()) {
             throw new AccountResourceException("No user was found for this activation key");
         }
-        AdminReservationDTO reservationDTO = new AdminReservationDTO();
+        UserReservation reservation = user.map(User::getId)
+            .flatMap(userReservationRepository::findByUserId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        AdminReservationDTO reservationDTO = new AdminReservationDTO(reservation);
         reservationDTO.setActivated(true);
 
         userReservationService.updateUserReservation(reservationDTO);

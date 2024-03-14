@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface StorageFileRepository extends JpaRepository<StorageFile, Long> {
     Optional<List<StorageFile>> findByUserId (Long id);
 
+    List<StorageFile> findAllByUserLogin(String login);
+
     Optional<StorageFile> findByName (String name);
 
     Page<StorageFile> findAllByUserLogin (String login, Pageable pageable);
