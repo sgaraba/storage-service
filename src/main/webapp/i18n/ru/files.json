@@ -6,6 +6,7 @@
       "thead": {
         "name": "Имя файла",
         "size": "Размер",
+        "mimeType": "Тип mime",
         "last_modified": "Последнее изменение",
         "user": "Пользователь",
         "Actions": "Действия"

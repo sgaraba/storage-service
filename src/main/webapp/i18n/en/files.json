@@ -6,6 +6,7 @@
       "thead": {
         "name": "Name file",
         "size": "Size",
+        "mimeType": "Type mime",
         "last_modified": "Last modified",
         "user": "User",
         "Actions": "Actions"
