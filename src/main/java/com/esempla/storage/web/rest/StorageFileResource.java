@@ -3,8 +3,10 @@ package com.esempla.storage.web.rest;
 
 import com.esempla.storage.domain.StorageFile;
 import com.esempla.storage.repository.StorageFileRepository;
+import com.esempla.storage.security.AuthoritiesConstants;
 import com.esempla.storage.security.SecurityUtils;
 import com.esempla.storage.service.MinioService;
+import com.esempla.storage.service.ExcelService;
 import com.esempla.storage.service.StorageFileService;
 import com.esempla.storage.service.dto.AdminStorageFileDTO;
 import com.esempla.storage.service.dto.UploadFileDTO;
@@ -14,11 +16,14 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,11 +69,13 @@ public class StorageFileResource {
     private final StorageFileService storageFileService;
     private final StorageFileRepository storageFileRepository;
     private final MinioService minioService;
+    private final ExcelService excelService;
 
-    public StorageFileResource(StorageFileService storageFileService, StorageFileRepository storageFileRepository, MinioService minioService) {
+    public StorageFileResource(StorageFileService storageFileService, StorageFileRepository storageFileRepository, MinioService minioService, ExcelService excelService) {
         this.storageFileService = storageFileService;
         this.storageFileRepository = storageFileRepository;
         this.minioService = minioService;
+        this.excelService = excelService;
     }
 
     @PostMapping("/storage-files")
@@ -197,5 +204,32 @@ public class StorageFileResource {
     public void handleFileUpload(@RequestParam("file") MultipartFile file) {
         System.err.println("file.getSize() = " + file.getSize());
         System.err.println("file.getOriginalFilename() = " + file.getOriginalFilename());
+    }
+
+    @GetMapping("/storage-files/download")
+    public ResponseEntity<Resource> getFile() {
+        String filename = "files.xlsx";
+
+        if(SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)){
+            log.debug("REST request to get all Storage Files for admin");
+            InputStreamResource file = new InputStreamResource(excelService.adminFilesLoad());
+
+            return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(file);
+            }
+
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(() -> new StorageFileException("Current user login not found"));
+
+        log.debug("REST request to get all Storage Files for user");
+        InputStreamResource file = new InputStreamResource(excelService.userFilesLoad(userLogin));
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+            .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+            .body(file);
     }
 }
