@@ -4,6 +4,7 @@ package com.esempla.storage.web.rest;
 import com.esempla.storage.domain.UserReservation;
 import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
+import com.esempla.storage.service.ExcelService;
 import com.esempla.storage.service.UserReservationService;
 import com.esempla.storage.service.dto.AdminReservationDTO;
 import com.esempla.storage.service.dto.UpdateReservationDTO;
@@ -13,11 +14,14 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -58,10 +62,12 @@ public class ReservationResource {
     private final UserReservationService userReservationService;
 
     private final UserReservationRepository userReservationRepository;
+    private final ExcelService excelService;
 
-    public ReservationResource(UserReservationService userReservationService, UserReservationRepository userReservationRepository) {
+    public ReservationResource(UserReservationService userReservationService, UserReservationRepository userReservationRepository, ExcelService excelService) {
         this.userReservationService = userReservationService;
         this.userReservationRepository = userReservationRepository;
+        this.excelService = excelService;
     }
 
     @PostMapping("/reservations")
@@ -136,5 +142,17 @@ public class ReservationResource {
         log.debug("REST request to delete Reservation: {}", id);
         userReservationService.deleteReservation(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "userReservationManagement.deleted", id.toString())).build();
+    }
+
+    @GetMapping("/reservations/download")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Resource> getFile() {
+        String filename = "reservations.xlsx";
+        InputStreamResource file = new InputStreamResource(excelService.reservationLoad());
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+            .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+            .body(file);
     }
 }
