@@ -33,6 +33,7 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -97,7 +98,7 @@ public class StorageFileResource {
     @GetMapping("/storage-files")
     public ResponseEntity<List<AdminStorageFileDTO>> getAllReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
 
-        if(SecurityUtils.hasCurrentUserThisAuthority("ADMIN")){
+        if(SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)){
             log.debug("REST request to get all Storage Files for an admin");
             if (!onlyContainsAllowedProperties(pageable)) {
                 return ResponseEntity.badRequest().build();
@@ -162,7 +163,11 @@ public class StorageFileResource {
     @DeleteMapping("/storage-files/{id}")
     public ResponseEntity<Void> deleteStorageFile(@PathVariable("id") Long id) {
         log.debug("REST request to delete Storage File: {}", id);
-        storageFileService.deleteStorageFile(id);
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(() -> new StorageFileException("Current user login not found"));
+
+        storageFileService.deleteStorageFile(id, userLogin);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "storageFileManagement.deleted", id.toString())).build();
     }
 
@@ -178,10 +183,12 @@ public class StorageFileResource {
             throw new BadRequestAlertException("Storage File with that name already exists!", "userStorageFileManagement", "nameexists");
         }
 
-        StorageFile storageFile = storageFileService.uploadNewFile(uploadFileDTO, userLogin);
+        String objectName = UUID.randomUUID().toString();
 
+        minioService.uploadObject(objectName, uploadFileDTO.getData(), uploadFileDTO.getMimeType(), userLogin);
 
-        minioService.uploadObject(UUID.randomUUID().toString(), uploadFileDTO.getData(), uploadFileDTO.getMimeType(), userLogin);
+        StorageFile storageFile = storageFileService.uploadNewFile(uploadFileDTO, userLogin, objectName);
+        
         //adaugat schimb automat de usedSize la rezervare
 
         return ResponseEntity
@@ -190,10 +197,11 @@ public class StorageFileResource {
             .body(storageFile);
     }
 
-    @GetMapping("/storage-files/test")
-    public ResponseEntity<UploadFileDTO> getStorageFile() {
+    @GetMapping("/storage-files/download/{id}")
+    public ResponseEntity<UploadFileDTO> downloadStorageFile(@PathVariable("id") Long id) throws IOException {
+
         log.debug("REST request to get Storage File");
-        UploadFileDTO fileDTO = storageFileService.getFile();
+        UploadFileDTO fileDTO = storageFileService.getFile(id);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createAlert(applicationName, "userStorageFileManagement.created", fileDTO.getName()))
@@ -206,7 +214,7 @@ public class StorageFileResource {
         System.err.println("file.getOriginalFilename() = " + file.getOriginalFilename());
     }
 
-    @GetMapping("/storage-files/download")
+    @GetMapping("/storage-files/excel-export")
     public ResponseEntity<Resource> getFile() {
         String filename = "files.xlsx";
 
