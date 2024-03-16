@@ -19,6 +19,7 @@ import { ITEMS_PER_PAGE } from '../../../config/pagination.constants';
 import SortDirective from '../../../shared/sort/sort.directive';
 import SortByDirective from '../../../shared/sort/sort-by.directive';
 import { saveAs } from 'file-saver';
+import { DataUtils } from 'app/core/util/data-util.service';
 
 // Register the 'ro' locale data
 registerLocaleData(localeRo);
@@ -49,6 +50,7 @@ export class FilesComponent  implements OnInit {
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    protected dataUtils: DataUtils,
   ) { }
 
   ngOnInit(): void {
@@ -74,7 +76,26 @@ export class FilesComponent  implements OnInit {
   }
 
   call_download_fileService(id: number): void {
-    this.fileService.downloadFile(id);
+    this.fileService.downloadFile(id).subscribe(
+      (fileData: any) => {
+        const binaryData = this.base64Decode(fileData.data);
+        const blob = new Blob([binaryData], { type: 'application/octet-stream' });
+
+        saveAs(blob, fileData.name);
+      }
+    );
+  }
+
+  exportListFilesToExcel(){
+    this.fileService.exportFilesToExcel().subscribe(
+      (blob: Blob) => {
+        saveAs(blob, 'list of files');
+      }
+    )
+  }
+
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    return this.dataUtils.openFile(base64String, contentType);
   }
 
   // pagination
@@ -105,12 +126,13 @@ export class FilesComponent  implements OnInit {
     });
   }
 
-  exportListFilesToExcel(){
-    this.fileService.exportFilesToExcel().subscribe(
-      (blob: Blob) => {
-        saveAs(blob, 'list of files');
+  private base64Decode(base64String: string): Uint8Array {
+      const byteString = atob(base64String);
+      const byteArray = new Uint8Array(byteString.length);
+      for (let i = 0; i < byteString.length; i++) {
+          byteArray[i] = byteString.charCodeAt(i);
       }
-    )
+      return byteArray;
   }
 
   private handleNavigation(): void {
@@ -136,5 +158,4 @@ export class FilesComponent  implements OnInit {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.files = files;
   }
-  // end pagination
 }
