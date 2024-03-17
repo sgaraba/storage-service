@@ -5,7 +5,7 @@ const routes: Routes = [
     path: 'files',
     title: 'files.home',
     loadChildren: () => import('./files/files.routes'),
-    data: { breadcrumb: { skip: true } }
+    data: { breadcrumb: "global.menu.sidebar.storage" }
   },
   {
     path: 'document',

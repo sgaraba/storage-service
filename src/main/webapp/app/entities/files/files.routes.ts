@@ -21,7 +21,7 @@ const filesRoutes: Routes = [
     component: FilesComponent,
     data: {
       defaultSort: 'id,asc',
-      breadcrumb: "global.menu.sidebar.storage"
+      breadcrumb: { skip: true }
     },
   },
   {
