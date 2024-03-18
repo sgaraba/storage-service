@@ -41,4 +41,10 @@ export class FileService {
       responseType: 'blob',
     });
   }
+
+  exportFilesToCSV(): Observable<any> {
+    return this.http.get(this.applicationConfigService.getEndpointFor('/api/storage-files/csv-export'), {
+      responseType: 'blob',
+    });
+  }
 }

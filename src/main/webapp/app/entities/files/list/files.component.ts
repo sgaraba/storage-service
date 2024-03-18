@@ -86,6 +86,14 @@ export class FilesComponent  implements OnInit {
     );
   }
 
+  exportListFilesToCSV(){
+    this.fileService.exportFilesToCSV().subscribe(
+      (blob: Blob) => {
+        saveAs(blob, 'list of files');
+      }
+    )
+  }
+
   exportListFilesToExcel(){
     this.fileService.exportFilesToExcel().subscribe(
       (blob: Blob) => {

@@ -26,7 +26,7 @@
             <span jhiTranslate="files.buttons.export.title">Export</span>
           </button>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
-            <a jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
+            <a (click)="exportListFilesToCSV()" jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
             <a (click)="exportListFilesToExcel()" jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item">Export to Excel</a>
           </div>
         </div>

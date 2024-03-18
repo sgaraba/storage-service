@@ -41,8 +41,14 @@ export class UserManagementService {
     return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/authorities'));
   }
 
+  exportUsersToCSV(): Observable<any> {
+    return this.http.get(this.applicationConfigService.getEndpointFor('/api/admin/users/csv-export'), {
+      responseType: 'blob',
+    });
+  }
+
   exportUsersToExcel(): Observable<any> {
-    return this.http.get(this.applicationConfigService.getEndpointFor('/api/admin/users/download'), {
+    return this.http.get(this.applicationConfigService.getEndpointFor('/api/admin/users/excel-export'), {
       responseType: 'blob',
     });
   }
