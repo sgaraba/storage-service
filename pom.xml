@@ -66,7 +66,7 @@
         <profile.api-docs/>
         <profile.e2e/>
         <profile.no-liquibase/>
-        <profile.test/>
+        <profile.CsvService/>
         <profile.tls/>
         <properties-maven-plugin.version>1.2.1</properties-maven-plugin.version>
         <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
@@ -147,8 +147,8 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-starter-CsvService</artifactId>
+            <scope>CsvService</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -164,8 +164,8 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-CsvService</artifactId>
+            <scope>CsvService</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -173,8 +173,8 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-security-CsvService</artifactId>
+            <scope>CsvService</scope>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -200,7 +200,7 @@
             <groupId>com.tngtech.archunit</groupId>
             <artifactId>archunit-junit5-api</artifactId>
             <version>${archunit-junit5.version}</version>
-            <scope>test</scope>
+            <scope>CsvService</scope>
         </dependency>
         <dependency>
             <!-- Adding the engine dependency to the surefire-plugin unfortunately does not work in the current version. -->
@@ -208,7 +208,7 @@
             <groupId>com.tngtech.archunit</groupId>
             <artifactId>archunit-junit5-engine</artifactId>
             <version>${archunit-junit5.version}</version>
-            <scope>test</scope>
+            <scope>CsvService</scope>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -267,12 +267,12 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>jdbc</artifactId>
-            <scope>test</scope>
+            <scope>CsvService</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
-            <scope>test</scope>
+            <scope>CsvService</scope>
         </dependency>
         <dependency>
             <groupId>io.minio</groupId>
@@ -571,13 +571,13 @@
                             <include>**/*IT*</include>
                             <include>**/*IntTest*</include>
                         </includes>
-                        <argLine>@{argLine} -Dspring.profiles.active=${profile.test}</argLine>
+                        <argLine>@{argLine} -Dspring.profiles.active=${profile.CsvService}</argLine>
                     </configuration>
                     <executions>
                         <execution>
                             <id>integration-test</id>
                             <goals>
-                                <goal>integration-test</goal>
+                                <goal>integration-CsvService</goal>
                             </goals>
                         </execution>
                         <execution>
@@ -733,7 +733,7 @@
                         <execution>
                             <!-- Ensures that the code coverage report for unit tests is created after unit tests have been run -->
                             <id>post-unit-test</id>
-                            <phase>test</phase>
+                            <phase>CsvService</phase>
                             <goals>
                                 <goal>report</goal>
                             </goals>
@@ -747,7 +747,7 @@
                         <execution>
                             <!-- Ensures that the code coverage report for integration tests is created after integration tests have been run -->
                             <id>post-integration-tests</id>
-                            <phase>post-integration-test</phase>
+                            <phase>post-integration-CsvService</phase>
                             <goals>
                                 <goal>report-integration</goal>
                             </goals>
@@ -818,7 +818,7 @@
             <properties>
                 <!-- default Spring profiles -->
                 <spring.profiles.active>dev${profile.tls}${profile.no-liquibase}</spring.profiles.active>
-                <profile.test>testdev</profile.test>
+                <profile.CsvService>testdev</profile.CsvService>
                 <liquibase-plugin.url>jdbc:postgresql://localhost:5432/storageService</liquibase-plugin.url>
                 <liquibase-plugin.username>storageService</liquibase-plugin.username>
                 <liquibase-plugin.password/>
@@ -926,7 +926,7 @@
             <properties>
                 <!-- default Spring profiles -->
                 <spring.profiles.active>prod${profile.api-docs}${profile.tls}${profile.e2e}${profile.no-liquibase}</spring.profiles.active>
-                <profile.test>testprod</profile.test>
+                <profile.CsvService>testprod</profile.CsvService>
                 <liquibase-plugin.url>jdbc:postgresql://localhost:5432/storageService</liquibase-plugin.url>
                 <liquibase-plugin.username>storageService</liquibase-plugin.username>
                 <liquibase-plugin.password/>
@@ -976,7 +976,7 @@
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
-                                <phase>test</phase>
+                                <phase>CsvService</phase>
                                 <configuration>
                                     <arguments>run webapp:test</arguments>
                                     <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>

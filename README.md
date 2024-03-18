@@ -158,7 +158,7 @@ To launch your application's tests, run:
 
 ### Client tests
 
-Unit tests are run by [Jest][]. They're located in [src/test/javascript/](src/test/javascript/) and can be run with:
+Unit tests are run by [Jest][]. They're located in [src/test/javascript/](src/CsvService/javascript/) and can be run with:
 
 ```
 npm test

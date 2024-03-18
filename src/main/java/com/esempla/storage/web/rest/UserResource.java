@@ -6,20 +6,13 @@ import com.esempla.storage.domain.UserReservation;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
-import com.esempla.storage.service.ExcelService;
-import com.esempla.storage.service.MailService;
-import com.esempla.storage.service.UserReservationService;
-import com.esempla.storage.service.UserService;
+import com.esempla.storage.service.*;
 import com.esempla.storage.service.dto.AdminUserDTO;
 import com.esempla.storage.web.rest.errors.BadRequestAlertException;
 import com.esempla.storage.web.rest.errors.EmailAlreadyUsedException;
 import com.esempla.storage.web.rest.errors.LoginAlreadyUsedException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +31,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing users.
@@ -96,17 +96,18 @@ public class UserResource {
     private final MailService mailService;
     private final ExcelService excelService;
     private final UserReservationService userReservationService;
-
     private final UserReservationRepository userReservationRepository;
+    private final CsvService CsvService;
 
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserReservationService userReservationService, ExcelService excelService, UserReservationService userReservationService1, UserReservationRepository userReservationRepository) {
+    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserReservationService userReservationService, ExcelService excelService, UserReservationRepository userReservationRepository, CsvService CsvService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.excelService = excelService;
-        this.userReservationService = userReservationService1;
+        this.userReservationService = userReservationService;
         this.userReservationRepository = userReservationRepository;
+        this.CsvService = CsvService;
     }
 
     /**
@@ -223,15 +224,27 @@ public class UserResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "userManagement.deleted", login)).build();
     }
 
-    @GetMapping("/users/download")
+    @GetMapping("/users/excel-export")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<Resource> getFile() {
+    public ResponseEntity<Resource> excelExport() {
         String filename = "users.xlsx";
         InputStreamResource file = new InputStreamResource(excelService.usersLoad());
 
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
             .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+            .body(file);
+    }
+
+    @GetMapping( "/users/csv-export")
+    public ResponseEntity<Resource> exportToCsv() {
+        String filename = "users.csv";
+
+        InputStreamResource file = new InputStreamResource(CsvService.usersLoad());
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = " + filename)
+            .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
             .body(file);
     }
 }
