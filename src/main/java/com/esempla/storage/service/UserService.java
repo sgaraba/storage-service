@@ -61,24 +61,6 @@ public class UserService {
                 log.debug("Activated user: {}", user);
                 return user;
             });
-
-        // Create user bucket
-        user1.ifPresent(user -> {
-            //minioService.createSubdirectory(user.getLogin());
-            // Upload
-            String filePath = "C:/Users/rusla/Desktop/imagine.png";
-            File file = new File(filePath);
-            byte[] data;
-            try {
-                data = Files.readAllBytes(file.toPath());
-                minioService.uploadObject("imagine.png", data, user.getLogin());
-                log.debug("Uploaded test.txt for user: {}", user.getLogin());
-            } catch (IOException e) {
-                log.error("Failed to read file or upload to Minio: {}", e.getMessage());
-                throw new RuntimeException(e);
-            }
-        });
-
         return user1;
     }
 

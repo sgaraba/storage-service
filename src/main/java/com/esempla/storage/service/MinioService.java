@@ -1,7 +1,6 @@
 package com.esempla.storage.service;
 
 import com.esempla.storage.config.ApplicationProperties;
-import com.esempla.storage.config.ApplicationReadyListener;
 import io.minio.*;
 import io.minio.errors.ErrorResponseException;
 import io.minio.errors.MinioException;
@@ -57,13 +56,14 @@ public class MinioService {
             throw new MinioException("Unexpected error occurred while creating subdirectory: " + subdirectoryName + " in bucket: " + bucketName + e);
         }
     }
-    public void uploadObject(String objectName, byte[] data, String login) {
+    public void uploadObject(String objectName, byte[] data, String mimeType, String login) {
         String fullObjectName = login + "/" + objectName;
         try {
             minioClient.putObject(
                 PutObjectArgs.builder()
                     .bucket(applicationProperties.minio().bucket())
                     .object(fullObjectName)
+                    .contentType(mimeType)
                     .stream(new ByteArrayInputStream(data), data.length, -1)
                     .build());
             System.out.println(objectName + " is successfully uploaded to bucket " + applicationProperties.minio().bucket() + ".");
@@ -72,16 +72,26 @@ public class MinioService {
         }
     }
 
+    public GetObjectResponse getObject(String objectName) {
+        try {
+            return minioClient.getObject(
+                GetObjectArgs.builder()
+                    .bucket(applicationProperties.minio().bucket())
+                    .object(objectName)
+                    .build());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void deleteObject(String objectName, String login) {
         try {
             String bucketName = applicationProperties.minio().bucket();
-            objectName = "test.txt";
-            String fullObjectName = login + "/" + objectName;
 
             minioClient.removeObject(
                 RemoveObjectArgs.builder()
                     .bucket(bucketName)
-                    .object(fullObjectName)
+                    .object(objectName)
                     .build());
 
             System.out.println(objectName + " is successfully deleted from subdirectory " + login + " of bucket " + bucketName + ".");

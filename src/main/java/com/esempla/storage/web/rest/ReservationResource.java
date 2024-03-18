@@ -92,7 +92,6 @@ public class ReservationResource {
             .body(newReservation);
     }
 
-
     @GetMapping("/reservations")
     public ResponseEntity<List<UserReservation>> getAllReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get all Reservations for an admin");

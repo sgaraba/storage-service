@@ -29,10 +29,12 @@ public class StorageFileService {
     private final StorageFileRepository storageFileRepository;
 
     private final UserRepository userRepository;
+    private final MinioService minioService;
 
-    public StorageFileService(StorageFileRepository storageFileRepository, UserRepository userRepository) {
+    public StorageFileService(StorageFileRepository storageFileRepository, UserRepository userRepository, MinioService minioService) {
         this.storageFileRepository = storageFileRepository;
         this.userRepository = userRepository;
+        this.minioService = minioService;
     }
 
     public StorageFile createStorageFile(AdminStorageFileDTO adminStorageFileDTO){
@@ -51,13 +53,13 @@ public class StorageFileService {
         return storageFile;
     }
 
-    public StorageFile uploadNewFile(UploadFileDTO uploadFileDTO, String userLogin){
+    public StorageFile uploadNewFile(UploadFileDTO uploadFileDTO, String userLogin, String objectName){
         User user = userRepository.findOneByLogin(userLogin)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         StorageFile storageFile = new StorageFile();
         storageFile.setName(uploadFileDTO.getName());
-        storageFile.setPath("test");
+        storageFile.setPath(userLogin + "/" + objectName);
         storageFile.setMimeType(uploadFileDTO.getMimeType());
         storageFile.setSize((long) uploadFileDTO.getData().length);
         storageFile.setUser(user);
@@ -96,28 +98,25 @@ public class StorageFileService {
         return new UploadFileDTO(storageFile);
     }
 
-    public UploadFileDTO getFile(){
-        File file = new File("src/main/resources/Raport1.docx");
-        Path path = file.toPath();
-        try {
-            String mimeType = Files.probeContentType(path);
-            byte[] array = Files.readAllBytes(path);
+    public UploadFileDTO getFile(long id) throws IOException {
 
-            UploadFileDTO fileDTO = new UploadFileDTO();
-            fileDTO.setName(file.getName());
-            fileDTO.setData(array);
-            fileDTO.setMimeType(mimeType);
+        StorageFile storageFile = storageFileRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-            return fileDTO;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        byte[] data = minioService.getObject(storageFile.getPath()).readAllBytes();
+
+        UploadFileDTO fileDTO = new UploadFileDTO();
+        fileDTO.setName(storageFile.getName());
+        fileDTO.setMimeType(storageFile.getMimeType());
+        fileDTO.setData(data);
+
+        return fileDTO;
     }
 
-    public void deleteStorageFile(Long id) {
+    public void deleteStorageFile(Long id, String login) {
         storageFileRepository
             .findById(id)
             .ifPresent(storageFile -> {
+                minioService.deleteObject(storageFile.getPath(), login);
                 storageFileRepository.delete(storageFile);
                 log.debug("Deleted Storage File: {}", storageFile);
             });
