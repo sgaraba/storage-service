@@ -10,6 +10,11 @@
         "createdBy": "Created by",
         "createdDate": "Created date",
         "actions": "Actions"
+      },
+
+      "action": {
+        "edit": "Change total reservation",
+        "delete": "Delete reservation"
       }
     },
 

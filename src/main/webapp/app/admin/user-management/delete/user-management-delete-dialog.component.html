@@ -3,7 +3,7 @@
     <div class="modal-header">
       <h4 class="modal-title" jhiTranslate="entity.delete.title">Confirmați operația de ștergere</h4>
 
-      <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
+      <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()"></button>
     </div>
 
     <div class="modal-body">
@@ -15,11 +15,11 @@
     </div>
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+      <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" (click)="cancel()">
         <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
       </button>
 
-      <button type="submit" class="btn btn-danger">
+      <button type="submit" class="btn btn-danger btn-sm">
         <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Ștergere</span>
       </button>
     </div>
