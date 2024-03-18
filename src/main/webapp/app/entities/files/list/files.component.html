@@ -71,7 +71,10 @@
           <tbody>
             <tr *ngFor="let file of files">
               <td>
-                <a [routerLink]="['../', file.id, 'detail']">{{ file.name }}</a>
+                <a [routerLink]="['../', file.id, 'detail']">
+                  <fa-icon  class="mx-2" [icon]="getFileIcon(file.name)" [spin]="isLoading"></fa-icon>
+                  {{ file.name }}
+                </a>
               </td>
               <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
               <td>{{ file.createdBy }}</td>

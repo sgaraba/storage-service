@@ -20,6 +20,7 @@ import SortDirective from '../../../shared/sort/sort.directive';
 import SortByDirective from '../../../shared/sort/sort-by.directive';
 import { saveAs } from 'file-saver';
 import { DataUtils } from 'app/core/util/data-util.service';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 // Register the 'ro' locale data
 registerLocaleData(localeRo);
@@ -60,6 +61,47 @@ export class FilesComponent  implements OnInit {
     );
 
     this.handleNavigation();
+  }
+
+  getFileIcon(fileName: string): IconProp {
+    const fileExtension = fileName.split('.').pop()?.toLowerCase();
+    switch (fileExtension) {
+      case 'xlsx':
+      case 'xlsm':
+      case 'xlsb':
+      case 'xltx':
+        return 'file-excel';
+
+      case 'csv':
+        return 'file-csv';
+
+      case 'jpg':
+      case 'png':
+      case 'jpeg':
+        return 'file-image';
+
+      case 'doc':
+      case 'docm':
+      case 'docx':
+      case 'dot':
+        return 'file-word';
+
+      case 'pdf':
+        return 'file-pdf';
+
+      case 'ppt':
+      case 'pptx':
+        return 'file-powerpoint';
+
+      case 'zip':
+      case 'rar':
+      case '7z':
+      case 'tar':
+        return 'file-archive';
+        
+      default:
+        return 'file-alt';
+    }
   }
 
   openModal(fileID: number): void {
