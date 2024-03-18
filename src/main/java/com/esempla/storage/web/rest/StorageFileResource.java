@@ -2,6 +2,8 @@ package com.esempla.storage.web.rest;
 
 
 import com.esempla.storage.domain.StorageFile;
+import com.esempla.storage.report.IReport;
+import com.esempla.storage.report.ReportType;
 import com.esempla.storage.repository.StorageFileRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
 import com.esempla.storage.security.SecurityUtils;
@@ -33,10 +35,15 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 
 @RestController
@@ -73,16 +80,19 @@ public class StorageFileResource {
     private final MinioService minioService;
     private final ExcelService excelService;
     private final CsvService CsvService;
+    private Map<ReportType, IReport> map;
 
     public StorageFileResource(StorageFileService storageFileService,
                                StorageFileRepository storageFileRepository,
                                MinioService minioService, ExcelService excelService,
-                               com.esempla.storage.service.CsvService csvService) {
+                               com.esempla.storage.service.CsvService csvService,
+                               List<IReport> reports) {
         this.storageFileService = storageFileService;
         this.storageFileRepository = storageFileRepository;
         this.minioService = minioService;
         this.excelService = excelService;
         CsvService = csvService;
+        map = reports.stream().collect(Collectors.toMap(IReport::getType, Function.identity()));
     }
 
     @PostMapping("/storage-files")
@@ -212,6 +222,18 @@ public class StorageFileResource {
             .ok()
             .headers(HeaderUtil.createAlert(applicationName, "userStorageFileManagement.created", fileDTO.getName()))
             .body(fileDTO);
+    }
+
+    @GetMapping("/storage-files/export/{type}")
+    public ResponseEntity<Resource> export(@PathVariable("type") ReportType type) {
+        String filename = "files.xlsx";
+
+        byte[] bytes = map.get(type).generate();
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+            .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+            .body(new InputStreamResource( new ByteArrayInputStream(bytes)));
     }
 
     @GetMapping("/storage-files/excel-export")
