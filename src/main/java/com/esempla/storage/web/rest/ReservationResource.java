@@ -4,12 +4,12 @@ package com.esempla.storage.web.rest;
 import com.esempla.storage.domain.UserReservation;
 import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
+import com.esempla.storage.service.CsvService;
 import com.esempla.storage.service.ExcelService;
 import com.esempla.storage.service.UserReservationService;
 import com.esempla.storage.service.dto.AdminReservationDTO;
 import com.esempla.storage.service.dto.UpdateReservationDTO;
 import com.esempla.storage.web.rest.errors.BadRequestAlertException;
-import com.esempla.storage.web.rest.errors.EmailAlreadyUsedException;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,18 +25,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -63,11 +62,13 @@ public class ReservationResource {
 
     private final UserReservationRepository userReservationRepository;
     private final ExcelService excelService;
+    private final CsvService CsvService;
 
-    public ReservationResource(UserReservationService userReservationService, UserReservationRepository userReservationRepository, ExcelService excelService) {
+    public ReservationResource(UserReservationService userReservationService, UserReservationRepository userReservationRepository, ExcelService excelService, CsvService CsvService) {
         this.userReservationService = userReservationService;
         this.userReservationRepository = userReservationRepository;
         this.excelService = excelService;
+        this.CsvService = CsvService;
     }
 
     @PostMapping("/reservations")
@@ -144,15 +145,27 @@ public class ReservationResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "userReservationManagement.deleted", id.toString())).build();
     }
 
-    @GetMapping("/reservations/download")
+    @GetMapping("/reservations/excel-export")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<Resource> getFile() {
+    public ResponseEntity<Resource> excelExport() {
         String filename = "reservations.xlsx";
         InputStreamResource file = new InputStreamResource(excelService.reservationLoad());
 
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
             .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+            .body(file);
+    }
+
+    @GetMapping("/reservations/csv-export")
+    public ResponseEntity<Resource> csvExport() {
+        String filename = "reservations.csv";
+
+        InputStreamResource file = new InputStreamResource(CsvService.reservationLoad());
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+            .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
             .body(file);
     }
 }

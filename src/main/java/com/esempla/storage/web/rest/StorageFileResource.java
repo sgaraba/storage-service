@@ -5,6 +5,7 @@ import com.esempla.storage.domain.StorageFile;
 import com.esempla.storage.repository.StorageFileRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
 import com.esempla.storage.security.SecurityUtils;
+import com.esempla.storage.service.CsvService;
 import com.esempla.storage.service.ExcelService;
 import com.esempla.storage.service.StorageFileService;
 import com.esempla.storage.service.dto.AdminStorageFileDTO;
@@ -24,7 +25,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,11 +32,8 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -74,11 +71,13 @@ public class StorageFileResource {
     private final StorageFileService storageFileService;
     private final StorageFileRepository storageFileRepository;
     private final ExcelService excelService;
+    private final CsvService CsvService;
 
-    public StorageFileResource(StorageFileService storageFileService, StorageFileRepository storageFileRepository, ExcelService excelService) {
+    public StorageFileResource(StorageFileService storageFileService, StorageFileRepository storageFileRepository, ExcelService excelService, CsvService CsvService) {
         this.storageFileService = storageFileService;
         this.storageFileRepository = storageFileRepository;
         this.excelService = excelService;
+        this.CsvService = CsvService;
     }
 
     @PostMapping("/storage-files")
@@ -204,8 +203,8 @@ public class StorageFileResource {
         System.err.println("file.getOriginalFilename() = " + file.getOriginalFilename());
     }
 
-    @GetMapping("/storage-files/download")
-    public ResponseEntity<Resource> getFile() {
+    @GetMapping("/storage-files/excel-export")
+    public ResponseEntity<Resource> excelExport() {
         String filename = "files.xlsx";
 
         if(SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)){
@@ -230,4 +229,32 @@ public class StorageFileResource {
             .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
             .body(file);
     }
+
+    @GetMapping( "/storage-files/csv-export")
+    public ResponseEntity<Resource> exportToCsv() {
+        String filename = "files.csv";
+
+        if(SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)){
+            log.debug("REST request to get all Storage Files for admin");
+            InputStreamResource file = new InputStreamResource(CsvService.adminFilesLoad());
+
+            return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
+                .body(file);
+        }
+
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(() -> new StorageFileException("Current user login not found"));
+
+        log.debug("REST request to get all Storage Files for user");
+        InputStreamResource file = new InputStreamResource(CsvService.userFilesLoad(userLogin));
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = " + filename)
+            .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
+            .body(file);
+    }
+
 }
