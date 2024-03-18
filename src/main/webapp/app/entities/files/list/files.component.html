@@ -32,8 +32,14 @@
             <span jhiTranslate="files.buttons.export.title">Export</span>
           </button>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
-            <a (click)="exportListFilesToCSV()" jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
-            <a (click)="exportListFilesToExcel()" jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item">Export to Excel</a>
+            <a (click)="exportListFilesToCSV()" class="dropdown-item">
+              <fa-icon icon="file-csv"></fa-icon>
+              <span jhiTranslate="files.buttons.export.downloadCSV">Download CSV</span>
+            </a>
+            <a (click)="exportListFilesToExcel()" class="dropdown-item">
+              <fa-icon icon="file-excel"></fa-icon>
+              <span jhiTranslate="files.buttons.export.exportEXCEL">Export to Excel</span>
+            </a>
           </div>
         </div>
       </div>
@@ -70,7 +76,7 @@
               <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
               <td>{{ file.createdBy }}</td>
               <td class="d-flex justify-content-end pe-4">
-                <ul class="nav-item dropdown" ngbDropdown>
+                <ul class="nav-item dropdown" ngbDropdown placement="left-top">
                   <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle><fa-icon class="fs-4" icon="ellipsis"></fa-icon></a>
                   <ul class="dropdown-menu" ngbDropdownMenu>
                     <li class="dropdown-item" (click)="call_download_fileService(file.id)">

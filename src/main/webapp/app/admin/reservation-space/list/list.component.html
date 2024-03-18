@@ -25,10 +25,14 @@
             <span jhiTranslate="files.buttons.export.title">Export</span>
           </button>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
-            <a (click)="exportListReservationToCSV()" jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
-            <a (click)="exportListReservationToExcel()" jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item"
-              >Export to Excel</a
-            >
+            <a (click)="exportListReservationToCSV()" class="dropdown-item">
+              <fa-icon icon="file-csv"></fa-icon>
+              <span jhiTranslate="files.buttons.export.downloadCSV">Download CSV</span>
+            </a>
+            <a (click)="exportListReservationToExcel()" class="dropdown-item">
+              <fa-icon icon="file-excel"></fa-icon>
+              <span jhiTranslate="files.buttons.export.exportEXCEL">Export to Excel</span>
+            </a>
           </div>
         </div>
       </div>
@@ -96,8 +100,8 @@
             </td>
             <td>{{ reservation.createdBy }}</td>
             <td>{{ reservation.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-            <td class="text-end pe-4">
-              <ul class="nav-item dropdown" ngbDropdown>
+            <td class="d-flex justify-content-end pe-4">
+              <ul class="nav-item dropdown" ngbDropdown placement="left-top">
                 <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle>
                   <fa-icon class="fs-4" icon="ellipsis"></fa-icon>
                 </a>

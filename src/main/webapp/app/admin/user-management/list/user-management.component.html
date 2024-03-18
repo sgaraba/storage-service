@@ -23,8 +23,14 @@
             <span jhiTranslate="files.buttons.export.title">Export</span>
           </button>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
-            <a (click)="exportListUsersToCSV()" jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
-            <a (click)="exportListUsersToExcel()" jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item">Export to Excel</a>
+            <a (click)="exportListUsersToCSV()" class="dropdown-item">
+              <fa-icon icon="file-csv"></fa-icon>
+              <span jhiTranslate="files.buttons.export.downloadCSV">Download CSV</span>
+            </a>
+            <a (click)="exportListUsersToExcel()" class="dropdown-item">
+              <fa-icon icon="file-excel"></fa-icon>
+              <span jhiTranslate="files.buttons.export.exportEXCEL">Export to excel</span>
+            </a>
           </div>
         </div>
       </div>
@@ -109,7 +115,7 @@
                 <td>{{ user.lastModifiedBy }}</td>
                 <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
                 <td class="d-flex justify-content-end pe-4">
-                  <ul class="nav-item dropdown" ngbDropdown>
+                  <ul class="nav-item dropdown" ngbDropdown placement="left-top">
                     <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle><fa-icon class="fs-4" icon="ellipsis"></fa-icon></a>
                     <ul class="dropdown-menu" ngbDropdownMenu>
                       <li class="dropdown-item" [routerLink]="['./', user.login, 'edit']">
