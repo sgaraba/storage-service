@@ -72,14 +72,14 @@
             <tr *ngFor="let file of files">
               <td>
                 <a [routerLink]="['../', file.id, 'detail']">
-                  <fa-icon  class="mx-2" [icon]="getFileIcon(file.name)" [spin]="isLoading"></fa-icon>
+                  <fa-icon  class="mx-2" [icon]="getFileIcon(file.name)"></fa-icon>
                   {{ file.name }}
                 </a>
               </td>
               <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
               <td>{{ file.createdBy }}</td>
               <td class="d-flex justify-content-end pe-4">
-                <ul class="nav-item dropdown" ngbDropdown placement="left-top">
+                <ul class="nav-item dropdown m-0" ngbDropdown placement="left-top">
                   <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle><fa-icon class="fs-4" icon="ellipsis"></fa-icon></a>
                   <ul class="dropdown-menu" ngbDropdownMenu>
                     <li class="dropdown-item" (click)="call_download_fileService(file.id)">

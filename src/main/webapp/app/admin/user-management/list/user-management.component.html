@@ -43,7 +43,7 @@
 
   @if (users) {
     <div class="table-responsive">
-      <table class="table table-striped" aria-describedby="user-management-page-heading">
+      <table class="table table-hover table-striped" aria-describedby="user-management-page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
             <th scope="col" jhiSortBy="login">
