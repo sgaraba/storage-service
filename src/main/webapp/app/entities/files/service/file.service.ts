@@ -5,21 +5,19 @@ import { Pagination } from '../../../core/request/request.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../../../core/request/request-util';
 import { ApplicationConfigService } from '../../../core/config/application-config.service';
-import { AlertService } from '../../../core/util/alert.service';
 
 @Injectable({ providedIn: 'root' })
 export class FileService {
-  private resourceUrl = this.applicationConfigService.getEndpointFor('/api/storage-files-by-user/');
+  private resourceUrl = this.applicationConfigService.getEndpointFor('/api/storage-files');
 
   constructor(
     private http: HttpClient,
-    private applicationConfigService: ApplicationConfigService,
-    private alertService: AlertService
+    private applicationConfigService: ApplicationConfigService
   ) {}
 
   query(userLogin: string, req?: Pagination): Observable<HttpResponse<FileModel[]>> {
     const options = createRequestOption(req);
-    return this.http.get<FileModel[]>(`${this.resourceUrl}/${userLogin}`, { params: options, observe: 'response' });
+    return this.http.get<FileModel[]>(`${this.resourceUrl}`, { params: options, observe: 'response' });
   }
 
   find(id: number): Observable<FileModel> {
@@ -34,7 +32,19 @@ export class FileService {
     return this.http.delete(`${this.applicationConfigService.getEndpointFor('/api/storage-files/')}/${id}`);
   }
 
-  downloadFile(id: number): void  {
-    this.alertService.addAlert({ message: `Donwloading file with id: ${id}`, type: "success" });
+  downloadFile(id: number)  {
+    return this.http.get(`/api/storage-files/download/${id}`);
+  }
+
+  exportFilesToExcel(): Observable<any> {
+    return this.http.get(this.applicationConfigService.getEndpointFor('/api/storage-files/excel-export'), {
+      responseType: 'blob',
+    });
+  }
+
+  exportFilesToCSV(): Observable<any> {
+    return this.http.get(this.applicationConfigService.getEndpointFor('/api/storage-files/csv-export'), {
+      responseType: 'blob',
+    });
   }
 }

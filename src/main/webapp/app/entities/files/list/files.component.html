@@ -20,13 +20,14 @@
 
 
         <div ngbDropdown class="dropdown">
-          <button ngbDropdownToggle class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button ngbDropdownToggle class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <fa-icon icon="file-export"></fa-icon>
             <span jhiTranslate="files.buttons.export.title">Export</span>
           </button>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
-            <a jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
-            <a jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item">Export to Excel</a>
+            <a (click)="exportListFilesToCSV()" jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
+            <a (click)="exportListFilesToExcel()" jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item">Export to Excel</a>
           </div>
         </div>
       </div>
@@ -37,24 +38,23 @@
     <jhi-alert></jhi-alert>
 
     @if (files && files.length > 0) {
-      <div class="table-responsive">
+      <div class="table-responsive w-100">
         <table class="table table-striped" aria-describedby="user-files-uploaded">
           <thead>
-          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
-            <th jhiSortBy="name" scope="col">
-              <span jhiTranslate="files.table.thead.name">file name</span>
-              <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th jhiSortBy="createdDate" scope="col">
-              <span jhiTranslate="files.table.thead.last_modified">last modified</span>
-              <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th jhiSortBy="user" scope="col">
-              <span jhiTranslate="files.table.thead.user">user</span>
-              <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col"></th>
-          </tr>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
+              <th jhiSortBy="name" scope="col">
+                <span jhiTranslate="files.table.thead.name">file name</span>
+                <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th jhiSortBy="createdDate" scope="col">
+                <span jhiTranslate="files.table.thead.last_modified">last modified</span>
+                <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th scope="col">
+                <span jhiTranslate="files.table.thead.user">user</span>
+              </th>
+              <th scope="col"></th>
+            </tr>
           </thead>
           <tbody>
           <tr *ngFor="let file of files">

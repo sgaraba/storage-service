@@ -16,7 +16,7 @@
       </div>
 
       @if (fileToUpload != null) {
-        <a (click)="openFile()" class="pull-start">Deschide</a>
+        <a (click)="openFile(uploadForm.get('data')?.value, uploadForm.get('mimeType')?.value)" class="pull-start">Deschide</a>
         <div class="form-text text-danger clearfix">
           <span>Last modified: <code
             class="fw-bold">{{ fileToUpload.lastModified | date: 'dd/MM/yy HH:mm' }}</code></span>

@@ -6,6 +6,7 @@
       "thead": {
         "name": "Nume fișier",
         "size": "Mărime",
+        "mimeType": "Tipul mime",
         "last_modified": "Ultima modificare",
         "user": "Utilizator",
         "Actions": "Acțiuni"

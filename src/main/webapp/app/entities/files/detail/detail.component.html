@@ -4,8 +4,11 @@
       <h2><span jhiTranslate="files.table.thead.name">File name</span> [{{file.name}}]</h2>
 
       <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="files.table.thead.mimeType">mimeType</span></dt>
+        <dd><span>{{ file.mimeType }}</span></dd>
+
         <dt><span jhiTranslate="files.table.thead.size">Size</span></dt>
-        <dd><span>size</span></dd>
+        <dd><span>{{ fileSize }} bytes</span></dd>
 
         <dt><span jhiTranslate="files.table.thead.last_modified">Last modified</span></dt>
         <dd><span>{{file.createdDate | date: 'dd/MM/yy HH:mm'}}</span></dd>

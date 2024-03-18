@@ -14,6 +14,7 @@ import { FileModel } from '../file.model';
 export class FilesDetailComponent implements OnInit {
   file: FileModel | null = null;
   filePath!: string;
+  fileSize!: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +25,7 @@ export class FilesDetailComponent implements OnInit {
     this.route.data.subscribe(({ file }) => {
       this.file = file;
       this.filePath = file.filePath;
+      this.fileSize = file.size;
     });
   }
 

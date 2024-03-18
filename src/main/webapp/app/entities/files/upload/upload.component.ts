@@ -66,14 +66,15 @@ export class UploadComponent implements OnInit {
     return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(): void {
-    const formData = this.uploadForm.getRawValue();
-    return this.dataUtils.openFile(formData.data, formData.mimeType);
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    return this.dataUtils.openFile(base64String, contentType);
   }
 
-
   upload(): void {
+    this.isSaving = true;
+
     if (this.fileToUpload == null) {
+      this.isSaving = false;
       this.alertService.addAlert({ type: 'danger', message: 'No file data available to upload.' });
       return;
     }
