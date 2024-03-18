@@ -1,2 +1,2 @@
-org.springframework.CsvService.context.ContextCustomizerFactory = com.esempla.storage.\
+org.springframework.test.context.ContextCustomizerFactory = com.esempla.storage.\
     config.SqlTestContainersSpringContextCustomizerFactory
