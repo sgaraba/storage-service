@@ -96,16 +96,8 @@ export default class UserManagementComponent implements OnInit {
     });
   }
 
-  exportListUsersToCSV(){
-    this.userService.exportUsersToCSV().subscribe(
-      (blob: Blob) => {
-        saveAs(blob, 'list of users');
-      }
-    )
-  }
-
-  exportListUsersToExcel(){
-    this.userService.exportUsersToExcel().subscribe(
+  exportListUsers(type: string){
+    this.userService.exportUsers(type).subscribe(
       (blob: Blob) => {
         saveAs(blob, 'list of users');
       }

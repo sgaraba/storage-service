@@ -32,11 +32,11 @@
             <span jhiTranslate="files.buttons.export.title">Export</span>
           </button>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
-            <a (click)="exportListFilesToCSV()" class="dropdown-item">
+            <a (click)="exportListFiles('CSV')" class="dropdown-item">
               <fa-icon icon="file-csv"></fa-icon>
               <span jhiTranslate="files.buttons.export.downloadCSV">Download CSV</span>
             </a>
-            <a (click)="exportListFilesToExcel()" class="dropdown-item">
+            <a (click)="exportListFiles('EXCEL')" class="dropdown-item">
               <fa-icon icon="file-excel"></fa-icon>
               <span jhiTranslate="files.buttons.export.exportEXCEL">Export to Excel</span>
             </a>

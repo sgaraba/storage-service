@@ -36,14 +36,8 @@ export class FileService {
     return this.http.get(`/api/storage-files/download/${id}`);
   }
 
-  exportFilesToExcel(): Observable<any> {
-    return this.http.get(this.applicationConfigService.getEndpointFor('/api/storage-files/excel-export'), {
-      responseType: 'blob',
-    });
-  }
-
-  exportFilesToCSV(): Observable<any> {
-    return this.http.get(this.applicationConfigService.getEndpointFor('/api/storage-files/csv-export'), {
+  exportFiles(type: string): Observable<any> {
+    return this.http.get(this.applicationConfigService.getEndpointFor(`/api/storage-files/export/${type}`), {
       responseType: 'blob',
     });
   }
