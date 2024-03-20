@@ -106,19 +106,21 @@ public class StorageFileResource {
             .body(newStorageFile);
     }
 
-    @GetMapping("/storage-files")
+    @GetMapping("/admin/storage-files")
     public ResponseEntity<List<AdminStorageFileDTO>> getAllReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
 
-        if(SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)){
-            log.debug("REST request to get all Storage Files for an admin");
-            if (!onlyContainsAllowedProperties(pageable)) {
-                return ResponseEntity.badRequest().build();
-            }
-
-            final Page<AdminStorageFileDTO> page = storageFileService.getAllManagedStorageFiles(pageable);
-            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-            return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        log.debug("REST request to get all Storage Files for an admin");
+        if (!onlyContainsAllowedProperties(pageable)) {
+            return ResponseEntity.badRequest().build();
         }
+
+        final Page<AdminStorageFileDTO> page = storageFileService.getAllManagedStorageFiles(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/storage-files")
+    public ResponseEntity<List<AdminStorageFileDTO>> getUserReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
 
         String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         log.debug("REST request to get Storage Files by User : {}", login);
