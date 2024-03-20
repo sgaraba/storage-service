@@ -11,7 +11,7 @@
   </div>
   }
   </div>
-  <div class="w-40">
+  <div class="d-flex flex-column align-items-center">
     @if (account !== null) {
     <div class="alert alert-success">
       @if (account) {
@@ -20,6 +20,9 @@
         account.login }}&quot;.</span>
       }
     </div>
+    @if (account !== null) {
+      <div ><img src="../../content/images/public_cloud.png" alt=" "></div>
+    }
     } @else {
     <div class="alert alert-warning">
       <span jhiTranslate="global.messages.info.authenticated.prefix">Dacă doriți</span>
