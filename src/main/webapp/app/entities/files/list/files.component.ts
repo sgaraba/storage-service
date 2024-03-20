@@ -161,14 +161,21 @@ export class FilesComponent  implements OnInit {
   }
 
   transition(): void {
+    let queryParams: any = {
+      page: this.page,
+      sort: `${this.predicate},${this.ascending ? ASC : DESC}`,
+    };
+  
+    if (this.page_list_all !== null) {
+      queryParams['list_all'] = this.page_list_all.toString();
+    }
+  
     this.router.navigate(['./list'], {
       relativeTo: this.activatedRoute.parent,
-      queryParams: {
-        page: this.page,
-        sort: `${this.predicate},${this.ascending ? ASC : DESC}`,
-      },
+      queryParams: queryParams,
     });
   }
+  
 
   private base64Decode(base64String: string): Uint8Array {
       const byteString = atob(base64String);
@@ -191,6 +198,7 @@ export class FilesComponent  implements OnInit {
       const sort = (params.get(SORT) ?? data['defaultSort']).split(',');
       this.predicate = sort[0];
       this.ascending = sort[1] === ASC;
+
       this.loadAll();
     });
   }
