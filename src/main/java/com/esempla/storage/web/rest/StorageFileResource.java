@@ -7,8 +7,6 @@ import com.esempla.storage.report.ReportType;
 import com.esempla.storage.repository.StorageFileRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
 import com.esempla.storage.security.SecurityUtils;
-import com.esempla.storage.service.CsvService;
-import com.esempla.storage.service.ExcelService;
 import com.esempla.storage.service.MinioService;
 import com.esempla.storage.service.StorageFileService;
 import com.esempla.storage.service.dto.AdminStorageFileDTO;
@@ -19,8 +17,6 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -35,7 +31,6 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -78,20 +73,15 @@ public class StorageFileResource {
     private final StorageFileService storageFileService;
     private final StorageFileRepository storageFileRepository;
     private final MinioService minioService;
-    private final ExcelService excelService;
-    private final CsvService CsvService;
-    private Map<ReportType, IReport> map;
+    private final Map<ReportType, IReport> map;
 
     public StorageFileResource(StorageFileService storageFileService,
                                StorageFileRepository storageFileRepository,
-                               MinioService minioService, ExcelService excelService,
-                               com.esempla.storage.service.CsvService csvService,
+                               MinioService minioService,
                                List<IReport> reports) {
         this.storageFileService = storageFileService;
         this.storageFileRepository = storageFileRepository;
         this.minioService = minioService;
-        this.excelService = excelService;
-        CsvService = csvService;
         map = reports.stream().collect(Collectors.toMap(IReport::getType, Function.identity()));
     }
 
@@ -111,19 +101,21 @@ public class StorageFileResource {
             .body(newStorageFile);
     }
 
-    @GetMapping("/storage-files")
+    @GetMapping("/admin/storage-files")
     public ResponseEntity<List<AdminStorageFileDTO>> getAllReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
 
-        if(SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)){
-            log.debug("REST request to get all Storage Files for an admin");
-            if (!onlyContainsAllowedProperties(pageable)) {
-                return ResponseEntity.badRequest().build();
-            }
-
-            final Page<AdminStorageFileDTO> page = storageFileService.getAllManagedStorageFiles(pageable);
-            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-            return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        log.debug("REST request to get all Storage Files for an admin");
+        if (!onlyContainsAllowedProperties(pageable)) {
+            return ResponseEntity.badRequest().build();
         }
+
+        final Page<AdminStorageFileDTO> page = storageFileService.getAllManagedStorageFiles(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/storage-files")
+    public ResponseEntity<List<AdminStorageFileDTO>> getUserReservations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
 
         String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         log.debug("REST request to get Storage Files by User : {}", login);
@@ -225,69 +217,33 @@ public class StorageFileResource {
     }
 
     @GetMapping("/storage-files/export/{type}")
-    public ResponseEntity<Resource> export(@PathVariable("type") ReportType type) {
-        String filename = "files.xlsx";
+    public ResponseEntity<byte[]> export(@PathVariable("type") ReportType type) {
+        String filename = "files";
 
-        byte[] bytes = map.get(type).generate();
-
-        return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-            .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-            .body(new InputStreamResource( new ByteArrayInputStream(bytes)));
-    }
-
-    @GetMapping("/storage-files/excel-export")
-    public ResponseEntity<Resource> excelExport() {
-        String filename = "files.xlsx";
-
-        if(SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)){
-            log.debug("REST request to get all Storage Files for admin");
-            InputStreamResource file = new InputStreamResource(excelService.adminFilesLoad());
+        if(SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            log.debug("REST request to get Storage Files report for admin");
+            List<StorageFile> files = storageFileRepository.findAll();
+            byte[] bytes = map.get(type).generateFilesReport(files);
 
             return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-                .body(file);
-            }
-
-        String userLogin = SecurityUtils
-            .getCurrentUserLogin()
-            .orElseThrow(() -> new StorageFileException("Current user login not found"));
-
-        log.debug("REST request to get all Storage Files for user");
-        InputStreamResource file = new InputStreamResource(excelService.userFilesLoad(userLogin));
-
-        return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-            .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-            .body(file);
-    }
-
-    @GetMapping( "/storage-files/csv-export")
-    public ResponseEntity<Resource> exportToCsv() {
-        String filename = "files.csv";
-
-        if(SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)){
-            log.debug("REST request to get all Storage Files for admin");
-            InputStreamResource file = new InputStreamResource(CsvService.adminFilesLoad());
-
-            return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-                .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
-                .body(file);
+                .contentType(MediaType.parseMediaType(map.get(type).getMediaType()))
+                .body(bytes);
         }
 
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(() -> new StorageFileException("Current user login not found"));
 
-        log.debug("REST request to get all Storage Files for user");
-        InputStreamResource file = new InputStreamResource(CsvService.userFilesLoad(userLogin));
+        List<StorageFile> files = storageFileRepository.findAllByUserLogin(userLogin);
+        log.debug("REST request to get Storage Files report for user");
+
+        byte[] bytes = map.get(type).generateFilesReport(files);
 
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = " + filename)
-            .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
-            .body(file);
-    }
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+            .contentType(MediaType.parseMediaType(map.get(type).getMediaType()))
+            .body(bytes);
 
+    }
 }
