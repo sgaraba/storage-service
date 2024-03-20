@@ -1,27 +1,25 @@
-<section class="d-flex flex-column min-vh-100">
-  <div>
-    <router-outlet name="navbar"></router-outlet>
-  </div>
+<div>
+  <router-outlet name="navbar"></router-outlet>
+</div>
 
-  <div class="container-fluid d-flex p-0">
-    @if (account !== null) {
-      <router-outlet name="sidebar"></router-outlet>
-    }
-    <div class="flex-fill">
+<div class="container-fluid d-flex">
+  @if (account !== null) {
+  <router-outlet name="sidebar"></router-outlet>
+  }
+  <div class="flex-fill">
+    <div class="card jh-card">
       @if (account !== null) {
-      <div class="card jh-card">
-          <div>
-            <xng-breadcrumb>
-              <ng-container *xngBreadcrumbItem="let breadcrumb; let info = info">
-                <ng-container>{{ info || (breadcrumb | translate)}}</ng-container>
-              </ng-container>
-            </xng-breadcrumb>
-          </div>
+      <div>
+        <xng-breadcrumb>
+          <ng-container *xngBreadcrumbItem="let breadcrumb; let info = info">
+            <ng-container>{{ info || (breadcrumb | translate)}}</ng-container>
+          </ng-container>
+        </xng-breadcrumb>
       </div>
-    }
-    <router-outlet></router-outlet>
+      }
+      <router-outlet></router-outlet>
     </div>
-  </div>
 
-  <jhi-footer class="mt-auto"></jhi-footer>
-</section>
+    <jhi-footer></jhi-footer>
+  </div>
+</div>

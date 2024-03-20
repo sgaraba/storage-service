@@ -9,6 +9,8 @@ import { PasswordResetInitService } from './password-reset-init.service';
   standalone: true,
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
   templateUrl: './password-reset-init.component.html',
+  styleUrl: '../../../home/home.component.scss'
+
 })
 export default class PasswordResetInitComponent implements AfterViewInit {
   @ViewChild('email', { static: false })

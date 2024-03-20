@@ -11,6 +11,8 @@ import { PasswordResetFinishService } from './password-reset-finish.service';
   standalone: true,
   imports: [SharedModule, RouterModule, FormsModule, ReactiveFormsModule, PasswordStrengthBarComponent],
   templateUrl: './password-reset-finish.component.html',
+  styleUrl: '../../../home/home.component.scss'
+
 })
 export default class PasswordResetFinishComponent implements OnInit, AfterViewInit {
   @ViewChild('newPassword', { static: false })

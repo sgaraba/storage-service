@@ -1,9 +1,6 @@
 /* ==========================================================================
 Main page styles
 ========================================================================== */
-* {
-  color: #d8f5fb;
-}
 
 .hipster {
   display: inline-block;
@@ -13,59 +10,40 @@ Main page styles
   background-size: contain;
 }
 
-.bg {
-  background-image: url('../../content/images/home_main.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100vh;
+div {
+  overflow: hidden;
 }
 
-.nElement {
-  background: none;
-}
-
-#title {
-  font-weight: bold;
-  font-size: 22px;
-  text-shadow: #d8f5fb 1px 0 10px;
+img {
+  max-width: 80vh;
 }
 
 .text {
-  position: relative;
-  top: 20vh;
-  left: 10vh;
+  max-width: 70vh;
+}
+
+#home {
+  // height: 50vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5%;
 }
 
 button {
-  background-color: rgba(14, 41, 59, 255);
-  color: white;
-  border: 1px solid white;
+  background-color: rgb(255, 203, 108);
+  border: none;
   border-radius: 45px;
   padding: 1vh 3vh;
-}
-
-button:hover {
-  box-shadow: 0px 4px 10px #d8f5fb;
-}
-
-a {
-  text-decoration: none;
-}
-
-a:hover {
-  color: white;
-  text-shadow: #d8f5fb 1px 0 10px;;
-}
-
-input {
-  color: black;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
 }
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and (-moz-min-device-pixel-ratio: 2),
-only screen and (-o-min-device-pixel-ratio: 2/1),
-only screen and (min-resolution: 192dpi),
-only screen and (min-resolution: 2dppx) {
+  only screen and (-moz-min-device-pixel-ratio: 2),
+  only screen and (-o-min-device-pixel-ratio: 2/1),
+  only screen and (min-resolution: 192dpi),
+  only screen and (min-resolution: 2dppx) {
   .hipster {
     background: url('../../content/images/jhipster_family_member_2.svg') no-repeat center top;
     background-size: contain;
