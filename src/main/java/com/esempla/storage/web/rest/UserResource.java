@@ -3,6 +3,8 @@ package com.esempla.storage.web.rest;
 import com.esempla.storage.config.Constants;
 import com.esempla.storage.domain.User;
 import com.esempla.storage.domain.UserReservation;
+import com.esempla.storage.report.IReport;
+import com.esempla.storage.report.ReportType;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.security.AuthoritiesConstants;
@@ -16,8 +18,6 @@ import jakarta.validation.constraints.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,10 +34,9 @@ import tech.jhipster.web.util.ResponseUtil;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing users.
@@ -94,20 +93,23 @@ public class UserResource {
     private final UserRepository userRepository;
 
     private final MailService mailService;
-    private final ExcelService excelService;
     private final UserReservationService userReservationService;
     private final UserReservationRepository userReservationRepository;
-    private final CsvService CsvService;
+    private final Map<ReportType, IReport> map;
 
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserReservationService userReservationService, ExcelService excelService, UserReservationRepository userReservationRepository, CsvService CsvService) {
+    public UserResource(UserService userService,
+                        UserRepository userRepository,
+                        MailService mailService,
+                        UserReservationService userReservationService,
+                        UserReservationRepository userReservationRepository,
+                        List<IReport> reports) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
-        this.excelService = excelService;
         this.userReservationService = userReservationService;
         this.userReservationRepository = userReservationRepository;
-        this.CsvService = CsvService;
+        map = reports.stream().collect(Collectors.toMap(IReport::getType, Function.identity()));
     }
 
     /**
@@ -224,27 +226,18 @@ public class UserResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "userManagement.deleted", login)).build();
     }
 
-    @GetMapping("/users/excel-export")
+    @GetMapping("/users/export/{type}")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<Resource> excelExport() {
-        String filename = "users.xlsx";
-        InputStreamResource file = new InputStreamResource(excelService.usersLoad());
+    public ResponseEntity<byte[]> export(@PathVariable("type") ReportType type) {
+        String filename = "users";
+
+        List<User> users = userRepository.findAll();
+        byte[] bytes = map.get(type).generateUsersReport(users);
 
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-            .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-            .body(file);
-    }
+            .contentType(MediaType.parseMediaType(map.get(type).getMediaType()))
+            .body(bytes);
 
-    @GetMapping( "/users/csv-export")
-    public ResponseEntity<Resource> exportToCsv() {
-        String filename = "users.csv";
-
-        InputStreamResource file = new InputStreamResource(CsvService.usersLoad());
-
-        return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = " + filename)
-            .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
-            .body(file);
     }
 }
