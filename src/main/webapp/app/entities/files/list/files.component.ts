@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FileModel } from 'app/entities/files/file.model';
 import { FileService } from 'app/entities/files/service/file.service';
 import SharedModule from 'app/shared/shared.module';
@@ -7,13 +7,11 @@ import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { combineLatest, Subject } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Alert, AlertService } from '../../../core/util/alert.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { registerLocaleData } from '@angular/common';
 import localeRo from '@angular/common/locales/ro';
 import {DeleteComponent} from "../delete/delete.component";
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { User } from '../../../admin/user-management/user-management.model';
 import { ASC, DESC, SORT } from '../../../config/navigation.constants';
 import { ITEMS_PER_PAGE } from '../../../config/pagination.constants';
 import SortDirective from '../../../shared/sort/sort.directive';
@@ -34,6 +32,8 @@ registerLocaleData(localeRo);
 })
 export class FilesComponent  implements OnInit {
   currentAccount: Account | null = null;
+  page_list_all: boolean = false;
+  isAdmin: boolean = false;
 
   files: FileModel[] | null = null;
   page!: number;
@@ -47,7 +47,6 @@ export class FilesComponent  implements OnInit {
   constructor(
     private accountService: AccountService,
     private fileService: FileService,
-    private alertService: AlertService,
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -57,6 +56,9 @@ export class FilesComponent  implements OnInit {
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
         this.currentAccount = account;
+        for (let i = 0; i < account!.authorities.length; i++)
+          if(account!.authorities[i] == 'ROLE_ADMIN')
+            this.isAdmin = true;
       }
     );
 
@@ -144,7 +146,7 @@ export class FilesComponent  implements OnInit {
   loadAll(): void {
     this.isLoading = true;
     this.fileService
-      .query(this.currentAccount?.login ?? '', {
+      .query(this.page_list_all ? this.isAdmin : false, {
         page: this.page - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
@@ -179,6 +181,11 @@ export class FilesComponent  implements OnInit {
 
   private handleNavigation(): void {
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
+      //check if is selected page list all documents
+      this.page_list_all = this.activatedRoute.snapshot.queryParamMap.get('list_all') === 'true';
+      if(this.page_list_all == null) this.page_list_all = false;
+
+      //standart queries params
       const page = params.get('page');
       this.page = +(page ?? 1);
       const sort = (params.get(SORT) ?? data['defaultSort']).split(',');

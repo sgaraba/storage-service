@@ -11,13 +11,14 @@
           </button>
         </div>
 
-        <div>
-          <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['../upload']">
-            <fa-icon icon="plus"></fa-icon>
-            <span jhiTranslate="files.buttons.upload">Upload new file</span>
-          </button>
-        </div>
-
+        @if (!page_list_all) {
+          <div>
+            <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['../upload']">
+              <fa-icon icon="plus"></fa-icon>
+              <span jhiTranslate="files.buttons.upload">Upload new file</span>
+            </button>
+          </div>
+        }
         <div ngbDropdown class="dropdown">
           <button
             ngbDropdownToggle
@@ -72,7 +73,7 @@
             <tr *ngFor="let file of files">
               <td>
                 <a [routerLink]="['../', file.id, 'detail']">
-                  <fa-icon  class="mx-2" [icon]="getFileIcon(file.name)"></fa-icon>
+                  <fa-icon class="mx-2" [icon]="getFileIcon(file.name)"></fa-icon>
                   {{ file.name }}
                 </a>
               </td>
@@ -84,7 +85,7 @@
                   <ul class="dropdown-menu" ngbDropdownMenu>
                     <li class="dropdown-item" (click)="call_download_fileService(file.id)">
                       <fa-icon icon="download"></fa-icon>
-                      <span  jhiTranslate="entity.action.download">Download</span>
+                      <span jhiTranslate="entity.action.download">Download</span>
                     </li>
                     <li class="dropdown-item" (click)="openModal(file.id)">
                       <fa-icon icon="trash-alt"></fa-icon>
