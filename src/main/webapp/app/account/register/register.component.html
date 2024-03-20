@@ -105,17 +105,17 @@
       }
       </div>
       <div class="mb-3">
-        <label class="form-label" for="reservedSize" jhiTranslate="global.form.reservedSize.label">MB pentru
+        <label class="form-label" for="rezervationSize" jhiTranslate="global.form.reservedSize.label">MB pentru
           alocare</label>
-        <input type="number" class="form-control" id="reservedSize" name="reservedSize"
-          formControlName="reservedSize" data-cy="reservedSize" (keypress)="numericOnly($event)" />
+        <input type="number" class="form-control" id="rezervationSize" name="rezervationSize"
+          formControlName="rezervationSize" data-cy="rezervationSize" (keypress)="numericOnly($event)" />
 
         @if (
-        registerForm.get('reservedSize')!.invalid &&
-        (registerForm.get('reservedSize')!.dirty || registerForm.get('reservedSize')!.touched)
+        registerForm.get('rezervationSize')!.invalid &&
+        (registerForm.get('rezervationSize')!.dirty || registerForm.get('rezervationSize')!.touched)
         ) {
       <div>
-        @if (registerForm.get('reservedSize')?.errors?.required) {
+        @if (registerForm.get('rezervationSize')?.errors?.required) {
         <small class="form-text text-danger" jhiTranslate="global.messages.validate.reservedSize.required">MB de
           alocat sunt necesari.</small>
         }
