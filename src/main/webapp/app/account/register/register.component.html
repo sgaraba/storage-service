@@ -1,34 +1,34 @@
-<div>
+<div [ngStyle]="{'background': 'rgba(14, 41, 59, 255)', 'height': '100vh'}">
   <div class="d-flex justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-8 mt-5">
       <h1 jhiTranslate="register.title" data-cy="registerTitle">Înregistrare</h1>
 
       @if (success) {
-      <div class="alert alert-success" jhiTranslate="register.messages.success">
+      <div class="alert alert-success text-dark" jhiTranslate="register.messages.success">
         <strong>Înregistrare salvată!</strong> Vă rugăm să vă verificați emailul pentru confirmare.
       </div>
       }
 
       @if (error) {
-      <div class="alert alert-danger" jhiTranslate="register.messages.error.fail">
+      <div class="alert alert-danger text-dark" jhiTranslate="register.messages.error.fail">
         <strong>Inregistrare eșuată!</strong> Vă rugăm să încercați mai tarziu.
       </div>
       }
 
       @if (errorUserExists) {
-      <div class="alert alert-danger" jhiTranslate="register.messages.error.userexists">
+      <div class="alert alert-danger text-dark" jhiTranslate="register.messages.error.userexists">
         <strong>Acest nume de utilizator este deja folosit de altcineva!</strong> Vă rugăm să alegeți altul.
       </div>
       }
 
       @if (errorEmailExists) {
-      <div class="alert alert-danger" jhiTranslate="register.messages.error.emailexists">
+      <div class="alert alert-danger text-dark" jhiTranslate="register.messages.error.emailexists">
         <strong>Acest email a mai fost folosit!</strong> Vă rugăm să alegeți altul.
       </div>
       }
 
       @if (doNotMatch) {
-      <div class="alert alert-danger" jhiTranslate="global.messages.error.dontmatch">Parola și confirmarea ei nu
+      <div class="alert alert-danger text-dark" jhiTranslate="global.messages.error.dontmatch">Parola și confirmarea ei nu
         corespund!</div>
       }
     </div>
@@ -193,7 +193,7 @@
     </div>
   </div>
   <span class="d-flex">
-    <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary"
+    <button type="submit" [disabled]="registerForm.invalid"
       jhiTranslate="register.form.button" data-cy="submit">
       Înregistrare
     </button>

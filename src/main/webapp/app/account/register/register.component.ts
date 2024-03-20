@@ -14,6 +14,7 @@ import { RegisterService } from './register.service';
   standalone: true,
   imports: [SharedModule, RouterModule, FormsModule, ReactiveFormsModule, PasswordStrengthBarComponent],
   templateUrl: './register.component.html',
+  styleUrl: '../../home/home.component.scss'
 })
 export default class RegisterComponent implements AfterViewInit {
   @ViewChild('login', { static: false })
@@ -43,7 +44,7 @@ export default class RegisterComponent implements AfterViewInit {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
     }),
-    rezervationSize: new FormControl('', {
+    reservedSize: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required],
     }),
@@ -80,9 +81,9 @@ export default class RegisterComponent implements AfterViewInit {
     if (password !== confirmPassword) {
       this.doNotMatch = true;
     } else {
-      const { login, email, rezervationSize } = this.registerForm.getRawValue();
+      const { login, email, reservedSize } = this.registerForm.getRawValue();
       this.registerService
-        .save({ login, email, password, rezervationSize, langKey: this.translateService.currentLang })
+        .save({ login, email, password, reservedSize, langKey: this.translateService.currentLang })
         .subscribe({ next: () => (this.success = true), error: response => this.processError(response) });
     }
   }
