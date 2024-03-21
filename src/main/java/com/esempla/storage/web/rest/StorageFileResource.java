@@ -72,16 +72,13 @@ public class StorageFileResource {
 
     private final StorageFileService storageFileService;
     private final StorageFileRepository storageFileRepository;
-    private final MinioService minioService;
     private final Map<ReportType, IReport> map;
 
     public StorageFileResource(StorageFileService storageFileService,
                                StorageFileRepository storageFileRepository,
-                               MinioService minioService,
                                List<IReport> reports) {
         this.storageFileService = storageFileService;
         this.storageFileRepository = storageFileRepository;
-        this.minioService = minioService;
         map = reports.stream().collect(Collectors.toMap(IReport::getType, Function.identity()));
     }
 
@@ -186,7 +183,11 @@ public class StorageFileResource {
     public ResponseEntity<UploadFileDTO> modifyStorageFile(@PathVariable("id") Long id, @Valid @RequestBody UploadFileDTO uploadFileDTO) {
         log.debug("REST request to modify Storage File : {}", id);
 
-        UploadFileDTO updatedStorageFile = storageFileService.modifyStorageFile(id, uploadFileDTO);
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(() -> new StorageFileException("Current user login not found"));
+
+        UploadFileDTO updatedStorageFile = storageFileService.modifyStorageFile(id, uploadFileDTO, userLogin);
 
         return ResponseEntity
             .ok()
@@ -217,11 +218,7 @@ public class StorageFileResource {
             throw new BadRequestAlertException("Storage File with that name already exists!", "userStorageFileManagement", "nameexists");
         }
 
-        String objectName = UUID.randomUUID().toString();
-
-        minioService.uploadObject(objectName, uploadFileDTO.getData(), uploadFileDTO.getMimeType(), userLogin);
-
-        StorageFile storageFile = storageFileService.uploadNewFile(uploadFileDTO, userLogin, objectName);
+        StorageFile storageFile = storageFileService.uploadNewFile(uploadFileDTO, userLogin);
 
         //adaugat schimb automat de usedSize la rezervare
 

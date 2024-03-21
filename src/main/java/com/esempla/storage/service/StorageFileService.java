@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class StorageFileService {
@@ -54,9 +55,13 @@ public class StorageFileService {
         return storageFile;
     }
 
-    public StorageFile uploadNewFile(UploadFileDTO uploadFileDTO, String userLogin, String objectName){
+    public StorageFile uploadNewFile(UploadFileDTO uploadFileDTO, String userLogin){
         User user = userRepository.findOneByLogin(userLogin)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        String objectName = UUID.randomUUID().toString();
+        minioService.uploadObject(objectName, uploadFileDTO.getData(), uploadFileDTO.getMimeType(), userLogin);
+
 
         StorageFile storageFile = new StorageFile();
         storageFile.setName(uploadFileDTO.getName());
@@ -87,16 +92,21 @@ public class StorageFileService {
             .map(AdminStorageFileDTO::new);
     }
 
-    public UploadFileDTO modifyStorageFile(Long id, UploadFileDTO uploadFileDTO){
+    public UploadFileDTO modifyStorageFile(Long id, UploadFileDTO uploadFileDTO, String userLogin){
         StorageFile storageFile = storageFileRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        String objectName = storageFile.getPath().substring(storageFile.getPath().lastIndexOf('/') + 1);
+
+        minioService.uploadObject(objectName, uploadFileDTO.getData(), uploadFileDTO.getMimeType(), userLogin);
+
 
         storageFile.setName(uploadFileDTO.getName());
         storageFile.setSize((long) uploadFileDTO.getData().length);
         storageFile.setMimeType(uploadFileDTO.getMimeType());
         storageFileRepository.save(storageFile);
 
-        return new UploadFileDTO(storageFile);
+        return uploadFileDTO;
     }
 
     public UploadFileDTO getFile(long id) throws IOException {
