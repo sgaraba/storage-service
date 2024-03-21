@@ -23,8 +23,14 @@
             <span jhiTranslate="files.buttons.export.title">Export</span>
           </button>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
-            <a (click)="exportListUsersToCSV()" jhiTranslate="files.buttons.export.downloadCSV" class="dropdown-item">Download CSV</a>
-            <a (click)="exportListUsersToExcel()" jhiTranslate="files.buttons.export.exportEXCEL" class="dropdown-item">Export to Excel</a>
+            <a (click)="exportListUsers('CSV')" class="dropdown-item">
+              <fa-icon icon="file-csv"></fa-icon>
+              <span jhiTranslate="files.buttons.export.downloadCSV">Download CSV</span>
+            </a>
+            <a (click)="exportListUsers('EXCEL')" class="dropdown-item">
+              <fa-icon icon="file-excel"></fa-icon>
+              <span jhiTranslate="files.buttons.export.exportEXCEL">Export to excel</span>
+            </a>
           </div>
         </div>
       </div>
@@ -37,11 +43,20 @@
 
   @if (users) {
     <div class="table-responsive">
-      <table class="table table-striped" aria-describedby="user-management-page-heading">
+      <table class="table table-hover table-striped" aria-describedby="user-management-page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
-            <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col" jhiSortBy="login"><span jhiTranslate="userManagement.login">Cont</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col" jhiSortBy="login">
+              <span jhiTranslate="userManagement.login">Cont</span> 
+              <fa-icon icon="sort"></fa-icon>
+            </th>
+            <th scope="col" jhiSortBy="firstName">
+              <span jhiTranslate="userManagement.firstName">Nume</span> <fa-icon icon="sort"></fa-icon>
+            </th>
+            <th scope="col" jhiSortBy="lastName">
+              <span jhiTranslate="userManagement.lastName">Prenume</span> 
+              <fa-icon icon="sort"></fa-icon>
+            </th>
             <th scope="col" jhiSortBy="email"><span jhiTranslate="userManagement.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
             <th scope="col"></th>
             <th scope="col" jhiSortBy="langKey">
@@ -64,10 +79,9 @@
           <tbody>
             @for (user of users; track trackIdentity) {
               <tr>
-                <td>
-                  <a [routerLink]="['./', user.login, 'view']">{{ user.id }}</a>
-                </td>
-                <td>{{ user.login }}</td>
+                <td><a [routerLink]="['./', user.login, 'view']">{{ user.login }}</a></td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
                 <td>{{ user.email }}</td>
                 <td>
                   @if (!user.activated) {
@@ -100,33 +114,20 @@
                 <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
                 <td>{{ user.lastModifiedBy }}</td>
                 <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
-                <td class="text-end">
-                  <div class="btn-group">
-                    <button type="submit" [routerLink]="['./', user.login, 'view']" class="btn btn-info btn-sm">
-                      <fa-icon icon="eye"></fa-icon>
-                      <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vizualizare</span>
-                    </button>
-
-                    <button
-                      type="submit"
-                      [routerLink]="['./', user.login, 'edit']"
-                      queryParamsHandling="merge"
-                      class="btn btn-primary btn-sm"
-                    >
-                      <fa-icon icon="pencil-alt"></fa-icon>
-                      <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editare</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      (click)="deleteUser(user)"
-                      class="btn btn-danger btn-sm"
-                      [disabled]="!currentAccount || currentAccount.login === user.login"
-                    >
-                      <fa-icon icon="times"></fa-icon>
-                      <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Ștergere</span>
-                    </button>
-                  </div>
+                <td class="d-flex justify-content-end pe-4">
+                  <ul class="nav-item dropdown" ngbDropdown placement="left-top">
+                    <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle><fa-icon class="fs-4" icon="ellipsis"></fa-icon></a>
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                      <li class="dropdown-item" [routerLink]="['./', user.login, 'edit']">
+                        <fa-icon icon="download"></fa-icon>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editare</span>
+                      </li>
+                      <li class="dropdown-item" (click)="deleteUser(user)">
+                        <fa-icon icon="trash-alt"></fa-icon>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Ștergere</span>
+                      </li>
+                    </ul>
+                  </ul>
                 </td>
               </tr>
             }

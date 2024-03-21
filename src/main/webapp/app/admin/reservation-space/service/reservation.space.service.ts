@@ -36,14 +36,8 @@ export class ReservationSpaceService{
     return this.http.get<ReservationModel[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  exportReservationsToExcel(): Observable<any> {
-    return this.http.get(this.applicationConfigService.getEndpointFor('/api/admin/reservations/excel-export'), {
-      responseType: 'blob',
-    });
-  }
-
-  exportReservationsToCSV(): Observable<any> {
-    return this.http.get(this.applicationConfigService.getEndpointFor('/api/admin/reservations/csv-export'), {
+  exportReservations(type: string): Observable<any> {
+    return this.http.get(this.applicationConfigService.getEndpointFor(`/api/admin/reservations/export/${type}`), {
       responseType: 'blob',
     });
   }

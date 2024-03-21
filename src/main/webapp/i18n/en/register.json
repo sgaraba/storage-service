@@ -2,7 +2,8 @@
   "register": {
     "title": "Registration",
     "form": {
-      "button": "Register"
+      "buttonReg": "Register",
+      "buttonCancel": "Cancel"
     },
     "messages": {
       "validate": {
