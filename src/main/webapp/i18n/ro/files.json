@@ -1,7 +1,7 @@
 {
   "files": {
     "title": "Lista cu documente personale",
-    "home": "Documente",
+    "home": "Documente personale",
     "table": {
       "thead": {
         "name": "Nume fișier",

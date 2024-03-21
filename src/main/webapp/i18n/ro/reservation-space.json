@@ -10,6 +10,11 @@
         "createdBy": "Creat de",
         "createdDate": "Dată creare",
         "actions": "Acțiuni"
+      },
+
+      "action": {
+        "edit": "Schimbă rezervarea totală",
+        "delete": "Șterge rezervarea"
       }
     },
 

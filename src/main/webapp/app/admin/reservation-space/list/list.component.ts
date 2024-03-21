@@ -112,16 +112,8 @@ export class ListComponent implements OnInit {
     });
   }
 
-  exportListReservationToCSV(){
-    this.reservationSpaceService.exportReservationsToCSV().subscribe(
-      (blob: Blob) => {
-        saveAs(blob, 'list of reservations');
-      }
-    )
-  }
-
-  exportListReservationToExcel(){
-    this.reservationSpaceService.exportReservationsToExcel().subscribe(
+  exportListReservation(type: string){
+    this.reservationSpaceService.exportReservations(type).subscribe(
       (blob: Blob) => {
         saveAs(blob, 'list of reservations');
       }

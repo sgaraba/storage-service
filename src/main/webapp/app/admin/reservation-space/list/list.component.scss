@@ -2,6 +2,10 @@ button{
   border: none;
 }
 
+.dropdown-toggle-no-arrow::after {
+  display: none;
+}
+
 @media only screen and (max-width: 1100px) {
   .adaptive-width{
     width: 80svw;
