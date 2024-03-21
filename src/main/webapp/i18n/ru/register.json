@@ -2,7 +2,8 @@
   "register": {
     "title": "Регистрация",
     "form": {
-      "button": "Зарегистрироваться"
+      "button_reg": "Зарегистрироваться",
+      "button_cancel": "Отменить"
     },
     "messages": {
       "validate": {
