@@ -5,6 +5,7 @@ import com.esempla.storage.domain.User;
 import com.esempla.storage.repository.StorageFileRepository;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.service.dto.AdminStorageFileDTO;
+import com.esempla.storage.service.dto.AdminUserDTO;
 import com.esempla.storage.service.dto.UploadFileDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,6 +123,8 @@ public class StorageFileService {
             });
     }
 
+
+
     @Transactional(readOnly = true)
     public Page<AdminStorageFileDTO> getAllManagedStorageFiles(Pageable pageable) {
         return storageFileRepository.findAll(pageable).map(AdminStorageFileDTO::new);
@@ -130,5 +133,15 @@ public class StorageFileService {
     @Transactional(readOnly = true)
     public Page<AdminStorageFileDTO> getStorageFilesByUserLogin(String login, Pageable pageable) {
         return storageFileRepository.findAllByUserLogin(login, pageable).map(AdminStorageFileDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AdminStorageFileDTO> search(String query, Pageable pageable) {
+        return storageFileRepository.findByDynamicQuery(query, pageable).map(AdminStorageFileDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AdminStorageFileDTO> userSearch(String query, String login, Pageable pageable) {
+        return storageFileRepository.findByDynamicQueryForUser(query, login, pageable).map(AdminStorageFileDTO::new);
     }
 }

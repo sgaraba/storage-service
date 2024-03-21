@@ -126,7 +126,33 @@ public class StorageFileResource {
         final Page<AdminStorageFileDTO> page = storageFileService.getStorageFilesByUserLogin(login, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
+    @GetMapping("/admin/storage-files/search")
+    public ResponseEntity<List<AdminStorageFileDTO>> adminSearch (@RequestParam(value = "query") String query, @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+
+        log.debug("REST request to get all Storage Files for an admin");
+        if (!onlyContainsAllowedProperties(pageable)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        final Page<AdminStorageFileDTO> page = storageFileService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/storage-files/search")
+    public ResponseEntity<List<AdminStorageFileDTO>> userSearch (@RequestParam(value = "query") String query, @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        log.debug("REST request to get Storage Files by User : {}", login);
+        if (!onlyContainsAllowedProperties(pageable)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        final Page<AdminStorageFileDTO> page = storageFileService.userSearch(query, login, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     private boolean onlyContainsAllowedProperties(Pageable pageable) {
