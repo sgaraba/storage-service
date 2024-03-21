@@ -2,7 +2,8 @@
   "register": {
     "title": "Înregistrare",
     "form": {
-      "button": "Înregistrare"
+      "buttonReg": "Înregistrare",
+      "buttonCancel": "Anulare"
     },
     "messages": {
       "validate": {
