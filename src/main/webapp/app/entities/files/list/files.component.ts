@@ -10,7 +10,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { registerLocaleData } from '@angular/common';
 import localeRo from '@angular/common/locales/ro';
-import {DeleteComponent} from "../delete/delete.component";
+import { DeleteComponent } from '../delete/delete.component';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ASC, DESC, SORT } from '../../../config/navigation.constants';
 import { ITEMS_PER_PAGE } from '../../../config/pagination.constants';
@@ -30,7 +30,7 @@ registerLocaleData(localeRo);
   styleUrls: ['./files.component.scss'],
   templateUrl: './files.component.html',
 })
-export class FilesComponent  implements OnInit {
+export class FilesComponent implements OnInit {
   currentAccount: Account | null = null;
   page_list_all: boolean = false;
   isAdmin: boolean = false;
@@ -51,58 +51,55 @@ export class FilesComponent  implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     protected dataUtils: DataUtils,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
-        this.currentAccount = account;
-        for (let i = 0; i < account!.authorities.length; i++)
-          if(account!.authorities[i] == 'ROLE_ADMIN')
-            this.isAdmin = true;
-      }
-    );
+      this.currentAccount = account;
+      for (let i = 0; i < account!.authorities.length; i++) if (account!.authorities[i] == 'ROLE_ADMIN') this.isAdmin = true;
+    });
 
     this.handleNavigation();
   }
 
-  getFileIcon(fileName: string): IconProp {
+  getFileIcon(fileName: string): { icon: IconProp; class: string } {
     const fileExtension = fileName.split('.').pop()?.toLowerCase();
     switch (fileExtension) {
       case 'xlsx':
       case 'xlsm':
       case 'xlsb':
       case 'xltx':
-        return 'file-excel';
+        return { icon: 'file-excel', class: 'text-success' };
 
       case 'csv':
-        return 'file-csv';
+        return { icon: 'file-csv', class: 'text-success' };
 
       case 'jpg':
       case 'png':
       case 'jpeg':
-        return 'file-image';
+        return { icon: 'file-image', class: 'text-muted' };
 
       case 'doc':
       case 'docm':
       case 'docx':
       case 'dot':
-        return 'file-word';
+        return { icon: 'file-word', class: 'text-primary' };
 
       case 'pdf':
-        return 'file-pdf';
+        return { icon: 'file-pdf', class: 'text-danger' };
 
       case 'ppt':
       case 'pptx':
-        return 'file-powerpoint';
+        return { icon: 'file-powerpoint', class: 'text-warning' };
 
       case 'zip':
       case 'rar':
       case '7z':
       case 'tar':
-        return 'file-archive';
-        
+        return { icon: 'file-archive', class: 'text-dark' };
+
       default:
-        return 'file-alt';
+        return { icon: 'file-alt', class: 'text-secondary' };
     }
   }
 
@@ -110,32 +107,26 @@ export class FilesComponent  implements OnInit {
     const modalRef = this.modalService.open(DeleteComponent);
     modalRef.componentInstance.fileID = fileID;
 
-    modalRef.closed.subscribe(
-      reason => {
-        if(reason === 'deleted'){
-          this.loadAll();
-        }
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'deleted') {
+        this.loadAll();
       }
-    );
+    });
   }
 
   call_download_fileService(id: number): void {
-    this.fileService.downloadFile(id).subscribe(
-      (fileData: any) => {
-        const binaryData = this.base64Decode(fileData.data);
-        const blob = new Blob([binaryData], { type: 'application/octet-stream' });
+    this.fileService.downloadFile(id).subscribe((fileData: any) => {
+      const binaryData = this.base64Decode(fileData.data);
+      const blob = new Blob([binaryData], { type: 'application/octet-stream' });
 
-        saveAs(blob, fileData.name);
-      }
-    );
+      saveAs(blob, fileData.name);
+    });
   }
 
-  exportListFiles(type: string){
-    this.fileService.exportFiles(type).subscribe(
-      (blob: Blob) => {
-        saveAs(blob, 'list of files');
-      }
-    )
+  exportListFiles(type: string) {
+    this.fileService.exportFiles(type).subscribe((blob: Blob) => {
+      saveAs(blob, 'list of files');
+    });
   }
 
   openFile(base64String: string, contentType: string | null | undefined): void {
@@ -165,32 +156,31 @@ export class FilesComponent  implements OnInit {
       page: this.page,
       sort: `${this.predicate},${this.ascending ? ASC : DESC}`,
     };
-  
+
     if (this.page_list_all !== null) {
       queryParams['list_all'] = this.page_list_all.toString();
     }
-  
+
     this.router.navigate(['./list'], {
       relativeTo: this.activatedRoute.parent,
       queryParams: queryParams,
     });
   }
-  
 
   private base64Decode(base64String: string): Uint8Array {
-      const byteString = atob(base64String);
-      const byteArray = new Uint8Array(byteString.length);
-      for (let i = 0; i < byteString.length; i++) {
-          byteArray[i] = byteString.charCodeAt(i);
-      }
-      return byteArray;
+    const byteString = atob(base64String);
+    const byteArray = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++) {
+      byteArray[i] = byteString.charCodeAt(i);
+    }
+    return byteArray;
   }
 
   private handleNavigation(): void {
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
       //check if is selected page list all documents
       this.page_list_all = this.activatedRoute.snapshot.queryParamMap.get('list_all') === 'true';
-      if(this.page_list_all == null) this.page_list_all = false;
+      if (this.page_list_all == null) this.page_list_all = false;
 
       //standart queries params
       const page = params.get('page');
