@@ -7,7 +7,7 @@ import saveAs from 'file-saver';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteComponent } from 'app/entities/files/delete/delete.component';
 import { GetFileIcon } from 'app/shared/files';
-import { AdminDashboardService } from '../service/admin-dashboard.service';
+import { RecentDocumentsService } from './service/recent-documents.service';
 
 @Component({
   standalone: true,
@@ -22,9 +22,9 @@ export class RecentDocumentsComponent {
   constructor(
     private fileService: FileService,
     private modalService: NgbModal,
-    private adminDashboardService: AdminDashboardService
+    private recentDocumentsService: RecentDocumentsService
   ) {
-    this.adminDashboardService.getRecentFiles().subscribe({
+    this.recentDocumentsService.getRecentFiles().subscribe({
       next: (files: FileModel[]) => {
         this.files = files;
       },

@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { FileModel } from 'app/entities/files/file.model';
 
 @Injectable({ providedIn: 'root' })
-export class AdminDashboardService {
+export class RecentDocumentsService {
   constructor(private http: HttpClient) {}
 
   getRecentFiles(): Observable<FileModel[]> {
