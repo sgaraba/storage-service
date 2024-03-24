@@ -73,7 +73,7 @@
           <tbody>
             <tr *ngFor="let file of files">
               <td style="width: 0;">
-                <fa-icon [class]="getFileIcon(file.name).class" [icon]="getFileIcon(file.name).icon"></fa-icon>
+                <fa-icon [class]="(file.name | getFileIcon).class" [icon]="(file.name | getFileIcon).icon"></fa-icon>
               </td>
               <td>
                 <a [routerLink]="['../', file.id, 'detail']">

@@ -1,6 +1,59 @@
-<div class="mt-4 border">
+<div class="mt-4 border border-bottom-0">
   <h4 class="bg-light p-3 border-bottom" jhiTranslate="home.dashboard.recentDocuments">Documente recente</h4>
-  <div>
-    <p>here is table</p>
-  </div>
+  @if (files && files.length > 0) {
+    <div class="table-responsive w-100">
+      <table class="table table-hover table-striped m-0" aria-describedby="user-files-uploaded">
+        <thead>
+          <tr>
+            <th></th>
+            <th>
+              <span jhiTranslate="files.table.thead.name">file name</span>
+              <fa-icon icon="sort"></fa-icon>
+            </th>
+            <th>
+              <span jhiTranslate="files.table.thead.last_modified">last modified</span>
+              <fa-icon icon="sort"></fa-icon>
+            </th>
+            <th>
+              <span jhiTranslate="files.table.thead.user">user</span>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let file of files;">
+            <td style="width: 0;">
+              <fa-icon [class]="(file.name | getFileIcon).class" [icon]="(file.name | getFileIcon).icon"></fa-icon>
+            </td>
+            <td>
+              <a>
+                {{ file.name }}
+              </a>
+            </td>
+            <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+            <td>{{ file.createdBy }}</td>
+            <td class="d-flex justify-content-end pe-4">
+              <ul class="nav-item dropdown m-0" ngbDropdown placement="start-bottom">
+                <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle><fa-icon class="fs-4" icon="ellipsis"></fa-icon></a>
+                <ul class="dropdown-menu" ngbDropdownMenu>
+                  <li class="dropdown-item" (click)="call_download_fileService(file.id)">
+                    <fa-icon icon="download"></fa-icon>
+                    <span jhiTranslate="entity.action.download">Download</span>
+                  </li>
+                  <li class="dropdown-item" (click)="openModal(file.id)">
+                    <fa-icon icon="trash-alt"></fa-icon>
+                    <span jhiTranslate="entity.action.delete">Delete</span>
+                  </li>
+                </ul>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="alert alert-warning" id="no-result">
+      <span>No recent documents found</span>
+    </div>
+  }
 </div>

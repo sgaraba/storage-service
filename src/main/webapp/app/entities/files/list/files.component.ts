@@ -18,7 +18,7 @@ import SortDirective from '../../../shared/sort/sort.directive';
 import SortByDirective from '../../../shared/sort/sort-by.directive';
 import { saveAs } from 'file-saver';
 import { DataUtils } from 'app/core/util/data-util.service';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { GetFileIcon } from 'app/shared/files';
 
 // Register the 'ro' locale data
 registerLocaleData(localeRo);
@@ -26,7 +26,7 @@ registerLocaleData(localeRo);
 @Component({
   selector: 'jhi-files-list',
   standalone: true,
-  imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective],
+  imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective, GetFileIcon],
   styleUrls: ['./files.component.scss'],
   templateUrl: './files.component.html',
 })
@@ -62,47 +62,6 @@ export class FilesComponent implements OnInit {
     this.handleNavigation();
   }
 
-  getFileIcon(fileName: string): { icon: IconProp; class: string } {
-    const fileExtension = fileName.split('.').pop()?.toLowerCase();
-    switch (fileExtension) {
-      case 'xlsx':
-      case 'xlsm':
-      case 'xlsb':
-      case 'xltx':
-        return { icon: 'file-excel', class: 'text-success' };
-
-      case 'csv':
-        return { icon: 'file-csv', class: 'text-success' };
-
-      case 'jpg':
-      case 'png':
-      case 'jpeg':
-        return { icon: 'file-image', class: 'text-muted' };
-
-      case 'doc':
-      case 'docm':
-      case 'docx':
-      case 'dot':
-        return { icon: 'file-word', class: 'text-primary' };
-
-      case 'pdf':
-        return { icon: 'file-pdf', class: 'text-danger' };
-
-      case 'ppt':
-      case 'pptx':
-        return { icon: 'file-powerpoint', class: 'text-warning' };
-
-      case 'zip':
-      case 'rar':
-      case '7z':
-      case 'tar':
-        return { icon: 'file-archive', class: 'text-dark' };
-
-      default:
-        return { icon: 'file-alt', class: 'text-secondary' };
-    }
-  }
-
   openModal(fileID: number): void {
     const modalRef = this.modalService.open(DeleteComponent);
     modalRef.componentInstance.fileID = fileID;
@@ -133,7 +92,6 @@ export class FilesComponent implements OnInit {
     return this.dataUtils.openFile(base64String, contentType);
   }
 
-  // pagination
   loadAll(): void {
     this.isLoading = true;
     this.fileService
@@ -178,7 +136,7 @@ export class FilesComponent implements OnInit {
 
   private handleNavigation(): void {
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
-      //check if is selected page list all documents
+      //check if is selected page - list all documents
       this.page_list_all = this.activatedRoute.snapshot.queryParamMap.get('list_all') === 'true';
       if (this.page_list_all == null) this.page_list_all = false;
 
