@@ -146,6 +146,11 @@ public class StorageFileService {
     }
 
     @Transactional(readOnly = true)
+    public Page<AdminStorageFileDTO> getAdminRecentFiles(Pageable pageable) {
+        return storageFileRepository.findAllByCreatedDateDesc(pageable).map(AdminStorageFileDTO::new);
+    }
+
+    @Transactional(readOnly = true)
     public Page<AdminStorageFileDTO> search(String query, Pageable pageable) {
         return storageFileRepository.findByDynamicQuery(query, pageable).map(AdminStorageFileDTO::new);
     }
