@@ -29,6 +29,11 @@
         "downloadCSV": "Descărcați CSV",
         "exportEXCEL": "Exportați în Excel"
       }
+    },
+
+    "fileDetail": {
+      "titleDetails": "Detalii fișier",
+      "titleReupload": "Reîncărcare fișier"
     }
   },
 

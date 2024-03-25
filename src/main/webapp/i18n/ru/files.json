@@ -29,6 +29,11 @@
         "downloadCSV": "Скачать CSV",
         "exportEXCEL": "Экспорт в Excel"
       }
+    },
+
+    "fileDetail": {
+      "titleDetails": "Детали файла",
+      "titleReupload": "Повторная загрузка файла"
     }
   },
 

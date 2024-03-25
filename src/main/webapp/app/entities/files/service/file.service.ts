@@ -32,6 +32,10 @@ export class FileService {
     return this.http.post<FileModel>(this.applicationConfigService.getEndpointFor(`${this.resourceUrl}/upload-file`), file);
   }
 
+  reUpload(id: number, file: FileModel): Observable<FileModel>{
+    return this.http.put<FileModel>(this.applicationConfigService.getEndpointFor(`${this.resourceUrl}/${id}`), file);
+  }
+
   deleteFile(id: number): Observable<{}> {
     return this.http.delete(`${this.resourceUrl}/${id}`);
   }

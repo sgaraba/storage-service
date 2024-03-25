@@ -12,6 +12,7 @@ export default class GetFileIcon implements PipeTransform {
       case 'xlsx':
       case 'xlsm':
       case 'xlsb':
+      case 'xls':
       case 'xltx':
         return { icon: 'file-excel', class: 'text-success' };
 
