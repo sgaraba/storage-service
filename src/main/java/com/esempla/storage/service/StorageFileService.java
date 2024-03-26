@@ -147,9 +147,7 @@ public class StorageFileService {
         return storageFileRepository.findAllByUserLogin(login, pageable).map(AdminStorageFileDTO::new);
     }
 
-    public List<AdminStorageFileDTO> getAdminRecentFiles() {
-        return storageFileRepository.findAllByCreatedDateDesc().stream().map(AdminStorageFileDTO::new).collect(Collectors.toList());
-    }
+
 
     @Transactional(readOnly = true)
     public Page<AdminStorageFileDTO> search(String query, Pageable pageable) {
