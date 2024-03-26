@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import SharedModule from 'app/shared/shared.module';
 import Chart from 'chart.js/auto';
+import { StatisticsDocumentsService } from './service/statistics-documents.service';
 
 @Component({
   standalone: true,
@@ -9,12 +10,14 @@ import Chart from 'chart.js/auto';
   imports: [SharedModule],
 })
 export class StatisticsDocumentsComponent implements OnInit {
-  fileUploadsData = [100, 200, 150, 300, 250, 400, 350, 500, 450, 600, 550, 700];
-  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  chartData!: { fileUploadsData: number[]; months: string[] };
 
-  constructor() { }
+  constructor(
+    private statisticsDocumentsService: StatisticsDocumentsService
+  ) { }
 
   ngOnInit() {
+    this.chartData = this.statisticsDocumentsService.getChartData();
     this.createChart();
   }
 
@@ -23,10 +26,10 @@ export class StatisticsDocumentsComponent implements OnInit {
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: this.months,
+        labels: this.chartData?.months,
         datasets: [{
           label: 'File Uploads',
-          data: this.fileUploadsData,
+          data: this.chartData?.fileUploadsData,
           backgroundColor: 'rgba(54, 162, 235, 0.2)',
           borderColor: 'rgba(54, 162, 235, 1)',
           borderWidth: 1

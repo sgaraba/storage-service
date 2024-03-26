@@ -2,7 +2,7 @@
     <li class="d-flex justify-content-between py-3 align-items-center">
         <fa-icon icon="database" class="fs-2 col-md-3 text-center"></fa-icon>
         <p class="pe-3 text-end m-0">
-            <b class="ps-2 fw-bold fs-5">52</b>
+            <b class="ps-2 fw-bold fs-5">{{details.usedSpace}}</b>
             <br>
             <span jhiTranslate="reservationSpace.table.thead.usedSize" class="text-secondary">Spatiu utilizat</span>
         </p>
@@ -11,7 +11,7 @@
     <li class="d-flex justify-content-between py-3 border-top align-items-center">
         <fa-icon icon="file-alt" class="fs-2 col-md-3 text-center"></fa-icon>
         <p class="pe-3 text-end m-0">
-            <b class="ps-2 fw-bold fs-5">521</b>
+            <b class="ps-2 fw-bold fs-5">{{details.totalDocuments}}</b>
             <br>
             <span jhiTranslate="global.menu.sidebar.documents" class="text-secondary">Documente</span>
         </p>
@@ -20,7 +20,7 @@
     <li class="d-flex justify-content-between border-top py-3 align-items-center">
         <fa-icon icon="users" class="fs-2 col-md-3 text-center"></fa-icon>
         <p class=" pe-3 text-end m-0">
-            <b class="ps-2 fw-bold fs-5">5211</b>
+            <b class="ps-2 fw-bold fs-5">{{details.totalUsers}}</b>
             <br>
             <span jhiTranslate="global.menu.sidebar.users" class="text-secondary">Utilizatori</span>
         </p>
