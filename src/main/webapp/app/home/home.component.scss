@@ -23,11 +23,13 @@ img {
 }
 
 #home {
-  // height: 50vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 5%;
+  height: 80vh;
+  width: 100%;
+  padding: 1%;
 }
 
 button {

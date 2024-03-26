@@ -11,13 +11,14 @@
       <fa-icon icon="bars"></fa-icon>
     </a>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed">
+      <!-- --------- -->
       <ul class="navbar-nav ms-auto">
         @if (languages && languages.length > 1) {
         <li ngbDropdown class="nav-item dropdown pointer" display="dynamic">
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
             <span>
               <fa-icon icon="flag"></fa-icon>
-              <span jhiTranslate="global.menu.language">Limbă</span>
+              <span>{{ currentLanguage | findLanguageFromKey }}</span>
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">

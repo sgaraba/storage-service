@@ -30,6 +30,7 @@ export default class NavbarComponent implements OnInit {
   version = '';
   account: Account | null = null;
   entitiesNavbarItems: NavbarItem[] = [];
+  currentLanguage: string;
 
   constructor(
     private loginService: LoginService,
@@ -38,7 +39,14 @@ export default class NavbarComponent implements OnInit {
     private accountService: AccountService,
     private profileService: ProfileService,
     private router: Router,
+    private translate: TranslateService
   ) {
+
+    this.currentLanguage = this.translate.currentLang;
+    this.translate.onLangChange.subscribe((event) => {
+      this.currentLanguage = event.lang;
+    });
+
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
     }
