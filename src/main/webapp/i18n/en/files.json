@@ -40,5 +40,6 @@
   "storageFileManagement": {
     "deleted": "The file was deleted!"
   },
-  "userStorageFileManagement.created": "The file was uploaded successfully!"
+  "userStorageFileManagement.created": "The file was uploaded successfully!", 
+  "userStorageFileManagement.downloaded": "The file was downloaded successfully!"
 }

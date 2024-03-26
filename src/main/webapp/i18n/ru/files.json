@@ -41,5 +41,6 @@
     "deleted": "Файл был удален!"
   },
 
-  "userStorageFileManagement.created": "Файл успешно загружен!"
+  "userStorageFileManagement.created": "Файл успешно загружен!",
+  "userStorageFileManagement.downloaded": "Файл был успешно загружен!"
 }
