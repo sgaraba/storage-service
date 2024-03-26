@@ -7,6 +7,7 @@ import com.esempla.storage.repository.StorageFileRepository;
 import com.esempla.storage.repository.UserRepository;
 import com.esempla.storage.repository.UserReservationRepository;
 import com.esempla.storage.service.dto.AdminReservationDTO;
+import com.esempla.storage.service.dto.AdminUserDTO;
 import com.esempla.storage.service.dto.UpdateReservationDTO;
 import com.esempla.storage.web.rest.errors.StorageInUseException;
 import org.slf4j.Logger;
@@ -90,5 +91,10 @@ public class UserReservationService {
     @Transactional(readOnly = true)
     public Page<UserReservation> getAllManagedReservations(Pageable pageable) {
         return userReservationRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AdminReservationDTO> search(String query, Pageable pageable) {
+        return userReservationRepository.findByDynamicQuery(query, pageable).map(AdminReservationDTO::new);
     }
 }

@@ -1,11 +1,14 @@
 package com.esempla.storage.repository;
 
 import com.esempla.storage.domain.StorageFile;
-import com.esempla.storage.domain.UserReservation;
+import com.esempla.storage.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,5 +20,11 @@ public interface StorageFileRepository extends JpaRepository<StorageFile, Long> 
     Optional<StorageFile> findByName (String name);
 
     Page<StorageFile> findAllByUserLogin (String login, Pageable pageable);
+
+    @Query("SELECT s FROM StorageFile s WHERE s.name LIKE %:query%")
+    Page<StorageFile> findByDynamicQuery(@Param("query") String query, Pageable pageable);
+
+    @Query("SELECT s FROM StorageFile s WHERE s.name LIKE %:query% AND s.user.login = :login")
+    Page<StorageFile> findByDynamicQueryForUser(@Param("query") String query, String login, Pageable pageable);
 
 }

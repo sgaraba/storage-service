@@ -72,16 +72,13 @@ public class StorageFileResource {
 
     private final StorageFileService storageFileService;
     private final StorageFileRepository storageFileRepository;
-    private final MinioService minioService;
     private final Map<ReportType, IReport> map;
 
     public StorageFileResource(StorageFileService storageFileService,
                                StorageFileRepository storageFileRepository,
-                               MinioService minioService,
                                List<IReport> reports) {
         this.storageFileService = storageFileService;
         this.storageFileRepository = storageFileRepository;
-        this.minioService = minioService;
         map = reports.stream().collect(Collectors.toMap(IReport::getType, Function.identity()));
     }
 
@@ -126,7 +123,33 @@ public class StorageFileResource {
         final Page<AdminStorageFileDTO> page = storageFileService.getStorageFilesByUserLogin(login, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
+    @GetMapping("/admin/storage-files/search")
+    public ResponseEntity<List<AdminStorageFileDTO>> adminSearch (@RequestParam(value = "query") String query, @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+
+        log.debug("REST request to get all Storage Files for an admin");
+        if (!onlyContainsAllowedProperties(pageable)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        final Page<AdminStorageFileDTO> page = storageFileService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/storage-files/search")
+    public ResponseEntity<List<AdminStorageFileDTO>> userSearch (@RequestParam(value = "query") String query, @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        log.debug("REST request to get Storage Files by User : {}", login);
+        if (!onlyContainsAllowedProperties(pageable)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        final Page<AdminStorageFileDTO> page = storageFileService.userSearch(query, login, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     private boolean onlyContainsAllowedProperties(Pageable pageable) {
@@ -160,7 +183,11 @@ public class StorageFileResource {
     public ResponseEntity<UploadFileDTO> modifyStorageFile(@PathVariable("id") Long id, @Valid @RequestBody UploadFileDTO uploadFileDTO) {
         log.debug("REST request to modify Storage File : {}", id);
 
-        UploadFileDTO updatedStorageFile = storageFileService.modifyStorageFile(id, uploadFileDTO);
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(() -> new StorageFileException("Current user login not found"));
+
+        UploadFileDTO updatedStorageFile = storageFileService.modifyStorageFile(id, uploadFileDTO, userLogin);
 
         return ResponseEntity
             .ok()
@@ -191,11 +218,7 @@ public class StorageFileResource {
             throw new BadRequestAlertException("Storage File with that name already exists!", "userStorageFileManagement", "nameexists");
         }
 
-        String objectName = UUID.randomUUID().toString();
-
-        minioService.uploadObject(objectName, uploadFileDTO.getData(), uploadFileDTO.getMimeType(), userLogin);
-
-        StorageFile storageFile = storageFileService.uploadNewFile(uploadFileDTO, userLogin, objectName);
+        StorageFile storageFile = storageFileService.uploadNewFile(uploadFileDTO, userLogin);
 
         //adaugat schimb automat de usedSize la rezervare
 
