@@ -10,7 +10,6 @@
       <fa-icon icon="bars"></fa-icon>
     </a>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed">
-      <!-- --------- -->
       <ul class="navbar-nav ms-auto">
         @if (languages && languages.length > 1) {
         <li ngbDropdown class="nav-item dropdown pointer" display="dynamic">
@@ -30,7 +29,9 @@
           </ul>
         </li>
         }
-        <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active"
+
+        @if (account !== null) {
+          <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu"
             data-cy="accountMenu">
@@ -67,23 +68,17 @@
                 <span jhiTranslate="global.menu.account.logout">Ieșire</span>
               </a>
             </li>
-            } @else {
-            <li>
-              <a class="dropdown-item" (click)="login()" id="login" data-cy="login">
-                <fa-icon icon="sign-in-alt" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.account.login">Autentificare</span>
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/account/register" routerLinkActive="active"
-                (click)="collapseNavbar()" data-cy="register">
-                <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.account.register">Înregistrare</span>
-              </a>
-            </li>
             }
           </ul>
-        </li>
+          </li>
+        } @else {
+          <li>
+            <a class="nav-link" (click)="login()" id="login" data-cy="login">
+              <fa-icon icon="sign-in-alt" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.account.login">Autentificare</span>
+            </a>
+          </li>
+        }
       </ul>
     </div>
   </div>
