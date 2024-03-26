@@ -7,6 +7,7 @@ import { DetailsService } from './service/details.service';
   selector: 'jhi-details',
   templateUrl: './details.component.html',
   imports: [SharedModule],
+  styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
   details:

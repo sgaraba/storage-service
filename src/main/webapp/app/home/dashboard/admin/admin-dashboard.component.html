@@ -1,7 +1,7 @@
 <section>
-    <div class="d-flex">
-        <jhi-statistics-documents class="w-100 h-25"></jhi-statistics-documents>
-        <jhi-details class="w-25"></jhi-details>        
+    <div class="row">
+        <jhi-statistics-documents [ngClass]="{ 'pe-0': isPhoneScreen }" class="col-md-9"></jhi-statistics-documents>
+        <jhi-details [ngClass]="{ 'ps-0': isPhoneScreen }" class="col-md-3"></jhi-details>        
     </div>
 
     <jhi-recent-documents></jhi-recent-documents>
