@@ -21,6 +21,5 @@ export class DetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.details = this.detailsService.getDetails();
-    console.log(this.details);
   }
 }

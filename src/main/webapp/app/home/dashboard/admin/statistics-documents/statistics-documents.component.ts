@@ -10,26 +10,37 @@ import { StatisticsDocumentsService } from './service/statistics-documents.servi
   imports: [SharedModule],
 })
 export class StatisticsDocumentsComponent implements OnInit {
-  chartData!: { fileUploadsData: number[]; months: string[] };
-
   constructor(
     private statisticsDocumentsService: StatisticsDocumentsService
   ) { }
 
   ngOnInit() {
-    this.chartData = this.statisticsDocumentsService.getChartData();
-    this.createChart();
+    let fileUploadsData: number[] = [];
+    let months: string[] = [];
+
+    this.statisticsDocumentsService.getChartData().subscribe(
+      (response: any) => {
+        for (const month in response) {
+          if (response.hasOwnProperty(month)) {
+            months.push(month);
+            fileUploadsData.push(response[month]);
+          }
+        }
+
+        this.createChart(months, fileUploadsData);
+      }
+    )
   }
 
-  createChart() {
+  protected createChart(months: string[], fileUploadsData: number[]) {
     const ctx = document.getElementById('fileUploadChart') as HTMLCanvasElement;
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: this.chartData?.months,
+        labels: months,
         datasets: [{
           label: 'File Uploads',
-          data: this.chartData?.fileUploadsData,
+          data: fileUploadsData,
           backgroundColor: 'rgba(54, 162, 235, 0.2)',
           borderColor: 'rgba(54, 162, 235, 1)',
           borderWidth: 1
