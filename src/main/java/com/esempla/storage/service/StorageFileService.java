@@ -20,8 +20,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class StorageFileService {
@@ -145,9 +147,8 @@ public class StorageFileService {
         return storageFileRepository.findAllByUserLogin(login, pageable).map(AdminStorageFileDTO::new);
     }
 
-    @Transactional(readOnly = true)
-    public Page<AdminStorageFileDTO> getAdminRecentFiles(Pageable pageable) {
-        return storageFileRepository.findAllByCreatedDateDesc(pageable).map(AdminStorageFileDTO::new);
+    public List<AdminStorageFileDTO> getAdminRecentFiles() {
+        return storageFileRepository.findAllByCreatedDateDesc().stream().map(AdminStorageFileDTO::new).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
