@@ -1,6 +1,8 @@
 package com.esempla.storage.web.rest;
 
 
+import com.esempla.storage.domain.DashboardData;
+import com.esempla.storage.security.SecurityUtils;
 import com.esempla.storage.service.DashboardService;
 import com.esempla.storage.service.StorageFileService;
 import com.esempla.storage.service.dto.AdminStorageFileDTO;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/dashboard")
@@ -25,6 +28,12 @@ public class DashboardResource {
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
+
+    private static class DashboardException extends RuntimeException {
+        private DashboardException(String message) {
+            super(message);
+        }
+    }
 
 
     private final DashboardService dashboardService;
@@ -50,6 +59,20 @@ public class DashboardResource {
 
         return ResponseEntity.ok()
             .body(filesByMonthDTO);
+    }
+
+    @GetMapping("/dashboard-data")
+    public ResponseEntity<DashboardData> getDashboardData() {
+        log.debug("REST request to get DashboardData for an admin");
+
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(() -> new DashboardException("Current user login not found"));
+
+        DashboardData dashboardData = dashboardService.getDashboardData(userLogin);
+
+        return ResponseEntity.ok()
+            .body(dashboardData);
     }
 
 }
