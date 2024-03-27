@@ -79,13 +79,4 @@ export default class NavbarComponent implements OnInit {
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
-
-  // formatName(): string {
-  //   let name = this.account?.login || '';
-  //   if (this.account?.firstName?.trim() && this.account?.lastName?.trim()){
-  //     name = this.account?.firstName + ' ' + this.account?.lastName;
-  //   }
-  //   return name;
-  // }
-  
 }
