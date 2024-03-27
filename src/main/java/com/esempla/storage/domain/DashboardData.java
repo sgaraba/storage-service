@@ -15,7 +15,7 @@ public class DashboardData implements Serializable {
     private Long userId;
     private Integer users = 0;
     private Integer files = 0;
-    private Integer usedSpace = 0;
+    private Long usedSpace = 0L;
 
     public Integer getFiles() {
         return files;
@@ -43,18 +43,18 @@ public class DashboardData implements Serializable {
 
 
 
-    public Integer getUsedSpace() {
+    public Long getUsedSpace() {
         return usedSpace;
     }
 
-    public void setUsedSpace(Integer usedSpace) {
+    public void setUsedSpace(Long usedSpace) {
         this.usedSpace = usedSpace;
     }
 
     public DashboardData() {
     }
 
-    public DashboardData(Long userId, Integer users, Integer files, Integer usedSpace) {
+    public DashboardData(Long userId, Integer users, Integer files, Long usedSpace) {
         this.userId = userId;
         this.users = users;
         this.files = files;

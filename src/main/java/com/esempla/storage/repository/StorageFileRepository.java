@@ -20,6 +20,9 @@ public interface StorageFileRepository extends JpaRepository<StorageFile, Long> 
 
     Page<StorageFile> findAllByUserLogin (String login, Pageable pageable);
 
+    @Query("SELECT SUM(s.size) FROM StorageFile s")
+    Long getTotalFileSize();
+
     @Query("SELECT s FROM StorageFile s ORDER BY s.createdDate DESC LIMIT 10")
     List<StorageFile> findAllByCreatedDateDesc();
 

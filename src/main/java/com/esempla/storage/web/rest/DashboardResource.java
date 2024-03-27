@@ -70,6 +70,7 @@ public class DashboardResource {
             .orElseThrow(() -> new DashboardException("Current user login not found"));
 
         DashboardData dashboardData = dashboardService.getDashboardData(userLogin);
+        //dashboardService.updateDashboardData();
 
         return ResponseEntity.ok()
             .body(dashboardData);

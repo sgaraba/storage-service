@@ -6,9 +6,12 @@ import com.esempla.storage.domain.User;
 import com.esempla.storage.repository.DashboardRepository;
 import com.esempla.storage.repository.StorageFileRepository;
 import com.esempla.storage.repository.UserRepository;
+import com.esempla.storage.security.SecurityUtils;
 import com.esempla.storage.service.dto.AdminStorageFileDTO;
 import com.esempla.storage.service.dto.FilesByMonthDTO;
+import com.esempla.storage.web.rest.DashboardResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,7 +28,6 @@ import java.util.stream.Collectors;
 public class DashboardService {
 
     private final StorageFileRepository storageFileRepository;
-
     private final DashboardRepository dashboardRepository;
     private final UserRepository userRepository;
 
@@ -64,11 +66,23 @@ public class DashboardService {
 
         Optional<DashboardData> dashboardData = dashboardRepository.findByUserId(user.getId());
 
-        return dashboardData.orElseGet(() -> createDashboardData(login));
+        return dashboardData.orElseGet(() -> createDashboardData(user.getId()));
     }
 
-    public DashboardData createDashboardData(String login) {
-        User user = userRepository.findOneByLogin(login).orElseThrow();
-        return new DashboardData(user.getId(), 0,0,0);
+    public DashboardData createDashboardData(long userId) {
+        DashboardData dashboardData = new DashboardData(userId, 0,0,0L);
+        dashboardRepository.save(dashboardData);
+        return dashboardData;
+    }
+
+    @Scheduled(cron = "0 0/5 * ? * *")
+    public void updateDashboardData(){
+        DashboardData dashboardData = dashboardRepository.findByUserId(1).
+            orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        dashboardData.setFiles((int) storageFileRepository.count());
+        dashboardData.setUsers((int) userRepository.count());
+        dashboardData.setUsedSpace(storageFileRepository.getTotalFileSize());
+        dashboardRepository.save(dashboardData);
     }
 }

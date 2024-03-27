@@ -18,7 +18,7 @@
             <column name="files" type="integer">
                 <constraints nullable="false"/>
             </column>
-            <column name="used_space" type="integer">
+            <column name="used_space" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
