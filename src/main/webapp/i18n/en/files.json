@@ -33,7 +33,8 @@
 
     "fileDetail":{
       "titleDetails": "File details",
-      "titleReupload": "File reupload"
+      "titleReupload": "File reupload",
+      "buttonReupload": "Reupload"
     }
   },
 
@@ -41,5 +42,6 @@
     "deleted": "The file was deleted!"
   },
   "userStorageFileManagement.created": "The file was uploaded successfully!", 
-  "userStorageFileManagement.downloaded": "The file was downloaded successfully!"
+  "userStorageFileManagement.downloaded": "The file was downloaded successfully!",
+  "userFileManagement.updated": "The file was updated successfully!"
 }

@@ -33,7 +33,8 @@
 
     "fileDetail": {
       "titleDetails": "Detalii fișier",
-      "titleReupload": "Reîncărcare fișier"
+      "titleReupload": "Reîncărcare fișier",
+      "buttonReupload": "Reîncarcă"
     }
   },
 
@@ -42,5 +43,6 @@
   },
 
   "userStorageFileManagement.created": "Fișierul a fost încărcat cu succes!",
-  "userStorageFileManagement.downloaded": "Fișierul a fost descărcat cu succes!"
+  "userStorageFileManagement.downloaded": "Fișierul a fost descărcat cu succes!",
+  "userFileManagement.updated": "Fișierul a fost actualizat cu succes!"
 }

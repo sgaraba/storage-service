@@ -7,19 +7,22 @@ import { DetailsService } from './service/details.service';
   selector: 'jhi-details',
   templateUrl: './details.component.html',
   imports: [SharedModule],
-  styleUrls: ['./details.component.scss']
+  styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnInit {
-  details:
-  { usedSpace: number; totalDocuments: number; totalUsers: number } = {
-    usedSpace: 0,
+  details = {
     totalDocuments: 0,
     totalUsers: 0,
+    usedSpace: 0
   };
 
   constructor(private detailsService: DetailsService) {}
 
   ngOnInit(): void {
-    this.details = this.detailsService.getDetails();
+    this.detailsService.getDetails().subscribe((response: any) => {
+      this.details.totalDocuments = response.files;
+      this.details.totalUsers = response.users;
+      this.details.usedSpace = response.usedSpace;
+    });
   }
 }

@@ -49,7 +49,9 @@
           </div>
         }
 
-        <button type="submit" class="btn btn-primary" [disabled]="uploadForm.invalid || !isSaving">Reupload</button>
+        <button type="submit" class="btn btn-primary" [disabled]="uploadForm.invalid || !isSaving">
+          <span jhiTranslate="files.fileDetail.buttonReupload">Reupload</span>
+        </button>
       </form>
     } @else {
       <div class="alert alert-warning" id="no-result">

@@ -33,7 +33,8 @@
 
     "fileDetail": {
       "titleDetails": "Детали файла",
-      "titleReupload": "Повторная загрузка файла"
+      "titleReupload": "Повторная загрузка файла",
+      "buttonReupload": "Перезагрузить"
     }
   },
 
@@ -42,5 +43,6 @@
   },
 
   "userStorageFileManagement.created": "Файл успешно загружен!",
-  "userStorageFileManagement.downloaded": "Файл был успешно загружен!"
+  "userStorageFileManagement.downloaded": "Файл был успешно загружен!",
+  "userFileManagement.updated": "Файл успешно обновлен!"
 }

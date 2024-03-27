@@ -9,6 +9,23 @@ export default class GetFileIcon implements PipeTransform {
   transform(fileName: string): { icon: IconProp; class: string } {
     const fileExtension = fileName.split('.').pop()?.toLowerCase();
     switch (fileExtension) {
+      case 'mp4':
+      case 'avi':
+      case 'mov':
+      case 'mkv':
+      case 'wmv':
+      case 'flv':
+      case 'webm':
+        return { icon: 'file-video', class: 'text-primary'}
+
+      case 'js':
+      case 'java':
+      case 'html':
+      case 'css':
+      case 'json':
+      case 'py':
+        return { icon: 'file-code', class: 'text-black'}
+
       case 'xlsx':
       case 'xlsm':
       case 'xlsb':
