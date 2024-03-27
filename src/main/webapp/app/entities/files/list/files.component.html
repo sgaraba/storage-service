@@ -11,13 +11,14 @@
           </button>
         </div>
 
-        <div>
-          <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['../upload']">
-            <fa-icon icon="plus"></fa-icon>
-            <span jhiTranslate="files.buttons.upload">Upload new file</span>
-          </button>
-        </div>
-
+        @if (!page_list_all) {
+          <div>
+            <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['../upload']">
+              <fa-icon icon="plus"></fa-icon>
+              <span jhiTranslate="files.buttons.upload">Upload new file</span>
+            </button>
+          </div>
+        }
         <div ngbDropdown class="dropdown">
           <button
             ngbDropdownToggle
@@ -54,6 +55,7 @@
         <table class="table table-hover table-striped" aria-describedby="user-files-uploaded">
           <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
+              <th></th>
               <th jhiSortBy="name" scope="col">
                 <span jhiTranslate="files.table.thead.name">file name</span>
                 <fa-icon icon="sort"></fa-icon>
@@ -70,21 +72,23 @@
           </thead>
           <tbody>
             <tr *ngFor="let file of files">
+              <td style="width: 0;">
+                <fa-icon [class]="(file.name | getFileIcon).class" [icon]="(file.name | getFileIcon).icon"></fa-icon>
+              </td>
               <td>
                 <a [routerLink]="['../', file.id, 'detail']">
-                  <fa-icon  class="mx-2" [icon]="getFileIcon(file.name)"></fa-icon>
                   {{ file.name }}
                 </a>
               </td>
               <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
               <td>{{ file.createdBy }}</td>
               <td class="d-flex justify-content-end pe-4">
-                <ul class="nav-item dropdown m-0" ngbDropdown placement="left-top">
+                <ul class="nav-item dropdown m-0" ngbDropdown placement="start-bottom">
                   <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle><fa-icon class="fs-4" icon="ellipsis"></fa-icon></a>
                   <ul class="dropdown-menu" ngbDropdownMenu>
                     <li class="dropdown-item" (click)="call_download_fileService(file.id)">
                       <fa-icon icon="download"></fa-icon>
-                      <span  jhiTranslate="entity.action.download">Download</span>
+                      <span jhiTranslate="entity.action.download">Download</span>
                     </li>
                     <li class="dropdown-item" (click)="openModal(file.id)">
                       <fa-icon icon="trash-alt"></fa-icon>

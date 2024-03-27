@@ -1,28 +1,56 @@
 <section class="d-flex">
   <div class="col-8">
-    @if(file){
-      <h2><span jhiTranslate="files.table.thead.name">File name</span> [{{file.name}}]</h2>
-
+    @if (file) {
+      <h2 jhiTranslate="files.fileDetail.titleDetails">Detalii fisier</h2>
       <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="files.table.thead.name">File name</span></dt>
+        <dd>
+          <span>{{ file.name }}</span>
+        </dd>
+
         <dt><span jhiTranslate="files.table.thead.mimeType">mimeType</span></dt>
-        <dd><span>{{ file.mimeType }}</span></dd>
+        <dd>
+          <span>{{ file.mimeType }}</span>
+        </dd>
 
         <dt><span jhiTranslate="files.table.thead.size">Size</span></dt>
-        <dd><span>{{ fileSize }} bytes</span></dd>
+        <dd>
+          <span>{{ fileSize }} bytes</span>
+        </dd>
 
         <dt><span jhiTranslate="files.table.thead.last_modified">Last modified</span></dt>
-        <dd><span>{{file.createdDate | date: 'dd/MM/yy HH:mm'}}</span></dd>
+        <dd>
+          <span>{{ file.createdDate | date: 'dd/MM/yy HH:mm' }}</span>
+        </dd>
 
         <dt><span jhiTranslate="files.table.thead.user">Created ny</span></dt>
-        <dd><span>{{file.createdBy}}</span></dd>
+        <dd>
+          <span>{{ file.createdBy }}</span>
+        </dd>
+      </dl>
 
-        @if(file.data){
-          <div>
-            <a (click)="openFile(filePath, file.mimeType)" class="pull-start">Deschidere</a>
-            {{ byteSize(file.data[0]) }} - {{ file.mimeType }}
+      <form (ngSubmit)="reUploadFile(file.id, $event)" [formGroup]="uploadForm" enctype="multipart/form-data" novalidate role="form">
+        <h2 jhiTranslate="files.fileDetail.titleReupload">Reupload file</h2>
+        <div class="mb-3">
+          <label class="form-label" for="formFile">Alegeti fisier</label>
+          <input id="formFile" (change)="onFileSelected($event)" class="form-control" type="file" required />
+        </div>
+
+        @if (fileToReUpload != null) {
+          <a (click)="openFile(uploadForm.get('data')?.value, uploadForm.get('mimeType')?.value)" class="pull-start">Deschide</a>
+          <div class="form-text text-danger clearfix">
+            <span>Last modified: <code
+              class="fw-bold">{{ fileToReUpload.lastModified | date: 'dd/MM/yy HH:mm' }}</code></span>
+            <br />
+            <span>File type: <code class="fw-bold">{{ fileToReUpload.type }}</code></span>
+            <br />
+            <span>File size: <code class="fw-bold">{{ byteSize(fileToReUpload.type) }}</code></span>
+            <hr>
           </div>
         }
-      </dl>
+
+        <button type="submit" class="btn btn-primary" [disabled]="uploadForm.invalid || !isSaving">Reupload</button>
+      </form>
     } @else {
       <div class="alert alert-warning" id="no-result">
         <span>Document not found</span>

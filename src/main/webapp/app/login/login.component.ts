@@ -11,6 +11,7 @@ import { AccountService } from 'app/core/auth/account.service';
   standalone: true,
   imports: [SharedModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
+  styleUrl: '../home/home.component.scss'
 })
 export default class LoginComponent implements OnInit, AfterViewInit {
   @ViewChild('username', { static: false })

@@ -10,6 +10,34 @@ Main page styles
   background-size: contain;
 }
 
+div {
+  overflow: hidden;
+}
+
+img {
+  max-width: 80vh;
+}
+
+.text {
+  max-width: 70vh;
+}
+
+#home {
+  // height: 50vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5%;
+}
+
+button {
+  background-color: rgb(255, 203, 108);
+  border: none;
+  border-radius: 45px;
+  padding: 1vh 3vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
   only screen and (-moz-min-device-pixel-ratio: 2),

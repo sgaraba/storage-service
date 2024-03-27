@@ -15,29 +15,37 @@ export class FileService {
     private applicationConfigService: ApplicationConfigService
   ) {}
 
-  query(userLogin: string, req?: Pagination): Observable<HttpResponse<FileModel[]>> {
+  query(isAdmin: boolean, req?: Pagination): Observable<HttpResponse<FileModel[]>> {
     const options = createRequestOption(req);
+
+    if(isAdmin)
+      return this.http.get<FileModel[]>(this.applicationConfigService.getEndpointFor('/api/admin/storage-files'), { params: options, observe: 'response' });
+
     return this.http.get<FileModel[]>(`${this.resourceUrl}`, { params: options, observe: 'response' });
   }
 
   find(id: number): Observable<FileModel> {
-    return this.http.get<FileModel>(`${this.applicationConfigService.getEndpointFor('/api/storage-files/')}/${id}`);
+    return this.http.get<FileModel>(`${this.resourceUrl}/${id}`);
   }
 
   upload(file: FileModel): Observable<FileModel>{
-    return this.http.post<FileModel>(this.applicationConfigService.getEndpointFor('/api/storage-files/upload-file'), file);
+    return this.http.post<FileModel>(this.applicationConfigService.getEndpointFor(`${this.resourceUrl}/upload-file`), file);
+  }
+
+  reUpload(id: number, file: FileModel): Observable<FileModel>{
+    return this.http.put<FileModel>(this.applicationConfigService.getEndpointFor(`${this.resourceUrl}/${id}`), file);
   }
 
   deleteFile(id: number): Observable<{}> {
-    return this.http.delete(`${this.applicationConfigService.getEndpointFor('/api/storage-files/')}/${id}`);
+    return this.http.delete(`${this.resourceUrl}/${id}`);
   }
 
   downloadFile(id: number)  {
-    return this.http.get(`/api/storage-files/download/${id}`);
+    return this.http.get(`${this.resourceUrl}/download/${id}`);
   }
 
   exportFiles(type: string): Observable<any> {
-    return this.http.get(this.applicationConfigService.getEndpointFor(`/api/storage-files/export/${type}`), {
+    return this.http.get(this.applicationConfigService.getEndpointFor(`${this.resourceUrl}/export/${type}`), {
       responseType: 'blob',
     });
   }

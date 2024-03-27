@@ -12,11 +12,6 @@ public class UploadFileDTO implements Serializable {
     public UploadFileDTO() {
     }
 
-    public UploadFileDTO(StorageFile storageFile) {
-        this.name = storageFile.getName();
-        this.mimeType = storageFile.getMimeType();
-    }
-
     public String getName() {
         return name;
     }

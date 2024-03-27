@@ -244,6 +244,7 @@ public class UserService {
             });
     }
 
+
     @Transactional
     public void changePassword(String currentClearTextPassword, String newPassword) {
         SecurityUtils
@@ -278,6 +279,11 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities() {
         return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AdminUserDTO> search(String query, Pageable pageable) {
+        return userRepository.findByDynamicQuery(query, pageable).map(AdminUserDTO::new);
     }
 
     /**

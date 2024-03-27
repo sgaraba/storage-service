@@ -115,7 +115,7 @@
                 <td>{{ user.lastModifiedBy }}</td>
                 <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
                 <td class="d-flex justify-content-end pe-4">
-                  <ul class="nav-item dropdown" ngbDropdown placement="left-top">
+                  <ul class="nav-item dropdown" ngbDropdown placement="start-bottom">
                     <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle><fa-icon class="fs-4" icon="ellipsis"></fa-icon></a>
                     <ul class="dropdown-menu" ngbDropdownMenu>
                       <li class="dropdown-item" [routerLink]="['./', user.login, 'edit']">
