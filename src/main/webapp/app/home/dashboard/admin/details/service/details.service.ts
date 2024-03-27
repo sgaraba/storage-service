@@ -5,12 +5,6 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 
 @Injectable({ providedIn: 'root' })
 export class DetailsService {
-  private data: { usedSpace: number; totalDocuments: number; totalUsers: number } = {
-    usedSpace: 0,
-    totalDocuments: 0,
-    totalUsers: 0,
-  };
-
   constructor(
     private http: HttpClient,
     private applicationConfigService: ApplicationConfigService,
