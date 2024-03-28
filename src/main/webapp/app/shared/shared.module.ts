@@ -9,12 +9,13 @@ import TranslateDirective from './language/translate.directive';
 import { AlertComponent } from './alert/alert.component';
 import { AlertErrorComponent } from './alert/alert-error.component';
 import CheckFirstLastName from './user/check-firstName-lastName.pipe';
+import { GetFileIcon } from './files';
 
 /**
  * Application wide Module
  */
 @NgModule({
-  imports: [AlertComponent, AlertErrorComponent, FindLanguageFromKeyPipe, TranslateDirective, CheckFirstLastName],
+  imports: [AlertComponent, AlertErrorComponent, FindLanguageFromKeyPipe, TranslateDirective, CheckFirstLastName, GetFileIcon],
   exports: [
     CommonModule,
     NgbModule,

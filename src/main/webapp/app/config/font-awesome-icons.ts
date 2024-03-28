@@ -47,7 +47,9 @@ import {
   faFileWord,
   faFilePdf,
   faFileArchive,
-  faFilePowerpoint
+  faFilePowerpoint,
+  faFileCode,
+  faFileVideo
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -100,6 +102,8 @@ export const fontAwesomeIcons = [
   faFileWord,
   faFilePdf,
   faFileArchive,
-  faFilePowerpoint
+  faFilePowerpoint,
+  faFileCode,
+  faFileVideo
   // jhipster-needle-add-icon-import
 ];
