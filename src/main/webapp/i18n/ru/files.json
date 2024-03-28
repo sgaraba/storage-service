@@ -29,6 +29,12 @@
         "downloadCSV": "Скачать CSV",
         "exportEXCEL": "Экспорт в Excel"
       }
+    },
+
+    "fileDetail": {
+      "titleDetails": "Детали файла",
+      "titleReupload": "Повторная загрузка файла",
+      "buttonReupload": "Перезагрузить"
     }
   },
 
@@ -36,5 +42,7 @@
     "deleted": "Файл был удален!"
   },
 
-  "userStorageFileManagement.created": "Файл успешно загружен!"
+  "userStorageFileManagement.created": "Файл успешно загружен!",
+  "userStorageFileManagement.downloaded": "Файл был успешно загружен!",
+  "userFileManagement.updated": "Файл успешно обновлен!"
 }
