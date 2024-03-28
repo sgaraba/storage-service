@@ -1,4 +1,4 @@
-<section class="d-flex flex-column min-vh-100">
+<section class="d-flex flex-column min-vh-100 bg-light">
   <div>
     <router-outlet name="navbar"></router-outlet>
   </div>
@@ -8,9 +8,9 @@
     <router-outlet name="sidebar"></router-outlet>
     }
     <div class="flex-fill">
-      <div class="card jh-card">
+      <div>
         @if (account !== null) {
-        <div>
+        <div class="pt-4">
           <xng-breadcrumb>
             <ng-container *xngBreadcrumbItem="let breadcrumb; let info = info">
               <ng-container>{{ info || (breadcrumb | translate)}}</ng-container>

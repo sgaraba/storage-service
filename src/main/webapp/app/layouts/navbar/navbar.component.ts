@@ -15,12 +15,13 @@ import {EntityNavbarItems} from 'app/entities/entity-navbar-items';
 import ActiveMenuDirective from './active-menu.directive';
 import NavbarItem from './navbar-item.model';
 
+import { NameDisplayPipe } from './name-display.pipe';
 @Component({
   standalone: true,
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
-  imports: [RouterModule, SharedModule, HasAnyAuthorityDirective, ActiveMenuDirective],
+  imports: [RouterModule, SharedModule, HasAnyAuthorityDirective, ActiveMenuDirective, NameDisplayPipe],
 })
 export default class NavbarComponent implements OnInit {
   inProduction?: boolean;
@@ -30,6 +31,7 @@ export default class NavbarComponent implements OnInit {
   version = '';
   account: Account | null = null;
   entitiesNavbarItems: NavbarItem[] = [];
+  currentLanguage: string;
 
   constructor(
     private loginService: LoginService,
@@ -38,7 +40,14 @@ export default class NavbarComponent implements OnInit {
     private accountService: AccountService,
     private profileService: ProfileService,
     private router: Router,
+    private translate: TranslateService
   ) {
+
+    this.currentLanguage = this.translate.currentLang;
+    this.translate.onLangChange.subscribe((event) => {
+      this.currentLanguage = event.lang;
+    });
+
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
     }
@@ -77,13 +86,5 @@ export default class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
-  }
-
-  formatName(): string {
-    let name = this.account?.login || '';
-    if (this.account?.firstName?.trim() && this.account?.lastName?.trim()){
-      name = this.account?.firstName + ' ' + this.account?.lastName;
-    }
-    return name;
   }
 }
