@@ -191,7 +191,7 @@ public class StorageFileResource {
 
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createAlert(applicationName, "userReservationManagement.updated", "test"))
+            .headers(HeaderUtil.createAlert(applicationName, "userFileManagement.updated", uploadFileDTO.getName()))
             .body(updatedStorageFile);
     }
 
@@ -235,7 +235,7 @@ public class StorageFileResource {
         UploadFileDTO fileDTO = storageFileService.getFile(id);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createAlert(applicationName, "userStorageFileManagement.created", fileDTO.getName()))
+            .headers(HeaderUtil.createAlert(applicationName, "userStorageFileManagement.downloaded", fileDTO.getName()))
             .body(fileDTO);
     }
 
