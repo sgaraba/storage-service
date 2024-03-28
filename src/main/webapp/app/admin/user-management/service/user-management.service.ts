@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { Pagination } from 'app/core/request/request.model';
+import { Pagination, SearchPagination } from 'app/core/request/request.model';
 import { IUser } from '../user-management.model';
 
 @Injectable({ providedIn: 'root' })
@@ -14,7 +14,7 @@ export class UserManagementService {
   constructor(
     private http: HttpClient,
     private applicationConfigService: ApplicationConfigService,
-  ) {}
+  ) { }
 
   create(user: IUser): Observable<IUser> {
     return this.http.post<IUser>(this.resourceUrl, user);
@@ -26,6 +26,11 @@ export class UserManagementService {
 
   find(login: string): Observable<IUser> {
     return this.http.get<IUser>(`${this.resourceUrl}/${login}`);
+  }
+
+  search(req: SearchPagination): Observable<HttpResponse<IUser[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<IUser[]>(`${this.resourceUrl}/search`, { params: options, observe: 'response' });
   }
 
   query(req?: Pagination): Observable<HttpResponse<IUser[]>> {

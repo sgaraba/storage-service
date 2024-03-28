@@ -3,7 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from '../../../core/config/application-config.service';
 import { ReservationModel } from '../reservation.model';
-import { Pagination } from '../../../core/request/request.model';
+import { Pagination, SearchPagination } from '../../../core/request/request.model';
 import { createRequestOption } from '../../../core/request/request-util';
 
 @Injectable({ providedIn: 'root' })
@@ -29,6 +29,11 @@ export class ReservationSpaceService{
 
   updateTotalSize(userId: number, reservationSize: number): Observable<any>{
     return this.http.patch(this.applicationConfigService.getEndpointFor('/api/admin/reservations/update-size'), {userId, reservationSize}, { observe: 'response' })
+  }
+
+  search(req: SearchPagination): Observable<HttpResponse<ReservationModel[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<ReservationModel[]>(`${this.resourceUrl}/search`, { params: options, observe: 'response' });
   }
 
   query(req?: Pagination): Observable<HttpResponse<ReservationModel[]>> {

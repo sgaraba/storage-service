@@ -18,6 +18,7 @@ import { User } from '../user-management.model';
 import localeRo from '@angular/common/locales/ro';
 import { registerLocaleData } from '@angular/common';
 import { saveAs } from 'file-saver';
+import { SearchBarComponent } from 'app/layouts/search-bar/search-bar.component';
 registerLocaleData(localeRo); // register local Ro lang
 
 @Component({
@@ -25,7 +26,7 @@ registerLocaleData(localeRo); // register local Ro lang
   selector: 'jhi-user-mgmt',
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss'],
-  imports: [RouterModule, SharedModule, SortDirective, SortByDirective, UserManagementDeleteDialogComponent, ItemCountComponent],
+  imports: [RouterModule, SharedModule, SortDirective, SortByDirective, UserManagementDeleteDialogComponent, ItemCountComponent, SearchBarComponent],
 })
 export default class UserManagementComponent implements OnInit {
   currentAccount: Account | null = null;
@@ -36,6 +37,8 @@ export default class UserManagementComponent implements OnInit {
   page!: number;
   predicate!: string;
   ascending!: boolean;
+
+  searchQuery: string = "";
 
   constructor(
     private userService: UserManagementService,
@@ -48,6 +51,14 @@ export default class UserManagementComponent implements OnInit {
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));
     this.handleNavigation();
+  }
+
+  updateSearchQuery(query: string): void {
+    this.searchQuery = query;
+    if (!query) {
+      this.page = 1;
+    }
+    this.handleListLoad();
   }
 
   setActive(user: User, isActivated: boolean): void {
@@ -67,6 +78,31 @@ export default class UserManagementComponent implements OnInit {
         this.loadAll();
       }
     });
+  }
+
+  handleListLoad(): void {
+    if (!this.searchQuery) {
+      this.loadAll();
+      return;
+    }
+    this.search();
+  }
+
+  search(): void {
+    this.isLoading = true;
+    this.userService.search({
+      query: this.searchQuery,
+      page: this.page - 1,
+      size: this.itemsPerPage,
+      sort: this.sort(),
+    })
+      .subscribe({
+        next: (res: HttpResponse<User[]>) => {
+          this.isLoading = false;
+          this.onSuccess(res.body, res.headers);
+        },
+        error: () => (this.isLoading = false),
+      });
   }
 
   loadAll(): void {
@@ -96,7 +132,7 @@ export default class UserManagementComponent implements OnInit {
     });
   }
 
-  exportListUsers(type: string){
+  exportListUsers(type: string) {
     this.userService.exportUsers(type).subscribe(
       (blob: Blob) => {
         saveAs(blob, 'list of users');
@@ -111,7 +147,7 @@ export default class UserManagementComponent implements OnInit {
       const sort = (params.get(SORT) ?? data['defaultSort']).split(',');
       this.predicate = sort[0];
       this.ascending = sort[1] === ASC;
-      this.loadAll();
+      this.handleListLoad();
     });
   }
 

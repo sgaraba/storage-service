@@ -1,159 +1,129 @@
 @if (currentAccount !== null) {
-  <div class="row p-2 adaptive-width">
-    <h2 class="d-flex flex-wrap justify-content-between">
-      <span jhiTranslate="reservationSpace.title">Rezervari</span>
+<div class="row p-2 adaptive-width">
+  <h2 class="d-flex flex-wrap justify-content-between">
+    <span jhiTranslate="reservationSpace.title">Rezervari</span>
 
-      <div class="d-flex flex-wrap justify-content-end">
-        <div>
-          <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-            <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-            <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
-          </button>
-        </div>
+    <div class="d-flex flex-wrap justify-content-end">
+      <div>
+        <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+          <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
+        </button>
+      </div>
 
-        <div ngbDropdown class="dropdown">
-          <button
-            ngbDropdownToggle
-            class="btn btn-primary dropdown-toggle"
-            type="button"
-            id="exportDropdown"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <fa-icon icon="file-export"></fa-icon>
-            <span jhiTranslate="files.buttons.export.title">Export</span>
-          </button>
-          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
-            <a (click)="exportListReservation('CSV')" class="dropdown-item">
-              <fa-icon icon="file-csv"></fa-icon>
-              <span jhiTranslate="files.buttons.export.downloadCSV">Download CSV</span>
-            </a>
-            <a (click)="exportListReservation('EXCEL')" class="dropdown-item">
-              <fa-icon icon="file-excel"></fa-icon>
-              <span jhiTranslate="files.buttons.export.exportEXCEL">Export to Excel</span>
-            </a>
-          </div>
+      <div ngbDropdown class="dropdown">
+        <button ngbDropdownToggle class="btn btn-primary dropdown-toggle" type="button" id="exportDropdown"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <fa-icon icon="file-export"></fa-icon>
+          <span jhiTranslate="files.buttons.export.title">Export</span>
+        </button>
+        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
+          <a (click)="exportListReservation('CSV')" class="dropdown-item">
+            <fa-icon icon="file-csv"></fa-icon>
+            <span jhiTranslate="files.buttons.export.downloadCSV">Download CSV</span>
+          </a>
+          <a (click)="exportListReservation('EXCEL')" class="dropdown-item">
+            <fa-icon icon="file-excel"></fa-icon>
+            <span jhiTranslate="files.buttons.export.exportEXCEL">Export to Excel</span>
+          </a>
         </div>
       </div>
-    </h2>
-
-    <jhi-alert-error></jhi-alert-error>
-    <jhi-alert></jhi-alert>
-
-    <div class="form-outline">
-      <input type="search" [(ngModel)]="searchtext" id="search" class="form-control" placeholder="Search"
-        aria-label="search">
     </div>
+  </h2>
 
-    <div class="table-responsive w-100 h-auto">
-      <table class="table table-hover table-striped" aria-describedby="user-files-uploaded">
-        <thead>
-          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
-            <th scope="col" jhiSortBy="totalSize">
-              <span jhiTranslate="reservationSpace.table.thead.totalSize">Total Size</span>
-              <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col" jhiSortBy="usedSize">
-              <span jhiTranslate="reservationSpace.table.thead.usedSize">Used Size</span>
-              <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col">
-              <span jhiTranslate="reservationSpace.table.thead.user">User</span>
-            </th>
-            <th scope="col" jhiSortBy="activated">
-              <span jhiTranslate="reservationSpace.table.thead.activated">Activated</span>
-              <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col" jhiSortBy="createdBy">
-              <span jhiTranslate="reservationSpace.table.thead.createdBy">Created By</span>
-              <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col" jhiSortBy="createdDate">
-              <span jhiTranslate="reservationSpace.table.thead.createdDate">Created Date</span>
-              <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
+  <jhi-alert-error></jhi-alert-error>
+  <jhi-alert></jhi-alert>
 
-        <tbody>
-          <tr *ngFor="let reservation of reservations|filter: searchtext">
-            <td>{{ reservation.totalSize }}</td>
-            <td>{{ reservation.usedSize }}</td>
-            <td>{{ reservation.user | checkFirstLastName }}</td>
-            <td>
-              @if (!reservation.activated) {
-                <button
-                  class="btn btn-danger btn-sm"
-                  (click)="setActive(reservation, true)"
-                  jhiTranslate="userManagement.deactivated"
-                  class="p-1 bg-danger text-white"
-                >
-                  Deactivat
-                </button>
-              } @else {
-                <button
-                  class="btn btn-danger btn-sm"
-                  (click)="setActive(reservation, false)"
-                  jhiTranslate="userManagement.activated"
-                  class="p-1 bg-success text-white"
-                >
-                  Activat
-                </button>
-              }
-            </td>
-            <td>{{ reservation.createdBy }}</td>
-            <td>{{ reservation.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-            <td class="d-flex justify-content-end pe-4">
-              <ul class="nav-item dropdown m-0" ngbDropdown placement="start-bottom">
-                <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle>
-                  <fa-icon class="fs-4" icon="ellipsis"></fa-icon>
-                </a>
-                <ul class="dropdown-menu" ngbDropdownMenu>
-                  <li
-                    class="dropdown-item"
-                    (click)="openModalChangeTotalSize(reservation.user)"
-                  >
-                    <fa-icon icon="download"></fa-icon>
-                    <span jhiTranslate="reservationSpace.table.action.edit">Schimba rezervarea totala</span>
-                  </li>
+  <jhi-search-bar (onChangeEvent)="updateSearchQuery($event)"></jhi-search-bar>
 
-                  <li
-                    class="dropdown-item"
-                    (click)="openModalDeleteReservation(reservation.id)"
-                  >
-                    <fa-icon icon="trash-alt"></fa-icon>
-                    <span jhiTranslate="reservationSpace.table.action.delete">Sterge rezervare</span>
-                  </li>
-                </ul>
+  <div class="table-responsive w-100 h-auto">
+    <table class="table table-hover table-striped" aria-describedby="user-files-uploaded">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
+          <th scope="col" jhiSortBy="totalSize">
+            <span jhiTranslate="reservationSpace.table.thead.totalSize">Total Size</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="usedSize">
+            <span jhiTranslate="reservationSpace.table.thead.usedSize">Used Size</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col">
+            <span jhiTranslate="reservationSpace.table.thead.user">User</span>
+          </th>
+          <th scope="col" jhiSortBy="activated">
+            <span jhiTranslate="reservationSpace.table.thead.activated">Activated</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="createdBy">
+            <span jhiTranslate="reservationSpace.table.thead.createdBy">Created By</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="createdDate">
+            <span jhiTranslate="reservationSpace.table.thead.createdDate">Created Date</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let reservation of reservations">
+          <td>{{ reservation.totalSize }}</td>
+          <td>{{ reservation.usedSize }}</td>
+          <td>{{ reservation.user | checkFirstLastName }}</td>
+          <td>
+            @if (!reservation.activated) {
+            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, true)"
+              jhiTranslate="userManagement.deactivated" class="p-1 bg-danger text-white">
+              Deactivat
+            </button>
+            } @else {
+            <button class="btn btn-danger btn-sm" (click)="setActive(reservation, false)"
+              jhiTranslate="userManagement.activated" class="p-1 bg-success text-white">
+              Activat
+            </button>
+            }
+          </td>
+          <td>{{ reservation.createdBy }}</td>
+          <td>{{ reservation.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td class="d-flex justify-content-end pe-4">
+            <ul class="nav-item dropdown m-0" ngbDropdown placement="start-bottom">
+              <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle>
+                <fa-icon class="fs-4" icon="ellipsis"></fa-icon>
+              </a>
+              <ul class="dropdown-menu" ngbDropdownMenu>
+                <li class="dropdown-item" (click)="openModalChangeTotalSize(reservation.user)">
+                  <fa-icon icon="download"></fa-icon>
+                  <span jhiTranslate="reservationSpace.table.action.edit">Schimba rezervarea totala</span>
+                </li>
+
+                <li class="dropdown-item" (click)="openModalDeleteReservation(reservation.id)">
+                  <fa-icon icon="trash-alt"></fa-icon>
+                  <span jhiTranslate="reservationSpace.table.action.delete">Sterge rezervare</span>
+                </li>
               </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <div>
-      <div class="d-flex justify-content-center">
-        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-      </div>
-      <div class="d-flex justify-content-center">
-        <ngb-pagination
-          [collectionSize]="totalItems"
-          [(page)]="page"
-          [pageSize]="itemsPerPage"
-          [maxSize]="5"
-          [rotate]="true"
-          [boundaryLinks]="true"
-          (pageChange)="transition()"
-        ></ngb-pagination>
-      </div>
+  <div>
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+    <div class="d-flex justify-content-center">
+      <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5"
+        [rotate]="true" [boundaryLinks]="true" (pageChange)="transition()"></ngb-pagination>
     </div>
   </div>
+</div>
 } @else {
-  <div class="alert alert-warning">
-    <span jhiTranslate="global.messages.info.register.noaccount">Încă nu aveți un cont?</span>&nbsp;
-    <a class="alert-link" routerLink="/account/register" jhiTranslate="global.messages.info.register.link">Înregistrați un cont nou</a>
-  </div>
+<div class="alert alert-warning">
+  <span jhiTranslate="global.messages.info.register.noaccount">Încă nu aveți un cont?</span>&nbsp;
+  <a class="alert-link" routerLink="/account/register" jhiTranslate="global.messages.info.register.link">Înregistrați un
+    cont nou</a>
+</div>
 }

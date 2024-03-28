@@ -22,14 +22,14 @@ import CheckFirstLastName from '../../../shared/user/check-firstName-lastName.pi
 import { DeleteComponent } from '../delete/delete.component';
 import { saveAs } from 'file-saver';
 import { FormsModule } from '@angular/forms';
-import { FilterPipe } from 'app/layouts/search-filter/filter.pipe';
+import { SearchBarComponent } from 'app/layouts/search-bar/search-bar.component';
 
 registerLocaleData(localeRo); // register local Ro lang
 
 @Component({
   selector: 'jhi-list',
   standalone: true,
-  imports: [SharedModule, ItemCountComponent, RouterModule, SortDirective, SortByDirective, CheckFirstLastName, FormsModule, FilterPipe],
+  imports: [SharedModule, ItemCountComponent, RouterModule, SortDirective, SortByDirective, FormsModule, SearchBarComponent, CheckFirstLastName],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })
@@ -43,7 +43,8 @@ export class ListComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   isLoading = false;
-  searchtext:any;
+
+  searchQuery: string = "";
 
   constructor(
     private accountService: AccountService,
@@ -60,13 +61,29 @@ export class ListComponent implements OnInit {
     this.handleNavigation();
   }
 
+  updateSearchQuery(query: string): void {
+    this.searchQuery = query;
+    if (!query) {
+      this.page = 1;
+    }
+    this.handleListLoad();
+  }
+
+  handleListLoad(): void {
+    if (!this.searchQuery) {
+      this.loadAll();
+      return;
+    }
+    this.search();
+  }
+
   openModalDeleteReservation(resevationID: number): void {
     const modalRef = this.modalService.open(DeleteComponent);
     modalRef.componentInstance.resevationID = resevationID;
 
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
-        this.loadAll();
+        this.handleListLoad();
       }
     });
   }
@@ -75,17 +92,35 @@ export class ListComponent implements OnInit {
     const modalRef = this.modalService.open(ChangeTotalSizeComponent);
     modalRef.componentInstance.userID = user.id;
 
-    modalRef.closed.subscribe( reason => {
-      if(reason === 'updated') {
-        this.loadAll();
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'updated') {
+        this.handleListLoad();
       }
     })
   }
 
   setActive(reservation: ReservationModel, isActivated: boolean): void {
     this.reservationSpaceService.update({ ...reservation, activated: isActivated }).subscribe(() => {
-      this.loadAll();
+      this.handleListLoad();
     });
+  }
+
+  search(): void {
+    this.isLoading = true;
+    this.reservationSpaceService
+      .search({
+        query: this.searchQuery,
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort()
+      })
+      .subscribe({
+        next: (res: HttpResponse<ReservationModel[]>) => {
+          this.isLoading = false;
+          this.onSuccess(res.body, res.headers);
+        },
+        error: () => (this.isLoading = false)
+      });
   }
 
   loadAll(): void {
@@ -115,7 +150,7 @@ export class ListComponent implements OnInit {
     });
   }
 
-  exportListReservation(type: string){
+  exportListReservation(type: string) {
     this.reservationSpaceService.exportReservations(type).subscribe(
       (blob: Blob) => {
         saveAs(blob, 'list of reservations');
@@ -130,7 +165,7 @@ export class ListComponent implements OnInit {
       const sort = (params.get(SORT) ?? data['defaultSort']).split(',');
       this.predicate = sort[0];
       this.ascending = sort[1] === ASC;
-      this.loadAll();
+      this.handleListLoad();
     });
   }
 

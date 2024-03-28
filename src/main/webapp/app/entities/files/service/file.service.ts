@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { FileModel } from '../file.model';
-import { Pagination } from '../../../core/request/request.model';
+import { Pagination, SearchPagination } from '../../../core/request/request.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../../../core/request/request-util';
 import { ApplicationConfigService } from '../../../core/config/application-config.service';
@@ -14,6 +14,15 @@ export class FileService {
     private http: HttpClient,
     private applicationConfigService: ApplicationConfigService
   ) {}
+
+  search(isAdmin: boolean, req: SearchPagination): Observable<HttpResponse<FileModel[]>> {
+    const options = createRequestOption(req);
+
+    if(isAdmin)
+      return this.http.get<FileModel[]>(this.applicationConfigService.getEndpointFor('/api/admin/storage-files/search'), { params: options, observe: 'response' });
+
+    return this.http.get<FileModel[]>(`${this.resourceUrl}/search`, { params: options, observe: 'response' });
+  }
 
   query(isAdmin: boolean, req?: Pagination): Observable<HttpResponse<FileModel[]>> {
     const options = createRequestOption(req);

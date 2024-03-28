@@ -1,7 +1,8 @@
 <div class="adaptive-width">
   <h2>
     <div class="d-flex flex-wrap justify-content-between">
-      <span id="user-management-page-heading" jhiTranslate="userManagement.home.title" data-cy="userManagementPageHeading">Utilizatori</span>
+      <span id="user-management-page-heading" jhiTranslate="userManagement.home.title"
+        data-cy="userManagementPageHeading">Utilizatori</span>
 
       <div class="d-flex flex-wrap justify-content-end align-items-center">
         <div class="mb-2 mb-md-0">
@@ -13,12 +14,14 @@
 
         <div class="mb-2 mb-md-0">
           <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['./new']">
-            <fa-icon icon="plus"></fa-icon> <span jhiTranslate="userManagement.home.createLabel">Creare utilizator nou</span>
+            <fa-icon icon="plus"></fa-icon> <span jhiTranslate="userManagement.home.createLabel">Creare utilizator
+              nou</span>
           </button>
         </div>
 
         <div ngbDropdown class="dropdown">
-          <button ngbDropdownToggle class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button ngbDropdownToggle class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <fa-icon icon="file-export"></fa-icon>
             <span jhiTranslate="files.buttons.export.title">Export</span>
           </button>
@@ -41,119 +44,111 @@
 
   <jhi-alert></jhi-alert>
 
+  <jhi-search-bar (onChangeEvent)="updateSearchQuery($event)"></jhi-search-bar>
+
   @if (users) {
-    <div class="table-responsive">
-      <table class="table table-hover table-striped" aria-describedby="user-management-page-heading">
-        <thead>
-          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
-            <th scope="col" jhiSortBy="login">
-              <span jhiTranslate="userManagement.login">Cont</span> 
-              <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col" jhiSortBy="firstName">
-              <span jhiTranslate="userManagement.firstName">Nume</span> <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col" jhiSortBy="lastName">
-              <span jhiTranslate="userManagement.lastName">Prenume</span> 
-              <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col" jhiSortBy="email"><span jhiTranslate="userManagement.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"></th>
-            <th scope="col" jhiSortBy="langKey">
-              <span jhiTranslate="userManagement.langKey">Limbă</span> <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col"><span jhiTranslate="userManagement.profiles">Profil</span></th>
-            <th scope="col" jhiSortBy="createdDate">
-              <span jhiTranslate="userManagement.createdDate">Creat la data</span> <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col" jhiSortBy="lastModifiedBy">
-              <span jhiTranslate="userManagement.lastModifiedBy">Modifica de</span> <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col" jhiSortBy="lastModifiedDate">
-              <span jhiTranslate="userManagement.lastModifiedDate">Modificat la data</span> <fa-icon icon="sort"></fa-icon>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        @if (users) {
-          <tbody>
-            @for (user of users; track trackIdentity) {
-              <tr>
-                <td><a [routerLink]="['./', user.login, 'view']">{{ user.login }}</a></td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.email }}</td>
-                <td>
-                  @if (!user.activated) {
-                    <button
-                      class="btn btn-danger btn-sm"
-                      (click)="setActive(user, true)"
-                      jhiTranslate="userManagement.deactivated"
-                    >
-                      Dezactivat
-                    </button>
-                  } @else {
-                    <button
-                      class="btn btn-success btn-sm"
-                      (click)="setActive(user, false)"
-                      [disabled]="!currentAccount || currentAccount.login === user.login"
-                      jhiTranslate="userManagement.activated"
-                    >
-                      Activat
-                    </button>
-                  }
-                </td>
-                <td>{{ user.langKey }}</td>
-                <td>
-                  @for (authority of user.authorities; track $index) {
-                    <div>
-                      <span class="badge bg-info">{{ authority }}</span>
-                    </div>
-                  }
-                </td>
-                <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-                <td>{{ user.lastModifiedBy }}</td>
-                <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
-                <td class="d-flex justify-content-end pe-4">
-                  <ul class="nav-item dropdown" ngbDropdown placement="start-bottom">
-                    <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle><fa-icon class="fs-4" icon="ellipsis"></fa-icon></a>
-                    <ul class="dropdown-menu" ngbDropdownMenu>
-                      <li class="dropdown-item" [routerLink]="['./', user.login, 'edit']">
-                        <fa-icon icon="download"></fa-icon>
-                        <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editare</span>
-                      </li>
-                      <li class="dropdown-item" (click)="deleteUser(user)">
-                        <fa-icon icon="trash-alt"></fa-icon>
-                        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Ștergere</span>
-                      </li>
-                    </ul>
-                  </ul>
-                </td>
-              </tr>
+  <div class="table-responsive">
+    <table class="table table-hover table-striped" aria-describedby="user-management-page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
+          <th scope="col" jhiSortBy="login">
+            <span jhiTranslate="userManagement.login">Cont</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="firstName">
+            <span jhiTranslate="userManagement.firstName">Nume</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="lastName">
+            <span jhiTranslate="userManagement.lastName">Prenume</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="email"><span jhiTranslate="userManagement.email">Email</span> <fa-icon
+              icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+          <th scope="col" jhiSortBy="langKey">
+            <span jhiTranslate="userManagement.langKey">Limbă</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"><span jhiTranslate="userManagement.profiles">Profil</span></th>
+          <th scope="col" jhiSortBy="createdDate">
+            <span jhiTranslate="userManagement.createdDate">Creat la data</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="lastModifiedBy">
+            <span jhiTranslate="userManagement.lastModifiedBy">Modifica de</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="lastModifiedDate">
+            <span jhiTranslate="userManagement.lastModifiedDate">Modificat la data</span> <fa-icon
+              icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      @if (users) {
+      <tbody>
+        @for (user of users; track trackIdentity) {
+        <tr>
+          <td><a [routerLink]="['./', user.login, 'view']">{{ user.login }}</a></td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            @if (!user.activated) {
+            <button class="btn btn-danger btn-sm" (click)="setActive(user, true)"
+              jhiTranslate="userManagement.deactivated">
+              Dezactivat
+            </button>
+            } @else {
+            <button class="btn btn-success btn-sm" (click)="setActive(user, false)"
+              [disabled]="!currentAccount || currentAccount.login === user.login"
+              jhiTranslate="userManagement.activated">
+              Activat
+            </button>
             }
-          </tbody>
+          </td>
+          <td>{{ user.langKey }}</td>
+          <td>
+            @for (authority of user.authorities; track $index) {
+            <div>
+              <span class="badge bg-info">{{ authority }}</span>
+            </div>
+            }
+          </td>
+          <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td>{{ user.lastModifiedBy }}</td>
+          <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td class="d-flex justify-content-end pe-4">
+            <ul class="nav-item dropdown" ngbDropdown placement="start-bottom">
+              <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle><fa-icon class="fs-4"
+                  icon="ellipsis"></fa-icon></a>
+              <ul class="dropdown-menu" ngbDropdownMenu>
+                <li class="dropdown-item" [routerLink]="['./', user.login, 'edit']">
+                  <fa-icon icon="download"></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editare</span>
+                </li>
+                <li class="dropdown-item" (click)="deleteUser(user)">
+                  <fa-icon icon="trash-alt"></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Ștergere</span>
+                </li>
+              </ul>
+            </ul>
+          </td>
+        </tr>
         }
-      </table>
-    </div>
+      </tbody>
+      }
+    </table>
+  </div>
   }
 
   @if (users) {
-    <div>
-      <div class="d-flex justify-content-center">
-        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-      </div>
-
-      <div class="d-flex justify-content-center">
-        <ngb-pagination
-          [collectionSize]="totalItems"
-          [(page)]="page"
-          [pageSize]="itemsPerPage"
-          [maxSize]="5"
-          [rotate]="true"
-          [boundaryLinks]="true"
-          (pageChange)="transition()"
-        ></ngb-pagination>
-      </div>
+  <div>
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5"
+        [rotate]="true" [boundaryLinks]="true" (pageChange)="transition()"></ngb-pagination>
+    </div>
+  </div>
   }
 </div>

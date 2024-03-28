@@ -20,14 +20,14 @@ import { saveAs } from 'file-saver';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { GetFileIcon } from 'app/shared/files';
 import { FormsModule, NgModel } from '@angular/forms';
-import { FilterPipe } from 'app/layouts/search-filter/filter.pipe';
+import { SearchBarComponent } from 'app/layouts/search-bar/search-bar.component';
 // Register the 'ro' locale data
 registerLocaleData(localeRo);
 
 @Component({
   selector: 'jhi-files-list',
   standalone: true,
-  imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective, GetFileIcon, FormsModule, FilterPipe],
+  imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective, GetFileIcon, FormsModule, SearchBarComponent],
   styleUrls: ['./files.component.scss'],
   templateUrl: './files.component.html',
 })
@@ -35,7 +35,6 @@ export class FilesComponent implements OnInit {
   currentAccount: Account | null = null;
   page_list_all: boolean = false;
   isAdmin: boolean = false;
-  searchtext:any;
 
   files: FileModel[] | null = null;
   page!: number;
@@ -45,6 +44,8 @@ export class FilesComponent implements OnInit {
 
   predicate!: string;
   ascending!: boolean;
+
+  searchQuery: string = "";
 
   constructor(
     private accountService: AccountService,
@@ -64,13 +65,29 @@ export class FilesComponent implements OnInit {
     this.handleNavigation();
   }
 
+  updateSearchQuery(query: string): void {
+    this.searchQuery = query;
+    if (!query) {
+      this.page = 1;
+    }
+    this.handleListLoad();
+  }
+
+  handleListLoad(): void {
+    if (!this.searchQuery) {
+      this.loadAll();
+      return;
+    }
+    this.search();
+  }
+
   openModal(fileID: number): void {
     const modalRef = this.modalService.open(DeleteComponent);
     modalRef.componentInstance.fileID = fileID;
 
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
-        this.loadAll();
+        this.handleListLoad();
       }
     });
   }
@@ -92,6 +109,24 @@ export class FilesComponent implements OnInit {
 
   openFile(base64String: string, contentType: string | null | undefined): void {
     return this.dataUtils.openFile(base64String, contentType);
+  }
+
+  search(): void {
+    this.isLoading = true;
+    this.fileService
+      .search(this.page_list_all ? this.isAdmin : false, {
+        query: this.searchQuery,
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+      })
+      .subscribe({
+        next: (res: HttpResponse<FileModel[]>) => {
+          this.isLoading = false;
+          this.onSuccess(res.body, res.headers);
+        },
+        error: () => (this.isLoading = false),
+      });
   }
 
   loadAll(): void {
@@ -149,7 +184,7 @@ export class FilesComponent implements OnInit {
       this.predicate = sort[0];
       this.ascending = sort[1] === ASC;
 
-      this.loadAll();
+      this.handleListLoad();
     });
   }
 
