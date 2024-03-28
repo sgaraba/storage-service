@@ -5,7 +5,7 @@ import SharedModule from 'app/shared/shared.module';
 import { ItemCountComponent } from 'app/shared/pagination';
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
-import { combineLatest, Subject } from 'rxjs';
+import { combineLatest, filter, Subject } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { registerLocaleData } from '@angular/common';
@@ -19,14 +19,15 @@ import SortByDirective from '../../../shared/sort/sort-by.directive';
 import { saveAs } from 'file-saver';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-
+import { FormsModule, NgModel } from '@angular/forms';
+import { FilterPipe } from 'app/layouts/search-filter/filter.pipe';
 // Register the 'ro' locale data
 registerLocaleData(localeRo);
 
 @Component({
   selector: 'jhi-files-list',
   standalone: true,
-  imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective],
+  imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective, FormsModule, FilterPipe],
   styleUrls: ['./files.component.scss'],
   templateUrl: './files.component.html',
 })
@@ -34,6 +35,7 @@ export class FilesComponent  implements OnInit {
   currentAccount: Account | null = null;
   page_list_all: boolean = false;
   isAdmin: boolean = false;
+  searchtext:any;
 
   files: FileModel[] | null = null;
   page!: number;

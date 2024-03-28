@@ -21,13 +21,15 @@ import { ITEMS_PER_PAGE } from '../../../config/pagination.constants';
 import CheckFirstLastName from '../../../shared/user/check-firstName-lastName.pipe';
 import { DeleteComponent } from '../delete/delete.component';
 import { saveAs } from 'file-saver';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from 'app/layouts/search-filter/filter.pipe';
 
 registerLocaleData(localeRo); // register local Ro lang
 
 @Component({
   selector: 'jhi-list',
   standalone: true,
-  imports: [SharedModule, ItemCountComponent, RouterModule, SortDirective, SortByDirective, CheckFirstLastName],
+  imports: [SharedModule, ItemCountComponent, RouterModule, SortDirective, SortByDirective, CheckFirstLastName, FormsModule, FilterPipe],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })
@@ -41,6 +43,7 @@ export class ListComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   isLoading = false;
+  searchtext:any;
 
   constructor(
     private accountService: AccountService,

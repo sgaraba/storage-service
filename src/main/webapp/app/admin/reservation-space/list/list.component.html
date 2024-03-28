@@ -41,6 +41,11 @@
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
 
+    <div class="form-outline">
+      <input type="search" [(ngModel)]="searchtext" id="search" class="form-control" placeholder="Search"
+        aria-label="search">
+    </div>
+
     <div class="table-responsive w-100 h-auto">
       <table class="table table-hover table-striped" aria-describedby="user-files-uploaded">
         <thead>
@@ -73,7 +78,7 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let reservation of reservations">
+          <tr *ngFor="let reservation of reservations|filter: searchtext">
             <td>{{ reservation.totalSize }}</td>
             <td>{{ reservation.usedSize }}</td>
             <td>{{ reservation.user | checkFirstLastName }}</td>
