@@ -77,12 +77,17 @@ public class DashboardService {
 
     @Scheduled(cron = "0 0/5 * ? * *")
     public void updateDashboardData(){
-        DashboardData dashboardData = dashboardRepository.findByUserId(1).
-            orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Integer files = (int) storageFileRepository.count();
+        Integer users = (int) userRepository.count();
+        Long usedSpace = storageFileRepository.getTotalFileSize();
 
-        dashboardData.setFiles((int) storageFileRepository.count());
-        dashboardData.setUsers((int) userRepository.count());
-        dashboardData.setUsedSpace(storageFileRepository.getTotalFileSize());
-        dashboardRepository.save(dashboardData);
+        List<DashboardData> dashboardDataList = dashboardRepository.findAll();
+
+        for (DashboardData dashboardData : dashboardDataList) {
+            dashboardData.setFiles(files);
+            dashboardData.setUsers(users);
+            dashboardData.setUsedSpace(usedSpace);
+            dashboardRepository.save(dashboardData);
+        }
     }
 }
