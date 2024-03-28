@@ -29,6 +29,12 @@
         "downloadCSV": "Descărcați CSV",
         "exportEXCEL": "Exportați în Excel"
       }
+    },
+
+    "fileDetail": {
+      "titleDetails": "Detalii fișier",
+      "titleReupload": "Reîncărcare fișier",
+      "buttonReupload": "Reîncarcă"
     }
   },
 
@@ -36,5 +42,7 @@
     "deleted": "Fișierul a fost șters!"
   },
 
-  "userStorageFileManagement.created": "Fișierul a fost încărcat cu succes!"
+  "userStorageFileManagement.created": "Fișierul a fost încărcat cu succes!",
+  "userStorageFileManagement.downloaded": "Fișierul a fost descărcat cu succes!",
+  "userFileManagement.updated": "Fișierul a fost actualizat cu succes!"
 }

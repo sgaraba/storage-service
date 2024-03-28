@@ -38,7 +38,7 @@
             @if (!account?.imageUrl) {
             <span>
               <fa-icon icon="user"></fa-icon>
-              <span>{{formatName()}}</span>
+              <span>{{account | nameDisplay: true}}</span>
             </span>
             } @else {
             <span>

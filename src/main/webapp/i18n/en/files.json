@@ -21,6 +21,7 @@
         "confirm": "Delete"
       }
     },
+    
     "buttons": {
       "upload": "Upload new file",
       "export": {
@@ -28,11 +29,19 @@
         "downloadCSV": "Download CSV",
         "exportEXCEL": "Export to excel"
       }
+    },
+
+    "fileDetail":{
+      "titleDetails": "File details",
+      "titleReupload": "File reupload",
+      "buttonReupload": "Reupload"
     }
   },
 
   "storageFileManagement": {
     "deleted": "The file was deleted!"
   },
-  "userStorageFileManagement.created": "The file was uploaded successfully!"
+  "userStorageFileManagement.created": "The file was uploaded successfully!", 
+  "userStorageFileManagement.downloaded": "The file was downloaded successfully!",
+  "userFileManagement.updated": "The file was updated successfully!"
 }
