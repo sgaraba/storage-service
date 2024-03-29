@@ -12,6 +12,21 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class StatisticsDocumentsComponent implements OnInit {
   currentLanguage: any;
+  monthsRO = [
+    'septembrie',
+    'februarie',
+    'decembrie',
+    'noiembrie',
+    'ianuarie',
+    'martie',
+    'aprilie',
+    'mai',
+    'iunie',
+    'august',
+    'octombrie',
+    'iulie',
+  ];
+  monthsRU = ['сентябрь', 'февраль', 'декабрь', 'ноябрь', 'январь', 'март', 'апрель', 'май', 'июнь', 'август', 'октябрь', 'июль'];
 
   constructor(
     private statisticsDocumentsService: StatisticsDocumentsService,
@@ -31,6 +46,8 @@ export class StatisticsDocumentsComponent implements OnInit {
           fileUploadsData.push(response[month]);
         }
       }
+
+      months = this.checkChartLang(months);
 
       this.createChart(months, fileUploadsData);
     });
@@ -62,5 +79,18 @@ export class StatisticsDocumentsComponent implements OnInit {
         },
       },
     });
+  }
+
+  private checkChartLang(months: string[]): string[] {
+    switch (this.currentLanguage) {
+      case 'ro':
+        months = this.monthsRO;
+        break;
+      case 'ru':
+        months = this.monthsRU;
+        break;
+    }
+
+    return months;
   }
 }
