@@ -17,11 +17,10 @@ export const FileResolve: ResolveFn<FileModel | null> = (route: ActivatedRouteSn
 
 const filesRoutes: Routes = [
   {
-    path: 'list',
+    path: '',
     component: FilesComponent,
     data: {
       defaultSort: 'id,asc',
-      breadcrumb: { skip: true }
     },
   },
   {
