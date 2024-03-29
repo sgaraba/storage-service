@@ -1,19 +1,23 @@
 <div>
-  <div id="home">
-    @if (account == null) {
-    <div class="text">
-      <h3 jhiTranslate="home.title"></h3>
-      <button jhiTranslate="global.messages.info.authenticated.link" (click)="login()"></button>
-      <button routerLink="/account/register" jhiTranslate="global.messages.info.register.link"></button>
+
+  @if (account == null) {
+    <div id="home">
+      <div class="text">
+        <h3 jhiTranslate="home.title"></h3>
+        <button jhiTranslate="global.messages.info.authenticated.link" (click)="login()"></button>
+        <button routerLink="/account/register" jhiTranslate="global.messages.info.register.link"></button>
+      </div>
+      <div>
+        <img src="../../content/images/best-cloud-storage.png" alt=" " class="rounded-circle" />
+      </div>
     </div>
-    <div>
-      <img src="../../content/images/best-cloud-storage.png" alt=" " class="rounded-circle">
-    </div>
+  }
+
+  @if (account !== null) {
+    @if (isAdmin) {
+      <jhi-admin-dashboard></jhi-admin-dashboard>
+    } @else {
+      <jhi-user-dashboard></jhi-user-dashboard>
     }
-    <div class="d-flex justify-content-center">
-      @if (account !== null) {
-      <div ><img src="../../content/images/public_cloud.png" alt=" "></div>
-      }
-    </div>
-  </div>
+  }
 </div>

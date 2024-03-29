@@ -13,7 +13,7 @@
 
       @if (!page_list_all) {
       <div>
-        <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['../upload']">
+        <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['/entity/files/upload']">
           <fa-icon icon="plus"></fa-icon>
           <span jhiTranslate="files.buttons.upload">Upload new file</span>
         </button>
@@ -67,7 +67,7 @@
       <tbody>
         <tr *ngFor="let file of files">
           <td>
-            <a [routerLink]="['../', file.id, 'detail']">
+            <a [routerLink]="['/entity/files/', file.id, 'detail']">
               <fa-icon [class]="(file.name | getFileIcon).class" [icon]="(file.name | getFileIcon).icon"></fa-icon>
               {{ file.name }}
             </a>

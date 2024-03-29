@@ -49,7 +49,8 @@ const routes: Routes = [
     data: { breadcrumb: { skip: true } }
   },
   {
-    path: '',
+    path: 'entity',
+    data: { breadcrumb: { skip: true } },
     loadChildren: () => import(`./entities/entity.routes`),
   },
   ...errorRoute,
