@@ -2,10 +2,6 @@
   <h4 class="bg-light p-3 border-bottom" jhiTranslate="home.dashboard.recentDocuments">Documente recente</h4>
   @if (files && files.length > 0) {
     <div class="table-responsive w-100">
-      <jhi-alert-error></jhi-alert-error>
-
-      <jhi-alert></jhi-alert>
-      
       <table class="table table-hover table-striped m-0" aria-describedby="user-files-uploaded">
         <thead>
           <tr>
@@ -38,15 +34,11 @@
             <td>{{ file.createdBy }}</td>
             <td class="d-flex justify-content-end pe-4">
               <ul class="nav-item dropdown m-0" ngbDropdown placement="start-bottom">
-                <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle><fa-icon class="fs-4" icon="ellipsis"></fa-icon></a>
+                <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle><fa-icon class="fs-4 text-secondary" icon="ellipsis"></fa-icon></a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
                   <li class="dropdown-item" (click)="call_download_fileService(file.id)">
                     <fa-icon icon="download"></fa-icon>
                     <span jhiTranslate="entity.action.download">Download</span>
-                  </li>
-                  <li class="dropdown-item" (click)="openModal(file.id)">
-                    <fa-icon icon="trash-alt"></fa-icon>
-                    <span jhiTranslate="entity.action.delete">Delete</span>
                   </li>
                 </ul>
               </ul>
