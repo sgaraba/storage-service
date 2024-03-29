@@ -94,7 +94,7 @@ public class UserReservationService {
     }
 
     @Transactional(readOnly = true)
-    public Page<AdminReservationDTO> search(String query, Pageable pageable) {
-        return userReservationRepository.findByDynamicQuery(query, pageable).map(AdminReservationDTO::new);
+    public Page<UserReservation> search(String query, Pageable pageable) {
+        return userReservationRepository.findByDynamicQuery(query, pageable);
     }
 }
