@@ -1,28 +1,28 @@
 <ul class="border bg-light fs-6 ps-0">
     <li class="d-flex justify-content-between py-3 align-items-center">
-        <fa-icon icon="database" class="fs-2 w-25 text-center"></fa-icon>
+        <fa-icon icon="database" class="fs-2 w-25 text-center text-primary"></fa-icon>
         <p class="pe-3 text-end m-0">
             <b class="ps-2 fw-bold fs-5">{{details.usedSpace}}</b>
             <br>
-            <span jhiTranslate="reservationSpace.table.thead.usedSize" class="text-secondary">Spatiu utilizat</span>
+            <span jhiTranslate="reservationSpace.table.thead.usedSize" class="text-dark">Spatiu utilizat</span>
         </p>
     </li>
 
     <li class="d-flex justify-content-between py-3 border-top align-items-center">
-        <fa-icon icon="file-alt" class="fs-2 w-25 text-center"></fa-icon>
+        <fa-icon icon="file-alt" class="fs-2 w-25 text-center text-info"></fa-icon>
         <p class="pe-3 text-end m-0">
             <b class="ps-2 fw-bold fs-5">{{details.totalDocuments}}</b>
             <br>
-            <span jhiTranslate="global.menu.sidebar.documents" class="text-secondary">Documente</span>
+            <span jhiTranslate="global.menu.sidebar.documents" class="text-dark">Documente</span>
         </p>
     </li>
 
     <li class="d-flex justify-content-between border-top py-3 align-items-center">
-        <fa-icon icon="users" class="fs-2 w-25 text-center"></fa-icon>
+        <fa-icon icon="users" class="fs-2 w-25 text-center text-danger"></fa-icon>
         <p class=" pe-3 text-end m-0">
             <b class="ps-2 fw-bold fs-5">{{details.totalUsers}}</b>
             <br>
-            <span jhiTranslate="global.menu.sidebar.users" class="text-secondary">Utilizatori</span>
+            <span jhiTranslate="global.menu.sidebar.users" class="text-dark">Utilizatori</span>
         </p>
     </li>
 </ul>
