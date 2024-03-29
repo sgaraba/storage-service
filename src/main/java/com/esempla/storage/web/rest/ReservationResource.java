@@ -161,14 +161,14 @@ public class ReservationResource {
 
     @GetMapping("/reservations/search")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<List<AdminReservationDTO>> search (@RequestParam(value = "query") String query, @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<UserReservation>> search (@RequestParam(value = "query") String query, @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
 
         log.debug("REST request for searching for admin");
         if (!onlyContainsAllowedProperties(pageable)) {
             return ResponseEntity.badRequest().build();
         }
 
-        final Page<AdminReservationDTO> page = userReservationService.search(query, pageable);
+        final Page<UserReservation> page = userReservationService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
