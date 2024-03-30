@@ -1,0 +1,19 @@
+{
+  "dashboard": {
+    "statisticsDocuments": {
+      "title": "File uploads",
+      "april": "April",
+      "may": "May",
+      "august": "August",
+      "october": "October",
+      "january": "January",
+      "march": "March",
+      "july": "July",
+      "june": "June",
+      "september": "September",
+      "february": "February",
+      "november": "November",
+      "december": "December"
+    }
+  }
+}

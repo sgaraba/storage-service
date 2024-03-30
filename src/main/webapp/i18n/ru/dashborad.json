@@ -1,0 +1,19 @@
+{
+  "dashboard": {
+    "statisticsDocuments": {
+      "title": "Загрузка файлов",
+      "april": "Апрель",
+      "may": "Май",
+      "august": "Август",
+      "october": "Октябрь",
+      "january": "Январь",
+      "march": "Март",
+      "july": "Июль",
+      "june": "Июнь",
+      "september": "Сентябрь",
+      "february": "Февраль",
+      "november": "Ноябрь",
+      "december": "Декабрь"
+    }
+  }
+}

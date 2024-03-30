@@ -8,13 +8,14 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteComponent } from 'app/entities/files/delete/delete.component';
 import { GetFileIcon } from 'app/shared/files';
 import { RecentDocumentsService } from './service/recent-documents.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'jhi-recent-documents',
   templateUrl: './recent-documents.component.html',
   styleUrls: ['./recent-documents.component.scss'],
-  imports: [SharedModule, GetFileIcon],
+  imports: [SharedModule, GetFileIcon, RouterModule],
 })
 export class RecentDocumentsComponent implements OnInit {
   files: FileModel[] | null = null;
@@ -22,7 +23,7 @@ export class RecentDocumentsComponent implements OnInit {
   constructor(
     private fileService: FileService,
     private modalService: NgbModal,
-    private recentDocumentsService: RecentDocumentsService
+    private recentDocumentsService: RecentDocumentsService,
   ) {}
 
   ngOnInit(): void {

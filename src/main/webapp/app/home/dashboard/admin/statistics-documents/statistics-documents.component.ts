@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import SharedModule from 'app/shared/shared.module';
 import Chart from 'chart.js/auto';
 import { StatisticsDocumentsService } from './service/statistics-documents.service';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 
 @Component({
   standalone: true,
@@ -12,21 +12,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class StatisticsDocumentsComponent implements OnInit {
   currentLanguage: any;
-  monthsRO = [
-    'septembrie',
-    'februarie',
-    'decembrie',
-    'noiembrie',
-    'ianuarie',
-    'martie',
-    'aprilie',
-    'mai',
-    'iunie',
-    'august',
-    'octombrie',
-    'iulie',
-  ];
-  monthsRU = ['сентябрь', 'февраль', 'декабрь', 'ноябрь', 'январь', 'март', 'апрель', 'май', 'июнь', 'август', 'октябрь', 'июль'];
+  months!: string[];
+  chart: any;
 
   constructor(
     private statisticsDocumentsService: StatisticsDocumentsService,
@@ -35,33 +22,31 @@ export class StatisticsDocumentsComponent implements OnInit {
     this.currentLanguage = this.translateService.currentLang;
   }
 
-  ngOnInit() {
-    let fileUploadsData: number[] = [];
-    let months: string[] = [];
+  ngOnInit():void {
+    this.translateService.onLangChange.subscribe(() => {
+      this.destroyChart();
+      this.loadChartData();
+    });
 
+    this.loadChartData();
+  }
+
+  loadChartData() {
     this.statisticsDocumentsService.getChartData().subscribe((response: any) => {
-      for (const month in response) {
-        if (response.hasOwnProperty(month)) {
-          months.push(month);
-          fileUploadsData.push(response[month]);
-        }
-      }
-
-      months = this.checkChartLang(months);
-
-      this.createChart(months, fileUploadsData);
+      this.months = this.translateMonths(Object.keys(response));
+      this.createChart(this.months, Object.values(response));
     });
   }
 
   protected createChart(months: string[], fileUploadsData: number[]) {
     const ctx = document.getElementById('fileUploadChart') as HTMLCanvasElement;
-    new Chart(ctx, {
+    this.chart = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: months,
         datasets: [
           {
-            label: 'File Uploads',
+            label: this.translateService.instant(`dashboard.statisticsDocuments.title`),
             data: fileUploadsData,
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
@@ -81,16 +66,13 @@ export class StatisticsDocumentsComponent implements OnInit {
     });
   }
 
-  private checkChartLang(months: string[]): string[] {
-    switch (this.currentLanguage) {
-      case 'ro':
-        months = this.monthsRO;
-        break;
-      case 'ru':
-        months = this.monthsRU;
-        break;
-    }
+  private translateMonths(months: string[]): string[] {
+    return months.map(month => this.translateService.instant(`dashboard.statisticsDocuments.${month}`));
+  }
 
-    return months;
+  private destroyChart(): void {
+    if (this.chart) {
+      this.chart.destroy();
+    }
   }
 }

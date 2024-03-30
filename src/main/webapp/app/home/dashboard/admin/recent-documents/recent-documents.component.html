@@ -32,7 +32,7 @@
               <fa-icon [class]="(file.name | getFileIcon).class" [icon]="(file.name | getFileIcon).icon"></fa-icon>
             </td>
             <td>
-              <a>
+              <a [routerLink]="['/entity/files/', file.id, 'detail']">
                 {{ file.name }}
               </a>
             </td>

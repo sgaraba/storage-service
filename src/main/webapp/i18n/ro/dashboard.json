@@ -1,0 +1,19 @@
+{
+  "dashboard": {
+    "statisticsDocuments": {
+      "title": "Încărcări de fișiere",
+      "april": "Aprilie",
+      "may": "Mai",
+      "august": "August",
+      "october": "Octombrie",
+      "january": "Ianuarie",
+      "march": "Martie",
+      "july": "Iulie",
+      "june": "Iunie",
+      "september": "Septembrie",
+      "february": "Februarie",
+      "november": "Noiembrie",
+      "december": "Decembrie"
+    }
+  }
+}
