@@ -5,9 +5,6 @@
       <table class="table table-hover table-striped m-0" aria-describedby="user-files-uploaded">
         <thead>
           <tr>
-            <th>
-              <input type="checkbox" class="custom-control-input" id="customCheck2" />
-            </th>
             <th></th>
             <th>
               <span jhiTranslate="files.table.thead.name">file name</span>
@@ -25,9 +22,6 @@
         </thead>
         <tbody>
           <tr *ngFor="let file of files">
-            <td style="width: 0;">
-              <input type="checkbox" class="custom-control-input" id="customCheck2" />
-            </td>
             <td style="width: 0">
               <fa-icon [class]="(file.name | getFileIcon).class" [icon]="(file.name | getFileIcon).icon"></fa-icon>
             </td>
@@ -39,17 +33,7 @@
             <td>{{ file.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
             <td>{{ file.createdBy }}</td>
             <td class="d-flex justify-content-end pe-4">
-              <ul class="nav-item dropdown m-0" ngbDropdown placement="start-bottom">
-                <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle
-                  ><fa-icon class="fs-4 text-secondary" icon="ellipsis"></fa-icon
-                ></a>
-                <ul class="dropdown-menu" ngbDropdownMenu>
-                  <li class="dropdown-item" (click)="call_download_fileService(file.id)">
-                    <fa-icon icon="download"></fa-icon>
-                    <span jhiTranslate="entity.action.download">Download</span>
-                  </li>
-                </ul>
-              </ul>
+              <app-files-menu [fileId]="file.id" [pageFiles]="false"></app-files-menu>
             </td>
           </tr>
         </tbody>

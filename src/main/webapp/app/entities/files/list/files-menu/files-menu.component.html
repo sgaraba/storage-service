@@ -1,0 +1,15 @@
+<ul class="nav-item dropdown m-0" ngbDropdown placement="left-bottom">
+  <a class="nav-link dropdown-toggle-no-arrow" ngbDropdownToggle>
+    <fa-icon class="fs-4 text-secondary" icon="ellipsis"></fa-icon>
+  </a>
+  <ul class="dropdown-menu" ngbDropdownMenu>
+    <li class="dropdown-item" (click)="call_download_fileService(fileId)">
+      <fa-icon icon="download"></fa-icon>
+      <span jhiTranslate="entity.action.download">Download</span>
+    </li>
+    <li *ngIf="pageFiles" class="dropdown-item" (click)="openModal(fileId)">
+      <fa-icon icon="trash-alt"></fa-icon>
+      <span jhiTranslate="entity.action.delete">Delete</span>
+    </li>
+  </ul>
+</ul>

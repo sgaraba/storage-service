@@ -7,7 +7,6 @@ import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { combineLatest, filter, Subject } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { registerLocaleData } from '@angular/common';
 import localeRo from '@angular/common/locales/ro';
 import { DeleteComponent } from '../delete/delete.component';
@@ -19,15 +18,16 @@ import SortByDirective from '../../../shared/sort/sort-by.directive';
 import { saveAs } from 'file-saver';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { GetFileIcon } from 'app/shared/files';
-import { FormsModule, NgModel } from '@angular/forms';
 import { SearchBarComponent } from 'app/layouts/search-bar/search-bar.component';
+import FilesMenu from './files-menu/files-menu.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // Register the 'ro' locale data
 registerLocaleData(localeRo);
 
 @Component({
   selector: 'jhi-files-list',
   standalone: true,
-  imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective, GetFileIcon, FormsModule, SearchBarComponent],
+  imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective, GetFileIcon, SearchBarComponent, FilesMenu],
   styleUrls: ['./files.component.scss'],
   templateUrl: './files.component.html',
 })
@@ -49,11 +49,11 @@ export class FilesComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private fileService: FileService,
-    private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    protected dataUtils: DataUtils,
+    private dataUtils: DataUtils,
+    private fileService: FileService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -89,15 +89,6 @@ export class FilesComponent implements OnInit {
       if (reason === 'deleted') {
         this.handleListLoad();
       }
-    });
-  }
-
-  call_download_fileService(id: number): void {
-    this.fileService.downloadFile(id).subscribe((fileData: any) => {
-      const binaryData = this.base64Decode(fileData.data);
-      const blob = new Blob([binaryData], { type: 'application/octet-stream' });
-
-      saveAs(blob, fileData.name);
     });
   }
 
@@ -160,15 +151,6 @@ export class FilesComponent implements OnInit {
       relativeTo: this.activatedRoute.parent,
       queryParams: queryParams,
     });
-  }
-
-  private base64Decode(base64String: string): Uint8Array {
-    const byteString = atob(base64String);
-    const byteArray = new Uint8Array(byteString.length);
-    for (let i = 0; i < byteString.length; i++) {
-      byteArray[i] = byteString.charCodeAt(i);
-    }
-    return byteArray;
   }
 
   private handleNavigation(): void {
