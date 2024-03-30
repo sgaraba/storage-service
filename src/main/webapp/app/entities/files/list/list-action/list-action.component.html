@@ -1,0 +1,45 @@
+<h2 class="d-flex flex-wrap justify-content-between">
+  <span jhiTranslate="files.title">Lista cu documente personale</span>
+  <div class="d-flex flex-wrap justify-content-end">
+    @if (!page_list_all) {
+      <div>
+        <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['/entity/files/upload']">
+          <fa-icon icon="plus"></fa-icon>
+          <span jhiTranslate="files.buttons.upload">Upload new file</span>
+        </button>
+      </div>
+    }
+
+    <div ngbDropdown class="dropdown">
+      <button
+        ngbDropdownToggle
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="exportDropdown"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <fa-icon icon="file-export"></fa-icon>
+        <span jhiTranslate="files.buttons.export.title">Export</span>
+      </button>
+      <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
+        <a (click)="exportListFiles('CSV')" class="dropdown-item">
+          <fa-icon icon="file-csv"></fa-icon>
+          <span jhiTranslate="files.buttons.export.downloadCSV">Download CSV</span>
+        </a>
+        <a (click)="exportListFiles('EXCEL')" class="dropdown-item">
+          <fa-icon icon="file-excel"></fa-icon>
+          <span jhiTranslate="files.buttons.export.exportEXCEL">Export to Excel</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="mx-2">
+      <button (click)="donwloadArchive()" class="btn btn-info">
+        <fa-icon icon="file-archive"></fa-icon>
+        <span>Donwload Archive</span>
+      </button>
+    </div>
+  </div>
+</h2>

@@ -1,50 +1,6 @@
 @if (currentAccount !== null) {
   <div class="row p-2 adaptive-width">
-    <h2 class="d-flex flex-wrap justify-content-between">
-      <span jhiTranslate="files.title">Lista cu documente personale</span>
-
-      <div class="d-flex flex-wrap justify-content-end">
-        <div>
-          <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-            <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-            <span jhiTranslate="userManagement.home.refreshListLabel">Refresh list</span>
-          </button>
-        </div>
-
-        @if (!page_list_all) {
-          <div>
-            <button class="btn btn-primary jh-create-entity me-2" [routerLink]="['/entity/files/upload']">
-              <fa-icon icon="plus"></fa-icon>
-              <span jhiTranslate="files.buttons.upload">Upload new file</span>
-            </button>
-          </div>
-        }
-        <div ngbDropdown class="dropdown">
-          <button
-            ngbDropdownToggle
-            class="btn btn-secondary dropdown-toggle"
-            type="button"
-            id="exportDropdown"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <fa-icon icon="file-export"></fa-icon>
-            <span jhiTranslate="files.buttons.export.title">Export</span>
-          </button>
-          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="exportDropdown">
-            <a (click)="exportListFiles('CSV')" class="dropdown-item">
-              <fa-icon icon="file-csv"></fa-icon>
-              <span jhiTranslate="files.buttons.export.downloadCSV">Download CSV</span>
-            </a>
-            <a (click)="exportListFiles('EXCEL')" class="dropdown-item">
-              <fa-icon icon="file-excel"></fa-icon>
-              <span jhiTranslate="files.buttons.export.exportEXCEL">Export to Excel</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </h2>
+    <app-files-list-action [page_list_all]="page_list_all" [selectedFiles]="getSelectedFiles()"></app-files-list-action>
 
     <jhi-alert-error></jhi-alert-error>
 
@@ -57,6 +13,9 @@
         <table class="table table-hover table-striped" aria-describedby="user-files-uploaded">
           <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
+              <th>
+                <input type="checkbox" class="form-check-input" (change)="selectAll($event)"/>
+              </th>
               <th jhiSortBy="name" scope="col">
                 <span jhiTranslate="files.table.thead.name">file name</span>
                 <fa-icon icon="sort"></fa-icon>
@@ -73,6 +32,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let file of files">
+              <td style="width: 0;">
+                <input type="checkbox" class="form-check-input" [checked]="isSelected(file.id)" (change)="toggleSelection(file.id)"/>
+              </td>
               <td>
                 <a [routerLink]="['/entity/files/', file.id, 'detail']">
                   <fa-icon [class]="(file.name | getFileIcon).class" [icon]="(file.name | getFileIcon).icon"></fa-icon>

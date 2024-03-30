@@ -21,13 +21,25 @@ import { GetFileIcon } from 'app/shared/files';
 import { SearchBarComponent } from 'app/layouts/search-bar/search-bar.component';
 import FilesMenu from './files-menu/files-menu.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import FilesListAction from './list-action/list-action.component';
 // Register the 'ro' locale data
 registerLocaleData(localeRo);
 
 @Component({
   selector: 'jhi-files-list',
   standalone: true,
-  imports: [SharedModule, RouterModule, DeleteComponent, ItemCountComponent, SortDirective, SortByDirective, GetFileIcon, SearchBarComponent, FilesMenu],
+  imports: [
+    SharedModule,
+    RouterModule,
+    DeleteComponent,
+    ItemCountComponent,
+    SortDirective,
+    SortByDirective,
+    GetFileIcon,
+    SearchBarComponent,
+    FilesMenu,
+    FilesListAction,
+  ],
   styleUrls: ['./files.component.scss'],
   templateUrl: './files.component.html',
 })
@@ -37,6 +49,8 @@ export class FilesComponent implements OnInit {
   isAdmin: boolean = false;
 
   files: FileModel[] | null = null;
+  selectedFileIds: number[] = [];
+
   page!: number;
   totalItems: number = 0;
   itemsPerPage: number = ITEMS_PER_PAGE;
@@ -45,7 +59,7 @@ export class FilesComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
 
-  searchQuery: string = "";
+  searchQuery: string = '';
 
   constructor(
     private accountService: AccountService,
@@ -53,7 +67,7 @@ export class FilesComponent implements OnInit {
     private router: Router,
     private dataUtils: DataUtils,
     private fileService: FileService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +77,32 @@ export class FilesComponent implements OnInit {
     });
 
     this.handleNavigation();
+  }
+
+  selectAll(event: any): void{
+    let checked = event.target.checked;
+    if(checked) {
+      this.selectedFileIds = this.files?.map(file => file.id) ?? [];
+    } else {
+      this.selectedFileIds = [];
+    }
+  }
+  
+  isSelected(fileId: number): boolean {
+    return this.selectedFileIds.includes(fileId);
+  }
+
+  toggleSelection(fileId: number): void {
+    const index = this.selectedFileIds.indexOf(fileId);
+    if (index !== -1) {
+      this.selectedFileIds.splice(index, 1);
+    } else {
+      this.selectedFileIds.push(fileId);
+    }
+  }
+
+  getSelectedFiles(): FileModel[] {
+    return this.files?.filter(file => this.selectedFileIds.includes(file.id)) || [];
   }
 
   updateSearchQuery(query: string): void {
@@ -89,12 +129,6 @@ export class FilesComponent implements OnInit {
       if (reason === 'deleted') {
         this.handleListLoad();
       }
-    });
-  }
-
-  exportListFiles(type: string) {
-    this.fileService.exportFiles(type).subscribe((blob: Blob) => {
-      saveAs(blob, 'list of files');
     });
   }
 

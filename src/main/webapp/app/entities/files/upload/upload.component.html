@@ -28,10 +28,6 @@
         </div>
       }
 
-      <button class="btn btn-secondary" data-cy="entityCreateCancelButton" id="cancel-save" routerLink="../list"
-              type="button">
-        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anulare</span>
-      </button>
       <button
         [disabled]="uploadForm.invalid || !isSaving"
         class="btn btn-primary"
