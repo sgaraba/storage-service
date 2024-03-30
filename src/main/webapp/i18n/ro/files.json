@@ -28,7 +28,8 @@
         "title": "Export",
         "downloadCSV": "Descărcați CSV",
         "exportEXCEL": "Exportați în Excel"
-      }
+      },
+      "donwloadArchive": "Descărcare arhivă"
     },
 
     "fileDetail": {

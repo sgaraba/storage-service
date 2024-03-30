@@ -28,7 +28,8 @@
         "title": "Export",
         "downloadCSV": "Download CSV",
         "exportEXCEL": "Export to excel"
-      }
+      },
+      "donwloadArchive": "Donwload archive"
     },
 
     "fileDetail":{

@@ -28,7 +28,8 @@
         "title": "Экспорт",
         "downloadCSV": "Скачать CSV",
         "exportEXCEL": "Экспорт в Excel"
-      }
+      },
+      "donwloadArchive": "Скачать архив"
     },
 
     "fileDetail": {

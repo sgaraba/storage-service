@@ -35,11 +35,13 @@
       </div>
     </div>
 
-    <div class="mx-2">
-      <button (click)="donwloadArchive()" class="btn btn-info">
-        <fa-icon icon="file-archive"></fa-icon>
-        <span>Donwload Archive</span>
-      </button>
-    </div>
+    @if(selectedFiles && selectedFiles.length > 0){
+      <div class="mx-2">
+        <button (click)="donwloadArchive()" class="btn btn-info">
+          <fa-icon icon="file-archive"></fa-icon>
+          <span  jhiTranslate="files.buttons.donwloadArchive">Donwload Archive</span>
+        </button>
+      </div>      
+    }
   </div>
 </h2>
