@@ -29,22 +29,22 @@
         </dd>
       </dl>
 
-      <form (ngSubmit)="reUploadFile(file.id, $event)" [formGroup]="uploadForm" enctype="multipart/form-data" novalidate role="form">
+      <form (ngSubmit)="upload()" [formGroup]="uploadForm" enctype="multipart/form-data" novalidate role="form">
         <h2 jhiTranslate="files.fileDetail.titleReupload">Reupload file</h2>
         <div class="mb-3">
           <label class="form-label" for="formFile">Alegeti fisier</label>
           <input id="formFile" (change)="onFileSelected($event)" class="form-control" type="file" required />
         </div>
 
-        @if (fileToReUpload != null) {
+        @if (fileToUpload != null) {
           <a (click)="openFile(uploadForm.get('data')?.value, uploadForm.get('mimeType')?.value)" class="pull-start">Deschide</a>
           <div class="form-text text-danger clearfix">
             <span>Last modified: <code
-              class="fw-bold">{{ fileToReUpload.lastModified | date: 'dd/MM/yy HH:mm' }}</code></span>
+              class="fw-bold">{{ fileToUpload.lastModified | date: 'dd/MM/yy HH:mm' }}</code></span>
             <br />
-            <span>File type: <code class="fw-bold">{{ fileToReUpload.type }}</code></span>
+            <span>File type: <code class="fw-bold">{{ fileToUpload.type }}</code></span>
             <br />
-            <span>File size: <code class="fw-bold">{{ byteSize(fileToReUpload.type) }}</code></span>
+            <span>File size: <code class="fw-bold">{{ byteSize(fileToUpload.type) }}</code></span>
             <hr>
           </div>
         }
